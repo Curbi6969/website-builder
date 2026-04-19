@@ -1,0 +1,7 @@
+.env
+.env.local
+.env*.local
+.claude/settings.local.json
+skills-lock.json
+nanobanana-output/
+Websites/
