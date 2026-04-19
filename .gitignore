@@ -2,6 +2,8 @@
 .env.local
 .env*.local
 .claude/settings.local.json
+.claude/Skills/node_modules/
 skills-lock.json
 nanobanana-output/
 Websites/
+.claude/Skills/nano-banana

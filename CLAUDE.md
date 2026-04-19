@@ -55,6 +55,11 @@ git add index.html
 git commit -m "..."   # push volgt automatisch via hook
 ```
 
+**ABSOLUUT VERBODEN in alle commits, PR's en GitHub-interacties:**
+- Geen `Co-Authored-By: Claude` of andere Claude/Anthropic-attributie
+- Geen vermelding van Claude Code, Anthropic of AI-tools in commit messages, PR descriptions, of comments
+- Commit messages zijn neutraal en beschrijven alleen de wijziging zelf
+
 ---
 
 ## Skills
