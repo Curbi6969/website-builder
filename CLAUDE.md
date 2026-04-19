@@ -14,6 +14,19 @@ Websites/
 
 ---
 
+## Actieve website bepalen
+
+Voordat er iets wordt aangepast in `Websites/`, altijd expliciet benoemen welke website in scope is.
+
+**Hoe de actieve website bepalen (in volgorde van prioriteit):**
+1. Kijk welke bestanden de gebruiker open heeft in de IDE — een geopend bestand uit `Websites/CV/` betekent CV is in scope
+2. Kijk of de gebruiker de website expliciet noemt in zijn bericht
+3. Als het na stap 1 en 2 nog onduidelijk is: **vraag het** — doe niets totdat dit duidelijk is
+
+**Nooit aannames doen.** Als de context wisselt (vorige sessie was CV, nu is er ook Van den Dam), altijd de actieve website benoemen vóórdat er code wordt geschreven. Zo voorkom je dat de verkeerde website per ongeluk wordt aangepast.
+
+---
+
 ## Isolatieregel: elke website is onafhankelijk
 
 **Gebruik NOOIT content, tekst, kleuren of structuur van de ene website bij het bouwen van een andere.**
