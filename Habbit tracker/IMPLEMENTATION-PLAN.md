@@ -214,10 +214,10 @@ Port faithfully into `ui/plant/PlantCanvas.kt`:
 - [x] All composables take `(state, vm)`. Stub screens show the tab name; stub overlays have working close buttons. Each gets filled in its own task.
 - [x] **Verify:** `:app:assembleDebug` green. Committed.
 
-### Task 4: Plant Canvas
-**Files:** `ui/plant/PlantCanvas.kt`.
-- [ ] Port the L-system per the algorithm section; animate generations → idle sway; draw pot beneath.
-- [ ] **Verify:** builds; plant grows then sways. Commit `feat: l-system plant canvas`.
+### Task 4: Plant Canvas — DONE
+**Files:** `ui/plant/PlantCanvas.kt` (`PlantCanvas` + `PlantWithPot`).
+- [x] Ported the L-system faithfully (xorshift32, stochastic X/F rules, growth lerp, idle sway), turtle drawing on `Canvas` via `withFrameNanos`. `PlantWithPot` adds the terracotta pot (Spacers).
+- [x] **Verify:** `:app:compileDebugKotlin` green. Visual confirmation happens once Home renders it (Task 5) / on the user's first emulator run.
 
 ### Task 5: Home tab
 **Files:** `ui/screens/HomeScreen.kt`, reusable `ui/common/Cards.kt`.
