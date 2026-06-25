@@ -230,10 +230,10 @@ Port faithfully into `ui/plant/PlantCanvas.kt`:
 - [x] Player overlay: gradient bg, icon/title/sub, progress ring drawn with two `drawArc`s (white sweep = pct, translucent remainder) + inner circle `m:ss` "resterend", play/pause toggle, done state. Countdown driven by the VM's coroutine timer.
 - [x] **Verify:** `:app:assembleDebug` green. Committed.
 
-### Task 7: Mood tab
+### Task 7: Mood tab — DONE
 **Files:** `ui/screens/MoodScreen.kt`.
-- [ ] Mood picker (5, selected scales to 1.18 + toast `Genoteerd. {note}`); journal "boomhut" card (textarea + Bewaren → clears + toast); mood calendar grid (weekday row + 35 cells seeded as specified).
-- [ ] **Verify:** builds; calendar + mood select render. Commit `feat: mood tab`.
+- [x] Mood picker (5, selected `scale(1.18)` + toast via vm); journal "boomhut" card (BasicTextField + Bewaren → clears + toast); mood calendar grid (weekday row + 35 seeded cells via `buildCalendar()`).
+- [x] **Verify:** `:app:assembleDebug` green. Committed.
 
 ### Task 8: Stats tab
 **Files:** `ui/screens/StatsScreen.kt`.
