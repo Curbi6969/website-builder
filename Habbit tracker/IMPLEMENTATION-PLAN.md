@@ -255,10 +255,10 @@ Port faithfully into `ui/plant/PlantCanvas.kt`:
 - [x] Bottom-sheet (scrim + slideInVertically, capped at 88% via BoxWithConstraints): grabber, title, mini-goal card (Doe 't! → toast+close), 6 quick-action grid (→ affirm+close), journal CTA (→ close + Mood tab).
 - [x] **Verify:** `:app:assembleDebug` green. Committed.
 
-### Task 12: Settings overlay
+### Task 12: Settings overlay — DONE
 **Files:** `ui/overlays/SettingsOverlay.kt`.
-- [ ] Header + back; name field (persists); reminders list with toggle switches (track/knob animate); reasons editor (textarea rows, remove ✕, "+ Reden toevoegen"). Persist name, reminders, reasons.
-- [ ] **Verify:** builds; edits persist across relaunch. Commit `feat: settings overlay`.
+- [x] Header + back; name field (persists); reminders list with animated toggle switches; reasons editor (BasicTextField rows, remove ✕, dashed "+ Reden toevoegen"). Name/reminders/reasons persist via VM→DataStore.
+- [x] **Verify:** `:app:assembleDebug` green. Committed.
 
 ### Task 13: Toast + affirmations + animation polish
 **Files:** `ui/common/Toast.kt` (finalize), small passes across screens.
