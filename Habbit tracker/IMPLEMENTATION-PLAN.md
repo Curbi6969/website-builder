@@ -200,13 +200,13 @@ Port faithfully into `ui/plant/PlantCanvas.kt`:
 - [x] `Theme.kt` — `RiseTheme { }` (lightColorScheme from tokens, `Bg` bg, light status bar). `Shape.kt` corner sizes 12–30dp.
 - [x] **Verify:** `:app:assembleDebug` green; MainActivity probe renders "Rise" in Fredoka. Committed.
 
-### Task 2: State, defaults, persistence
+### Task 2: State, defaults, persistence — DONE
 **Files:** `data/RiseUiState.kt`, `data/RiseDefaults.kt`, `data/RisePreferences.kt`, `vm/RiseViewModel.kt`.
-- [ ] `RiseUiState.kt` per the State Model section.
-- [ ] `RiseDefaults.kt` — all seeded lists/maps from "Key seeded data".
-- [ ] `RisePreferences.kt` — DataStore for `userName`, `reasons` (JSON or `\n`-joined), reminder booleans, `tapRecord`.
-- [ ] `RiseViewModel.kt` — `StateFlow<RiseUiState>`; intents: `goTab`, `toggleTask`, `pickMood`, `setJournal`/`saveJournal`, panic open/close/sub-nav, game pick/back, bored open/close/goal, settings open/close, `setName`, reason add/edit/remove, reminder toggle, player open/tick/toggle/close, ground tap/next, tap game start/tick/hit/stop, bubble pop/spawn, `affirm(msg)` with auto-clear, `rndAffirm()`. Load/save persisted fields.
-- [ ] **Verify:** builds. Commit `feat: ui state, defaults, datastore, viewmodel`.
+- [x] `RiseUiState.kt` — enums + sub-models + `RiseUiState` (computed `doneCount`/`streak`/`displayName`/`plantGenerations`). Added `PlayerContent` (urge-surf has no Course) and `bubbleSeed`.
+- [x] `RiseDefaults.kt` — all seeded lists/maps incl. mood-calendar seed and `urgeSurf`.
+- [x] `RisePreferences.kt` — DataStore (`user_name`, `reasons` joined by ``, `rem_<key>` bools, `tap_record`).
+- [x] `RiseViewModel.kt` (`AndroidViewModel`) — `StateFlow<RiseUiState>` + all intents (nav, tasks, mood/journal, settings/name/reasons/reminders, panic nav, games, grounding, tap-green timer, bubbles, bored, player timer, `affirm`/`rndAffirm`). Coroutine timers (no java Timer). Persists name/reasons/reminders/tapRecord.
+- [x] **Verify:** `:app:compileDebugKotlin` green. Committed.
 
 ### Task 3: App shell (scaffold, nav, FAB, overlay host)
 **Files:** `RiseApp.kt`, `ui/common/Toast.kt`, update `MainActivity.kt`.
