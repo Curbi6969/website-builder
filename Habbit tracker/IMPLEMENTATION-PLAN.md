@@ -240,10 +240,10 @@ Port faithfully into `ui/plant/PlantCanvas.kt`:
 - [x] Two reclaimed cards (36u / +18%), streak bar chart (14 bars, `h=40+round(i/13*58)`), triggers (4 labeled progress bars via `fillMaxWidth(pct)`), urges-beaten weekly (4 gradient bars + "92% deze week 🔥").
 - [x] **Verify:** `:app:assembleDebug` green. Committed.
 
-### Task 9: Panic overlay — menu, breathing, cold water, reasons, done
-**Files:** `ui/overlays/PanicOverlay.kt`.
-- [ ] Green gradient overlay, header "Je bent veilig. Adem." + close. Sub-states: MENU (4 action rows + "Ik heb 'm verslagen ✓"), BREATHING (two breathe-scaling circles 8s + box-breathing copy), WATER (4 steps), REASONS (user reasons), DONE (🎉 celebration → close). Game sub-state handled in Task 10.
-- [ ] **Verify:** builds; sub-navigation + breathing animation. Commit `feat: panic overlay (non-game states)`.
+### Task 9: Panic overlay — menu, breathing, cold water, reasons, done — DONE
+**Files:** `ui/overlays/PanicOverlay.kt`, `ui/overlays/PanicGames.kt` (stub).
+- [x] Green gradient overlay + header + close. Sub-states: MENU (4 action rows + WhiteCta beat), BREATHING (two breathe-scaling circles via infiniteTransition + box-breathing copy), WATER (4 steps), REASONS (user reasons), DONE (🎉 → close). GAME branch → `PanicGames` (stub for now). Shared `WhiteCta`/`BackPill`/`ActionRow`.
+- [x] **Verify:** `:app:assembleDebug` green. Committed.
 
 ### Task 10: Panic mini-games (bubbles, grounding, tap-green)
 **Files:** extend `ui/overlays/PanicOverlay.kt` (or `ui/overlays/PanicGames.kt`).
