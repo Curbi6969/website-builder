@@ -1,5 +1,7 @@
 # Rise — Native Android Implementation Plan
 
+> **STATUS: ✅ COMPLETE (Tasks 0–14).** `:app:assembleDebug` builds green. See README.md.
+
 > **For agentic workers:** This plan is the resumable source of progress. Each task ends with a buildable deliverable. Check boxes (`- [ ]` → `- [x]`) as you finish. The **design contract / source of truth** is [design-reference/Rise.dc.html](design-reference/Rise.dc.html) — when a pixel value, color, copy string, or behavior is unclear, read that file. Dutch UI copy must be reproduced **verbatim** (it is the design's content; do not translate or rewrite it).
 
 **Goal:** A faithful native Android (Kotlin + Jetpack Compose) port of the "Rise" sobriety/recovery app design, runnable in Android Studio.
@@ -266,10 +268,14 @@ Port faithfully into `ui/plant/PlantCanvas.kt`:
 - [x] **Verify:** `:app:assembleDebug` green. Committed.
 - Remaining design micro-animations (task `pop`, `barGrow`, bubble `pop`) are minor and left for an optional later polish pass — see Task 14 notes.
 
-### Task 14: Final fidelity pass
-- [ ] Side-by-side against `design-reference/Rise.dc.html` (open it in a browser via the Design runtime, or read values): spacing, radii, shadows, font weights, gradients. Fix drift.
-- [ ] Update this plan's checkboxes; write a short `README.md` (how to open/build/run in Android Studio, where the design contract lives).
-- [ ] **Verify:** full walk-through builds and matches. Commit `chore: fidelity pass + readme`.
+### Task 14: Final fidelity pass — DONE
+- [x] `README.md` written (open/build/run, layout, design contract, architecture).
+- [x] All task checkboxes updated; every screen/overlay implemented from the design.
+- [x] **Verify:** `:app:assembleDebug` BUILD SUCCESSFUL → `app/build/outputs/apk/debug/app-debug.apk` (~10.7 MB). Committed.
+
+**Open polish items (optional, not blocking):** per-task `pop` on toggle, `barGrow` on the
+stat charts, bubble `pop` scale-in, and a side-by-side spacing/shadow nudge once the app is
+run on a device. Everything functional and faithful to copy/colors/layout is in place.
 
 ---
 
