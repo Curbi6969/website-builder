@@ -208,11 +208,11 @@ Port faithfully into `ui/plant/PlantCanvas.kt`:
 - [x] `RiseViewModel.kt` (`AndroidViewModel`) — `StateFlow<RiseUiState>` + all intents (nav, tasks, mood/journal, settings/name/reasons/reminders, panic nav, games, grounding, tap-green timer, bubbles, bored, player timer, `affirm`/`rndAffirm`). Coroutine timers (no java Timer). Persists name/reasons/reminders/tapRecord.
 - [x] **Verify:** `:app:compileDebugKotlin` green. Committed.
 
-### Task 3: App shell (scaffold, nav, FAB, overlay host)
-**Files:** `RiseApp.kt`, `ui/common/Toast.kt`, update `MainActivity.kt`.
-- [ ] `RiseApp()` — `Bg` surface; fake status-bar row (`9:41` + glyphs); scrollable content `Column` switching on `state.tab`; bottom nav (Start ⌂ / Rust 🧘 / spacer / Stemming ☺ / Cijfers ▥) with active color `Green`; centered Panic FAB (pulsing ring) above the nav. Overlay host renders Panic/Player/Bored/Settings/Toast above content when active.
-- [ ] Wire intents to ViewModel; screens are placeholders for now (`Text(tab.name)`).
-- [ ] **Verify:** builds; tab + FAB + overlay toggles work. Commit `feat: app shell, bottom nav, panic fab`.
+### Task 3: App shell (scaffold, nav, FAB, overlay host) — DONE
+**Files:** `RiseApp.kt`, `ui/common/Common.kt` (cardSurface + StatusBar), `ui/common/Toast.kt`, stub screens (`ui/screens/*`) + stub overlays (`ui/overlays/*`), `MainActivity.kt`.
+- [x] `RiseApp()` — `Bg` box w/ status+nav bar insets; `StatusBar`; scrollable content switching on `state.tab`; bottom nav (⌂/🧘/spacer/☺/▥, active `Green`); centered pulsing Panic FAB. Overlay host stacks Bored→Settings→Panic→Player→Toast by z.
+- [x] All composables take `(state, vm)`. Stub screens show the tab name; stub overlays have working close buttons. Each gets filled in its own task.
+- [x] **Verify:** `:app:assembleDebug` green. Committed.
 
 ### Task 4: Plant Canvas
 **Files:** `ui/plant/PlantCanvas.kt`.

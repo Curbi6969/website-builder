@@ -1,0 +1,27 @@
+package com.beaunolten.rise.ui.overlays
+
+import androidx.compose.foundation.background
+import androidx.compose.foundation.clickable
+import androidx.compose.foundation.layout.Box
+import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.padding
+import androidx.compose.material3.Text
+import androidx.compose.runtime.Composable
+import androidx.compose.ui.Alignment
+import androidx.compose.ui.Modifier
+import androidx.compose.ui.unit.dp
+import com.beaunolten.rise.data.RiseUiState
+import com.beaunolten.rise.ui.theme.Bg
+import com.beaunolten.rise.vm.RiseViewModel
+
+// Stub — implemented in Task 12.
+@Composable
+fun SettingsOverlay(state: RiseUiState, vm: RiseViewModel) {
+    Box(Modifier.fillMaxSize().background(Bg)) {
+        Text("Instellingen", modifier = Modifier.align(Alignment.Center))
+        Text(
+            "‹ Terug",
+            modifier = Modifier.align(Alignment.TopStart).padding(20.dp).clickable { vm.closeSettings() },
+        )
+    }
+}
