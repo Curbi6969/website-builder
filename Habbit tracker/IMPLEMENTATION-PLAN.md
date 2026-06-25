@@ -235,10 +235,10 @@ Port faithfully into `ui/plant/PlantCanvas.kt`:
 - [x] Mood picker (5, selected `scale(1.18)` + toast via vm); journal "boomhut" card (BasicTextField + Bewaren → clears + toast); mood calendar grid (weekday row + 35 seeded cells via `buildCalendar()`).
 - [x] **Verify:** `:app:assembleDebug` green. Committed.
 
-### Task 8: Stats tab
+### Task 8: Stats tab — DONE
 **Files:** `ui/screens/StatsScreen.kt`.
-- [ ] Two reclaimed cards (36u / +18%), streak bar chart (14 bars w/ grow), triggers (4 labeled progress bars), urges-beaten weekly (4 bars + "92% deze week 🔥").
-- [ ] **Verify:** builds; charts render. Commit `feat: stats tab`.
+- [x] Two reclaimed cards (36u / +18%), streak bar chart (14 bars, `h=40+round(i/13*58)`), triggers (4 labeled progress bars via `fillMaxWidth(pct)`), urges-beaten weekly (4 gradient bars + "92% deze week 🔥").
+- [x] **Verify:** `:app:assembleDebug` green. Committed.
 
 ### Task 9: Panic overlay — menu, breathing, cold water, reasons, done
 **Files:** `ui/overlays/PanicOverlay.kt`.
