@@ -193,12 +193,12 @@ Port faithfully into `ui/plant/PlantCanvas.kt`:
 - [x] `MainActivity.kt` placeholder.
 - [x] **Verify:** `:app:assembleDebug` → BUILD SUCCESSFUL (verified via JBR 21). Committed.
 
-### Task 1: Theme (colors, fonts, shapes)
-**Files:** `ui/theme/Color.kt`, `Type.kt`, `Shape.kt`, `Theme.kt`; `res/font/` Google Fonts cert (`com_google_android_gms_fonts_certs`), `res/values/font_certs.xml`, `res/xml/...` as needed.
-- [ ] `Color.kt` — every token in the table above as `val X = Color(0xFF……)`.
-- [ ] `Type.kt` — `GoogleFont.Provider`, `Fredoka`/`Nunito` `FontFamily`, and a `RiseType` object exposing the heading/body styles used (display 26/Fredoka600, hero number 72/Fredoka700, body 14/Nunito800, etc.).
-- [ ] `Theme.kt` — `RiseTheme { }` applying a Material3 color scheme seeded from tokens + `Bg` background; set status bar icons dark. `Shape.kt` for the common corner sizes.
-- [ ] **Verify:** builds; a probe `Text` shows Fredoka. Commit `feat: theme tokens and fonts`.
+### Task 1: Theme (colors, fonts, shapes) — DONE
+**Files:** `ui/theme/Color.kt`, `Type.kt`, `Shape.kt`, `Theme.kt`; bundled variable fonts `res/font/fredoka.ttf` + `nunito.ttf` (from google/fonts; weights via `FontVariation`, no Play Services/certs needed).
+- [x] `Color.kt` — every token as `val X = Color(0xFF……)`.
+- [x] `Type.kt` — `Fredoka`/`Nunito` `FontFamily` from variable TTFs (`@OptIn(ExperimentalTextApi)`), `RiseTypography` Material3 mapping.
+- [x] `Theme.kt` — `RiseTheme { }` (lightColorScheme from tokens, `Bg` bg, light status bar). `Shape.kt` corner sizes 12–30dp.
+- [x] **Verify:** `:app:assembleDebug` green; MainActivity probe renders "Rise" in Fredoka. Committed.
 
 ### Task 2: State, defaults, persistence
 **Files:** `data/RiseUiState.kt`, `data/RiseDefaults.kt`, `data/RisePreferences.kt`, `vm/RiseViewModel.kt`.
