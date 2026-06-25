@@ -219,10 +219,10 @@ Port faithfully into `ui/plant/PlantCanvas.kt`:
 - [x] Ported the L-system faithfully (xorshift32, stochastic X/F rules, growth lerp, idle sway), turtle drawing on `Canvas` via `withFrameNanos`. `PlantWithPot` adds the terracotta pot (Spacers).
 - [x] **Verify:** `:app:compileDebugKotlin` green. Visual confirmation happens once Home renders it (Task 5) / on the user's first emulator run.
 
-### Task 5: Home tab
-**Files:** `ui/screens/HomeScreen.kt`, reusable `ui/common/Cards.kt`.
-- [ ] Greeting header (date, `Kom op {name}…`, ⚙️ + 🙂 buttons), hero (plant by default; number variant), 3 mini-stat cards (`36u`/`{urgePct}%`/`{doneCount}`), bored CTA card, "Plan van vandaag" task list with toggle + `{doneCount}/{taskTotal}` and affirmation toast on complete.
-- [ ] **Verify:** builds; matches Home region of design. Commit `feat: home tab`.
+### Task 5: Home tab — DONE
+**Files:** `ui/screens/HomeScreen.kt`.
+- [x] Greeting header (date, `Kom op {name}…`, ⚙️ + 🙂 buttons), hero (PlantHero default via `PlantWithPot`; NumberHero variant), 3 mini-stat cards, bored CTA, "Plan van vandaag" toggleable task list (`{doneCount}/{taskTotal}`, affirmation toast on complete via vm).
+- [x] **Verify:** `:app:assembleDebug` green. Committed.
 
 ### Task 6: Rust tab + Player overlay
 **Files:** `ui/screens/RustScreen.kt`, `ui/overlays/PlayerOverlay.kt`.
