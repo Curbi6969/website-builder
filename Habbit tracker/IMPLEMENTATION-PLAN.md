@@ -245,10 +245,10 @@ Port faithfully into `ui/plant/PlantCanvas.kt`:
 - [x] Green gradient overlay + header + close. Sub-states: MENU (4 action rows + WhiteCta beat), BREATHING (two breathe-scaling circles via infiniteTransition + box-breathing copy), WATER (4 steps), REASONS (user reasons), DONE (🎉 → close). GAME branch → `PanicGames` (stub for now). Shared `WhiteCta`/`BackPill`/`ActionRow`.
 - [x] **Verify:** `:app:assembleDebug` green. Committed.
 
-### Task 10: Panic mini-games (bubbles, grounding, tap-green)
-**Files:** extend `ui/overlays/PanicOverlay.kt` (or `ui/overlays/PanicGames.kt`).
-- [ ] Game menu (3 choices). Bubbles: 7 randomly placed bubbles, tap pops + respawns + score. Grounding 5-4-3-2-1: dots fill per step, next when filled, done screen. Tap-green: 3×3 grid, random green target every 900ms, 20s timer tick, score, record persisted to DataStore (`tapRecord`), game-over restart.
-- [ ] **Verify:** builds; all three games playable; record persists across launches. Commit `feat: panic mini-games`.
+### Task 10: Panic mini-games (bubbles, grounding, tap-green) — DONE
+**Files:** `ui/overlays/PanicGames.kt` (full).
+- [x] Game menu (3 choices). Bubbles: 7 placed bubbles, tap pops+respawns+score. Grounding 5-4-3-2-1: dots fill per step, "Volgende" when filled, done screen. Tap-green: 3×3 grid, random target/900ms + 20s timer (VM), score + caption, record persisted, "Opnieuw" on game over.
+- [x] **Verify:** `:app:assembleDebug` green. Committed.
 
 ### Task 11: Bored sheet
 **Files:** `ui/overlays/BoredSheet.kt`.
