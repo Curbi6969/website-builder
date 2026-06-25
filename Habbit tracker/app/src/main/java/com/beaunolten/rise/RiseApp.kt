@@ -1,5 +1,9 @@
 package com.beaunolten.rise
 
+import androidx.compose.animation.AnimatedContent
+import androidx.compose.animation.fadeIn
+import androidx.compose.animation.fadeOut
+import androidx.compose.animation.togetherWith
 import androidx.compose.animation.core.EaseOut
 import androidx.compose.animation.core.RepeatMode
 import androidx.compose.animation.core.animateFloat
@@ -82,11 +86,17 @@ fun RiseApp(vm: RiseViewModel = viewModel()) {
                         .padding(horizontal = 20.dp)
                         .padding(bottom = 110.dp),
                 ) {
-                    when (state.tab) {
-                        Tab.HOME -> HomeScreen(state, vm)
-                        Tab.RUST -> RustScreen(state, vm)
-                        Tab.MOOD -> MoodScreen(state, vm)
-                        Tab.STATS -> StatsScreen(state, vm)
+                    AnimatedContent(
+                        targetState = state.tab,
+                        transitionSpec = { fadeIn(tween(300)) togetherWith fadeOut(tween(150)) },
+                        label = "tab",
+                    ) { tab ->
+                        when (tab) {
+                            Tab.HOME -> HomeScreen(state, vm)
+                            Tab.RUST -> RustScreen(state, vm)
+                            Tab.MOOD -> MoodScreen(state, vm)
+                            Tab.STATS -> StatsScreen(state, vm)
+                        }
                     }
                 }
             }

@@ -260,10 +260,11 @@ Port faithfully into `ui/plant/PlantCanvas.kt`:
 - [x] Header + back; name field (persists); reminders list with animated toggle switches; reasons editor (BasicTextField rows, remove ✕, dashed "+ Reden toevoegen"). Name/reminders/reasons persist via VM→DataStore.
 - [x] **Verify:** `:app:assembleDebug` green. Committed.
 
-### Task 13: Toast + affirmations + animation polish
-**Files:** `ui/common/Toast.kt` (finalize), small passes across screens.
-- [ ] Toast pop animation (slide+fade, auto-dismiss 2.4s). Confirm affirmations fire on: task complete, mood log, bored actions, goal, journal save. Add the remaining design animations where cheap: hero `fadein`, task `pop`, FAB `pulseRing`, bar `barGrow`, bubble `pop`, sheet `sheetup`.
-- [ ] **Verify:** builds; toasts + key animations present. Commit `feat: toasts and animation polish`.
+### Task 13: Toast + affirmations + animation polish — DONE
+**Files:** `RiseApp.kt` (tab `AnimatedContent` fade), `ui/common/Toast.kt` (already slide+fade, auto-dismiss 2.4s via VM).
+- [x] Toast pop (slide+fade). Affirmations confirmed firing on: task complete, mood log, bored goal/activity, journal save. Animations present: tab fade-in, FAB pulseRing, breathing pulse, bored slide-up, mood scale, toggle knob.
+- [x] **Verify:** `:app:assembleDebug` green. Committed.
+- Remaining design micro-animations (task `pop`, `barGrow`, bubble `pop`) are minor and left for an optional later polish pass — see Task 14 notes.
 
 ### Task 14: Final fidelity pass
 - [ ] Side-by-side against `design-reference/Rise.dc.html` (open it in a browser via the Design runtime, or read values): spacing, radii, shadows, font weights, gradients. Fix drift.
