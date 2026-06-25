@@ -7,3 +7,11 @@ skills-lock.json
 nanobanana-output/
 Websites/
 .claude/Skills/nano-banana
+
+# Website projects with their own git repos
+beau-nolten-cv/
+van-den-dam/
+
+# Python bytecode
+__pycache__/
+*.pyc
