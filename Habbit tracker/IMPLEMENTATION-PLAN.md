@@ -224,11 +224,11 @@ Port faithfully into `ui/plant/PlantCanvas.kt`:
 - [x] Greeting header (date, `Kom op {name}…`, ⚙️ + 🙂 buttons), hero (PlantHero default via `PlantWithPot`; NumberHero variant), 3 mini-stat cards, bored CTA, "Plan van vandaag" toggleable task list (`{doneCount}/{taskTotal}`, affirmation toast on complete via vm).
 - [x] **Verify:** `:app:assembleDebug` green. Committed.
 
-### Task 6: Rust tab + Player overlay
+### Task 6: Rust tab + Player overlay — DONE
 **Files:** `ui/screens/RustScreen.kt`, `ui/overlays/PlayerOverlay.kt`.
-- [ ] Rust: "Urge surfen" featured card → opens player (8 min); "Routines" list of 5 courses → player.
-- [ ] Player overlay: gradient bg, icon/title/sub, conic-gradient progress ring with `m:ss` remaining, play/pause toggle, done state ("Mooi. Je nam tijd voor jezelf. 🌱"). 1s countdown tick via `LaunchedEffect`.
-- [ ] **Verify:** builds; timer counts down, pause works. Commit `feat: rust tab + meditation player`.
+- [x] Rust: "Urge surfen" featured card → `openUrgeSurf`; "Routines" list of 5 courses → `openPlayer`.
+- [x] Player overlay: gradient bg, icon/title/sub, progress ring drawn with two `drawArc`s (white sweep = pct, translucent remainder) + inner circle `m:ss` "resterend", play/pause toggle, done state. Countdown driven by the VM's coroutine timer.
+- [x] **Verify:** `:app:assembleDebug` green. Committed.
 
 ### Task 7: Mood tab
 **Files:** `ui/screens/MoodScreen.kt`.
