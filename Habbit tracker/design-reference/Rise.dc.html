@@ -1,0 +1,860 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Fredoka:wght@400;500;600;700&family=Nunito:wght@400;600;700;800;900&display=swap" rel="stylesheet">
+<style>
+  *{box-sizing:border-box;-webkit-tap-highlight-color:transparent;}
+  body{margin:0;}
+  @keyframes breathe{0%,100%{transform:scale(.62);}50%{transform:scale(1);}}
+  @keyframes breatheGlow{0%,100%{opacity:.4;}50%{opacity:.9;}}
+  @keyframes floaty{0%,100%{transform:translateY(0);}50%{transform:translateY(-8px);}}
+  @keyframes pulseRing{0%{transform:scale(.9);opacity:.7;}70%{transform:scale(1.45);opacity:0;}100%{opacity:0;}}
+  @keyframes toastpop{0%{transform:translate(-50%,18px) scale(.9);opacity:0;}100%{transform:translate(-50%,0) scale(1);opacity:1;}}
+  @keyframes pop{0%{transform:scale(0);}70%{transform:scale(1.12);}100%{transform:scale(1);}}
+  @keyframes sheetup{0%{transform:translateY(100%);}100%{transform:translateY(0);}}
+  @keyframes fadein{0%{opacity:0;}100%{opacity:1;}}
+  @keyframes barGrow{0%{transform:scaleY(0);}100%{transform:scaleY(1);}}
+  @keyframes ringspin{0%{transform:rotate(0);}100%{transform:rotate(360deg);}}
+  @keyframes fadeUp{0%{opacity:0;transform:translateY(14px);}100%{opacity:1;transform:translateY(0);}}
+  @keyframes wiggle{0%,100%{transform:rotate(0);}25%{transform:rotate(-7deg);}75%{transform:rotate(7deg);}}
+  ::-webkit-scrollbar{width:0;height:0;}
+</style>
+</helmet>
+
+<div style="width:390px;height:844px;margin:0 auto;position:relative;overflow:hidden;background:#EAF6EF;font-family:'Nunito',sans-serif;color:#1B3A2E;display:flex;flex-direction:column;box-shadow:0 30px 80px rgba(27,58,46,.25);">
+
+  <!-- STATUS BAR -->
+  <div style="display:flex;justify-content:space-between;align-items:center;padding:14px 26px 6px;font-size:13px;font-weight:800;flex-shrink:0;">
+    <span>9:41</span><span style="letter-spacing:2px;font-size:11px;">●●●  ⌁  ▮</span>
+  </div>
+
+  <!-- ============ SCROLLABLE CONTENT ============ -->
+  <div style="flex:1;overflow-y:auto;overflow-x:hidden;padding:0 20px 110px;">
+
+    <!-- ====== HOME ====== -->
+    <sc-if value="{{ isHome }}" hint-placeholder-val="{{ true }}">
+      <div style="animation:fadein .3s ease;">
+        <div style="display:flex;justify-content:space-between;align-items:center;margin-top:6px;">
+          <div>
+            <div style="font-size:13px;color:#4A6A5A;font-weight:800;">Dinsdag 25 juni</div>
+            <div style="font-family:'Fredoka',sans-serif;font-size:21px;font-weight:600;">Kom op {{ userName }}, jij kan dit 💪</div>
+          </div>
+          <div style="display:flex;gap:8px;flex-shrink:0;">
+            <div onClick="{{ openSettings }}" style="width:44px;height:44px;border-radius:50%;background:#fff;display:flex;align-items:center;justify-content:center;font-size:20px;cursor:pointer;box-shadow:0 4px 12px rgba(27,58,46,.06);">⚙️</div>
+            <div onClick="{{ goMood }}" style="width:44px;height:44px;border-radius:50%;background:#D6ECE0;display:flex;align-items:center;justify-content:center;font-size:21px;cursor:pointer;">🙂</div>
+          </div>
+        </div>
+
+        <!-- HERO: number -->
+        <sc-if value="{{ heroNumber }}" hint-placeholder-val="{{ true }}">
+          <div style="margin-top:16px;border-radius:30px;padding:24px;background:linear-gradient(150deg,#2EA873,#1E8A5E);color:#fff;position:relative;overflow:hidden;box-shadow:0 16px 30px rgba(30,138,94,.35);">
+            <div style="position:absolute;right:-20px;bottom:-26px;font-size:120px;opacity:.18;">🌿</div>
+            <div style="font-size:13px;font-weight:800;opacity:.9;letter-spacing:.5px;">JE STREAK</div>
+            <div style="font-family:'Fredoka',sans-serif;font-size:72px;font-weight:700;line-height:1;margin-top:4px;">{{ streak }}<span style="font-size:24px;font-weight:600;"> dagen</span></div>
+            <div style="font-size:15px;font-weight:700;margin-top:6px;opacity:.95;">Sterk &amp; vrij. Record: 21 dagen.</div>
+          </div>
+        </sc-if>
+        <!-- HERO: plant -->
+        <sc-if value="{{ heroPlant }}" hint-placeholder-val="{{ false }}">
+          <div style="margin-top:16px;border-radius:30px;padding:18px 24px 8px;background:linear-gradient(180deg,#D6F0E4,#EAF6EF);position:relative;overflow:hidden;box-shadow:0 12px 26px rgba(30,138,94,.18);text-align:center;">
+            <div style="font-size:12px;font-weight:800;color:#2EA873;letter-spacing:.5px;">JOUW GROEI · {{ streak }} DAGEN</div>
+            <div style="position:relative;width:210px;height:200px;margin:2px auto 0;display:flex;align-items:flex-end;justify-content:center;">
+              <x-import component-from-global-scope="lsys-plant" from="./lsys-plant.js" width="210" height="196" generations="{{ plantGenerations }}" angle="24" seg="5" stem="#3FA071" stem-tip="#7DC79B" berry-a="#F2A9C4" berry-b="#FFB07C" hint-size="210px,196px"></x-import>
+            </div>
+            <!-- pot -->
+            <div style="position:relative;width:96px;height:14px;background:#E78A4A;border-radius:8px;margin:-6px auto 0;z-index:2;"></div>
+            <div style="position:relative;width:78px;height:42px;background:linear-gradient(#D9763B,#C9692F);border-radius:0 0 18px 18px;margin:0 auto 4px;z-index:2;"></div>
+          </div>
+        </sc-if>
+
+        <!-- mini stats -->
+        <div style="display:flex;gap:12px;margin-top:14px;">
+          <div style="flex:1;background:#fff;border-radius:22px;padding:14px;text-align:center;box-shadow:0 6px 16px rgba(27,58,46,.06);">
+            <div style="font-family:'Fredoka',sans-serif;font-size:23px;font-weight:700;color:#4FB8CE;">36u</div>
+            <div style="font-size:11px;font-weight:800;color:#4A6A5A;">tijd terug</div>
+          </div>
+          <div style="flex:1;background:#fff;border-radius:22px;padding:14px;text-align:center;box-shadow:0 6px 16px rgba(27,58,46,.06);">
+            <div style="font-family:'Fredoka',sans-serif;font-size:23px;font-weight:700;color:#FF7A59;">{{ urgePct }}%</div>
+            <div style="font-size:11px;font-weight:800;color:#4A6A5A;">drang verslagen</div>
+          </div>
+          <div style="flex:1;background:#fff;border-radius:22px;padding:14px;text-align:center;box-shadow:0 6px 16px rgba(27,58,46,.06);">
+            <div style="font-family:'Fredoka',sans-serif;font-size:23px;font-weight:700;color:#2EA873;">{{ doneCount }}</div>
+            <div style="font-size:11px;font-weight:800;color:#4A6A5A;">wins vandaag</div>
+          </div>
+        </div>
+
+        <!-- BORED quick card -->
+        <div onClick="{{ openBored }}" style="margin-top:14px;border-radius:24px;padding:16px 18px;background:linear-gradient(120deg,#FFD98A,#FBC55F);display:flex;align-items:center;gap:14px;cursor:pointer;box-shadow:0 10px 22px rgba(245,166,76,.28);">
+          <div style="font-size:30px;">🎯</div>
+          <div style="flex:1;"><div style="font-weight:900;font-size:15px;color:#7a5a14;">Voel je je leeg of verveeld?</div><div style="font-size:12.5px;font-weight:800;color:#9a7826;">Pak een snelle actie — vul de leegte →</div></div>
+        </div>
+
+        <!-- today -->
+        <div style="margin-top:18px;display:flex;align-items:center;justify-content:space-between;">
+          <div style="font-family:'Fredoka',sans-serif;font-size:18px;font-weight:600;">Plan van vandaag</div>
+          <div style="font-size:12px;font-weight:800;color:#2EA873;">{{ doneCount }} / {{ taskTotal }} gedaan</div>
+        </div>
+        <div style="margin-top:10px;display:flex;flex-direction:column;gap:9px;">
+          <sc-for list="{{ tasks }}" as="t" hint-placeholder-count="4">
+            <div onClick="{{ t.toggle }}" style="display:flex;align-items:center;gap:13px;background:#fff;border-radius:20px;padding:14px 16px;box-shadow:0 4px 12px rgba(27,58,46,.05);cursor:pointer;">
+              <div style="width:26px;height:26px;border-radius:50%;flex-shrink:0;display:flex;align-items:center;justify-content:center;font-weight:900;font-size:14px;color:#fff;background:{{ t.dotBg }};border:{{ t.dotBorder }};">{{ t.check }}</div>
+              <div style="flex:1;"><div style="font-weight:800;font-size:14px;color:{{ t.txtColor }};text-decoration:{{ t.strike }};">{{ t.time }} · {{ t.label }}</div></div>
+              <div style="font-size:18px;">{{ t.icon }}</div>
+            </div>
+          </sc-for>
+        </div>
+      </div>
+    </sc-if>
+
+    <!-- ====== RUST / MEDITATIE ====== -->
+    <sc-if value="{{ isRust }}" hint-placeholder-val="{{ false }}">
+      <div style="animation:fadein .3s ease;">
+        <div style="font-family:'Fredoka',sans-serif;font-size:26px;font-weight:600;margin-top:8px;">Rust &amp; meditatie</div>
+        <div style="font-size:13.5px;color:#4A6A5A;font-weight:700;">Adem. Reset. Jij hebt de leiding.</div>
+
+        <!-- featured -->
+        <div onClick="{{ playUrge }}" style="margin-top:16px;border-radius:28px;padding:22px;background:linear-gradient(135deg,#4FB8CE,#3C8FAE);color:#fff;position:relative;overflow:hidden;cursor:pointer;box-shadow:0 14px 28px rgba(60,143,174,.32);">
+          <div style="position:absolute;right:-10px;top:-10px;font-size:90px;opacity:.2;">🌊</div>
+          <div style="font-size:12px;font-weight:800;opacity:.9;letter-spacing:.5px;">AANBEVOLEN BIJ DRANG</div>
+          <div style="font-family:'Fredoka',sans-serif;font-size:26px;font-weight:600;margin-top:4px;">Urge surfen</div>
+          <div style="font-size:13px;font-weight:700;opacity:.95;margin-top:2px;max-width:230px;">Rij de golf uit. Hij komt op, piekt, en zakt — altijd.</div>
+          <div style="margin-top:12px;display:inline-flex;align-items:center;gap:8px;background:rgba(255,255,255,.25);padding:8px 16px;border-radius:30px;font-weight:900;font-size:13px;">▶ Start · 8 min</div>
+        </div>
+
+        <div style="margin-top:20px;font-family:'Fredoka',sans-serif;font-size:17px;font-weight:600;">Routines</div>
+        <div style="margin-top:10px;display:flex;flex-direction:column;gap:10px;">
+          <sc-for list="{{ courses }}" as="c" hint-placeholder-count="5">
+            <div onClick="{{ c.play }}" style="display:flex;align-items:center;gap:14px;background:#fff;border-radius:22px;padding:14px;box-shadow:0 5px 14px rgba(27,58,46,.06);cursor:pointer;">
+              <div style="width:52px;height:52px;border-radius:16px;flex-shrink:0;display:flex;align-items:center;justify-content:center;font-size:24px;background:{{ c.bg }};">{{ c.icon }}</div>
+              <div style="flex:1;"><div style="font-weight:900;font-size:15px;">{{ c.title }}</div><div style="font-size:12.5px;color:#4A6A5A;font-weight:700;">{{ c.sub }}</div></div>
+              <div style="font-size:12px;font-weight:800;color:#9bb0a6;">{{ c.len }}</div>
+            </div>
+          </sc-for>
+        </div>
+      </div>
+    </sc-if>
+
+    <!-- ====== STEMMING / MOOD ====== -->
+    <sc-if value="{{ isMood }}" hint-placeholder-val="{{ false }}">
+      <div style="animation:fadein .3s ease;">
+        <div style="font-family:'Fredoka',sans-serif;font-size:26px;font-weight:600;margin-top:8px;">Stemming</div>
+        <div style="font-size:13.5px;color:#4A6A5A;font-weight:700;">Leer jezelf kennen — zonder oordeel.</div>
+
+        <!-- log now -->
+        <div style="margin-top:16px;background:#fff;border-radius:26px;padding:20px 18px;box-shadow:0 8px 20px rgba(27,58,46,.07);">
+          <div style="font-weight:900;font-size:16px;text-align:center;">Hoe voel je je nu?</div>
+          <div style="display:flex;justify-content:space-between;margin-top:16px;">
+            <sc-for list="{{ moods }}" as="m" hint-placeholder-count="5">
+              <div onClick="{{ m.pick }}" style="display:flex;flex-direction:column;align-items:center;gap:6px;cursor:pointer;flex:1;">
+                <div style="width:48px;height:48px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:26px;background:{{ m.bg }};transform:scale({{ m.scale }});transition:transform .15s;">{{ m.face }}</div>
+                <div style="font-size:10.5px;font-weight:800;color:#4A6A5A;">{{ m.label }}</div>
+              </div>
+            </sc-for>
+          </div>
+        </div>
+
+        <!-- journaling -->
+        <div style="margin-top:14px;background:linear-gradient(135deg,#E9E2FB,#F3EFFD);border-radius:26px;padding:20px 18px;box-shadow:0 8px 20px rgba(120,100,200,.12);">
+          <div style="display:flex;align-items:center;gap:8px;"><span style="font-size:18px;">🌳</span><div style="font-weight:900;font-size:15px;color:#5b4b9e;">Jouw boomhut</div></div>
+          <div style="font-weight:800;font-size:15px;margin-top:8px;color:#3a3160;">{{ journalPrompt }}</div>
+          <textarea value="{{ journalText }}" onInput="{{ onJournal }}" placeholder="Typ hier… niemand leest mee." style="width:100%;margin-top:10px;border:none;background:rgba(255,255,255,.7);border-radius:16px;padding:12px 14px;font-family:'Nunito',sans-serif;font-size:14px;font-weight:700;color:#3a3160;resize:none;height:74px;outline:none;"></textarea>
+          <div onClick="{{ saveJournal }}" style="margin-top:10px;text-align:center;background:#6C5CE0;color:#fff;font-weight:900;font-size:14px;padding:12px;border-radius:16px;cursor:pointer;">Bewaren ✨</div>
+        </div>
+
+        <!-- calendar -->
+        <div style="margin-top:14px;background:#fff;border-radius:26px;padding:18px;box-shadow:0 8px 20px rgba(27,58,46,.07);">
+          <div style="display:flex;justify-content:space-between;align-items:center;"><div style="font-weight:900;font-size:15px;">Juni 2026</div><div style="font-size:12px;font-weight:800;color:#9bb0a6;">Stemmingen</div></div>
+          <div style="display:grid;grid-template-columns:repeat(7,1fr);gap:6px;margin-top:12px;">
+            <sc-for list="{{ weekdays }}" as="w" hint-placeholder-count="7">
+              <div style="text-align:center;font-size:10px;font-weight:900;color:#bcccc3;">{{ w }}</div>
+            </sc-for>
+            <sc-for list="{{ calendar }}" as="d" hint-placeholder-count="35">
+              <div style="aspect-ratio:1;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:14px;font-weight:800;background:{{ d.bg }};color:{{ d.color }};">{{ d.content }}</div>
+            </sc-for>
+          </div>
+        </div>
+      </div>
+    </sc-if>
+
+    <!-- ====== CIJFERS / STATS ====== -->
+    <sc-if value="{{ isStats }}" hint-placeholder-val="{{ false }}">
+      <div style="animation:fadein .3s ease;">
+        <div style="font-family:'Fredoka',sans-serif;font-size:26px;font-weight:600;margin-top:8px;">Jouw cijfers</div>
+        <div style="font-size:13.5px;color:#4A6A5A;font-weight:700;">Bewijs zwart op wit: je groeit.</div>
+
+        <!-- reclaimed -->
+        <div style="display:flex;gap:12px;margin-top:16px;">
+          <div style="flex:1;border-radius:24px;padding:18px;background:linear-gradient(150deg,#2EA873,#1E8A5E);color:#fff;box-shadow:0 12px 24px rgba(30,138,94,.28);">
+            <div style="font-size:24px;">⏳</div>
+            <div style="font-family:'Fredoka',sans-serif;font-size:30px;font-weight:700;margin-top:4px;">36u</div>
+            <div style="font-size:12px;font-weight:800;opacity:.92;">tijd teruggewonnen</div>
+          </div>
+          <div style="flex:1;border-radius:24px;padding:18px;background:linear-gradient(150deg,#4FB8CE,#3C8FAE);color:#fff;box-shadow:0 12px 24px rgba(60,143,174,.28);">
+            <div style="font-size:24px;">🧠</div>
+            <div style="font-family:'Fredoka',sans-serif;font-size:30px;font-weight:700;margin-top:4px;">+18%</div>
+            <div style="font-size:12px;font-weight:800;opacity:.92;">focus &amp; energie</div>
+          </div>
+        </div>
+
+        <!-- streak chart -->
+        <div style="margin-top:14px;background:#fff;border-radius:26px;padding:18px;box-shadow:0 8px 20px rgba(27,58,46,.07);">
+          <div style="font-weight:900;font-size:15px;">Schone dagen · 14 dagen</div>
+          <div style="display:flex;align-items:flex-end;gap:5px;height:96px;margin-top:14px;">
+            <sc-for list="{{ streakBars }}" as="b" hint-placeholder-count="14">
+              <div style="flex:1;display:flex;flex-direction:column;justify-content:flex-end;height:100%;">
+                <div style="height:{{ b.h }}%;background:{{ b.color }};border-radius:6px;transform-origin:bottom;animation:barGrow .6s ease;"></div>
+              </div>
+            </sc-for>
+          </div>
+          <div style="display:flex;justify-content:space-between;font-size:10px;font-weight:800;color:#bcccc3;margin-top:8px;"><span>12 jun</span><span>vandaag</span></div>
+        </div>
+
+        <!-- triggers -->
+        <div style="margin-top:14px;background:#fff;border-radius:26px;padding:18px;box-shadow:0 8px 20px rgba(27,58,46,.07);">
+          <div style="font-weight:900;font-size:15px;">Wanneer komt de drang op?</div>
+          <div style="font-size:12px;color:#4A6A5A;font-weight:700;margin-top:2px;">Zo weet je waar je sterk moet staan.</div>
+          <div style="margin-top:14px;display:flex;flex-direction:column;gap:12px;">
+            <sc-for list="{{ triggers }}" as="g" hint-placeholder-count="4">
+              <div>
+                <div style="display:flex;justify-content:space-between;font-size:13px;font-weight:800;margin-bottom:5px;"><span>{{ g.icon }} {{ g.label }}</span><span style="color:#9bb0a6;">{{ g.pct }}%</span></div>
+                <div style="height:12px;border-radius:8px;background:#EDF4F0;overflow:hidden;"><div style="width:{{ g.pct }}%;height:100%;background:{{ g.color }};border-radius:8px;"></div></div>
+              </div>
+            </sc-for>
+          </div>
+        </div>
+
+        <!-- urges beaten weekly -->
+        <div style="margin-top:14px;background:#fff;border-radius:26px;padding:18px;box-shadow:0 8px 20px rgba(27,58,46,.07);">
+          <div style="display:flex;justify-content:space-between;align-items:center;"><div style="font-weight:900;font-size:15px;">Drang verslagen</div><div style="font-size:12px;font-weight:900;color:#2EA873;">92% deze week 🔥</div></div>
+          <div style="display:flex;align-items:flex-end;gap:14px;height:80px;margin-top:14px;">
+            <sc-for list="{{ weeks }}" as="w" hint-placeholder-count="4">
+              <div style="flex:1;text-align:center;">
+                <div style="display:flex;flex-direction:column;justify-content:flex-end;height:64px;"><div style="height:{{ w.h }}%;background:linear-gradient(#FF8A65,#FF6B43);border-radius:8px;transform-origin:bottom;animation:barGrow .6s ease;"></div></div>
+                <div style="font-size:10px;font-weight:800;color:#9bb0a6;margin-top:6px;">{{ w.label }}</div>
+              </div>
+            </sc-for>
+          </div>
+        </div>
+      </div>
+    </sc-if>
+
+  </div>
+
+  <!-- ============ BOTTOM NAV ============ -->
+  <div style="position:absolute;left:0;right:0;bottom:0;height:86px;background:#fff;border-top:1px solid #eef4f0;display:flex;align-items:flex-start;justify-content:space-around;padding:12px 16px 0;z-index:20;">
+    <div onClick="{{ goHome }}" style="text-align:center;font-weight:800;font-size:11px;cursor:pointer;color:{{ navHome }};">⌂<div style="margin-top:2px;">Start</div></div>
+    <div onClick="{{ goRust }}" style="text-align:center;font-weight:800;font-size:11px;cursor:pointer;color:{{ navRust }};">🧘<div style="margin-top:2px;">Rust</div></div>
+    <div style="width:64px;"></div>
+    <div onClick="{{ goMood }}" style="text-align:center;font-weight:800;font-size:11px;cursor:pointer;color:{{ navMood }};">☺<div style="margin-top:2px;">Stemming</div></div>
+    <div onClick="{{ goStats }}" style="text-align:center;font-weight:800;font-size:11px;cursor:pointer;color:{{ navStats }};">▥<div style="margin-top:2px;">Cijfers</div></div>
+  </div>
+
+  <!-- PANIC FAB -->
+  <div onClick="{{ openPanic }}" style="position:absolute;left:50%;bottom:46px;transform:translateX(-50%);width:70px;height:70px;z-index:25;cursor:pointer;">
+    <div style="position:absolute;inset:0;border-radius:50%;background:#FF6B43;animation:pulseRing 2.2s ease-out infinite;"></div>
+    <div style="position:absolute;inset:0;border-radius:50%;background:linear-gradient(150deg,#FF8A65,#FF6B43);box-shadow:0 10px 22px rgba(255,107,67,.55);display:flex;flex-direction:column;align-items:center;justify-content:center;color:#fff;border:4px solid #fff;">
+      <div style="display:flex;gap:4px;"><div style="width:5px;height:17px;background:#fff;border-radius:3px;"></div><div style="width:5px;height:17px;background:#fff;border-radius:3px;"></div></div>
+      <div style="font-family:'Fredoka',sans-serif;font-size:10px;font-weight:700;margin-top:2px;">Hulp</div>
+    </div>
+  </div>
+
+  <!-- ============ PANIC OVERLAY ============ -->
+  <sc-if value="{{ panicOpen }}" hint-placeholder-val="{{ false }}">
+    <div style="position:absolute;inset:0;z-index:60;background:linear-gradient(180deg,#1E8A5E,#14613f);color:#fff;display:flex;flex-direction:column;animation:fadein .25s ease;font-family:'Nunito',sans-serif;">
+      <div style="display:flex;justify-content:space-between;align-items:center;padding:18px 22px;">
+        <div style="font-family:'Fredoka',sans-serif;font-weight:600;font-size:18px;">Je bent veilig. Adem.</div>
+        <div onClick="{{ closePanic }}" style="width:34px;height:34px;border-radius:50%;background:rgba(255,255,255,.18);display:flex;align-items:center;justify-content:center;font-size:18px;cursor:pointer;">✕</div>
+      </div>
+      <div style="flex:1;overflow-y:auto;padding:0 22px 26px;">
+
+        <!-- MENU -->
+        <sc-if value="{{ pMenu }}" hint-placeholder-val="{{ true }}">
+          <div>
+            <div style="font-size:15px;font-weight:800;opacity:.92;line-height:1.45;">Deze drang is een golf. Hij piekt en zakt — altijd. Kies iets en rij 'm uit, man. 💪</div>
+            <div style="margin-top:18px;display:flex;flex-direction:column;gap:12px;">
+              <div onClick="{{ pBreath }}" style="display:flex;align-items:center;gap:14px;background:rgba(255,255,255,.14);border-radius:22px;padding:18px;cursor:pointer;">
+                <div style="font-size:30px;">🌬️</div><div style="flex:1;"><div style="font-weight:900;font-size:16px;">Ademhaling</div><div style="font-size:12.5px;opacity:.85;font-weight:700;">Kalmeer je lijf in 1 minuut</div></div><div style="font-size:20px;opacity:.6;">›</div>
+              </div>
+              <div onClick="{{ pWater }}" style="display:flex;align-items:center;gap:14px;background:rgba(255,255,255,.14);border-radius:22px;padding:18px;cursor:pointer;">
+                <div style="font-size:30px;">💧</div><div style="flex:1;"><div style="font-weight:900;font-size:16px;">Koud water reset</div><div style="font-size:12.5px;opacity:.85;font-weight:700;">Breek het patroon nú</div></div><div style="font-size:20px;opacity:.6;">›</div>
+              </div>
+              <div onClick="{{ pGame }}" style="display:flex;align-items:center;gap:14px;background:rgba(255,255,255,.14);border-radius:22px;padding:18px;cursor:pointer;">
+                <div style="font-size:30px;">🫧</div><div style="flex:1;"><div style="font-weight:900;font-size:16px;">Snelle afleiding</div><div style="font-size:12.5px;opacity:.85;font-weight:700;">Klein spelletje, hoofd leeg</div></div><div style="font-size:20px;opacity:.6;">›</div>
+              </div>
+              <div onClick="{{ pReasons }}" style="display:flex;align-items:center;gap:14px;background:rgba(255,255,255,.14);border-radius:22px;padding:18px;cursor:pointer;">
+                <div style="font-size:30px;">❤️</div><div style="flex:1;"><div style="font-weight:900;font-size:16px;">Waarom ik begon</div><div style="font-size:12.5px;opacity:.85;font-weight:700;">Lees je eigen woorden terug</div></div><div style="font-size:20px;opacity:.6;">›</div>
+              </div>
+            </div>
+            <div onClick="{{ pBeat }}" style="margin-top:18px;text-align:center;background:#fff;color:#1E8A5E;font-weight:900;font-size:15px;padding:15px;border-radius:18px;cursor:pointer;">Ik heb 'm verslagen ✓</div>
+          </div>
+        </sc-if>
+
+        <!-- BREATHING -->
+        <sc-if value="{{ pBreathing }}" hint-placeholder-val="{{ false }}">
+          <div style="text-align:center;padding-top:24px;">
+            <div style="position:relative;width:230px;height:230px;margin:0 auto;display:flex;align-items:center;justify-content:center;">
+              <div style="position:absolute;width:200px;height:200px;border-radius:50%;background:rgba(255,255,255,.18);animation:breathe 8s ease-in-out infinite;"></div>
+              <div style="position:absolute;width:140px;height:140px;border-radius:50%;background:rgba(255,255,255,.28);animation:breathe 8s ease-in-out infinite;animation-delay:.2s;"></div>
+              <div style="position:relative;font-family:'Fredoka',sans-serif;font-weight:600;font-size:20px;">Adem<br>mee</div>
+            </div>
+            <div style="margin-top:24px;font-size:16px;font-weight:800;opacity:.92;">In · 4 &nbsp;·&nbsp; Vast · 4 &nbsp;·&nbsp; Uit · 4</div>
+            <div style="font-size:14px;font-weight:700;opacity:.8;margin-top:6px;">Volg de cirkel. Nog even, je doet 't goed.</div>
+            <div onClick="{{ pBack }}" style="margin-top:26px;display:inline-block;background:rgba(255,255,255,.16);padding:12px 24px;border-radius:16px;font-weight:800;cursor:pointer;">‹ Terug</div>
+            <div onClick="{{ pBeat }}" style="margin-top:12px;background:#fff;color:#1E8A5E;font-weight:900;font-size:15px;padding:14px;border-radius:18px;cursor:pointer;">Ik voel me rustiger ✓</div>
+          </div>
+        </sc-if>
+
+        <!-- COLD WATER -->
+        <sc-if value="{{ pWaterV }}" hint-placeholder-val="{{ false }}">
+          <div style="padding-top:10px;">
+            <div style="text-align:center;font-size:64px;animation:floaty 3s ease-in-out infinite;">💧</div>
+            <div style="font-family:'Fredoka',sans-serif;font-weight:600;font-size:22px;text-align:center;margin-top:6px;">Koud water reset</div>
+            <div style="font-size:14px;font-weight:700;opacity:.88;text-align:center;margin-top:6px;line-height:1.5;">Sta op. Beweeg je lijf. Dit breekt het patroon direct — het werkt echt.</div>
+            <div style="margin-top:18px;display:flex;flex-direction:column;gap:10px;">
+              <div style="background:rgba(255,255,255,.14);border-radius:18px;padding:15px 18px;font-weight:800;font-size:14.5px;">1 · Loop naar de kraan of douche</div>
+              <div style="background:rgba(255,255,255,.14);border-radius:18px;padding:15px 18px;font-weight:800;font-size:14.5px;">2 · Koud water op je gezicht / nek</div>
+              <div style="background:rgba(255,255,255,.14);border-radius:18px;padding:15px 18px;font-weight:800;font-size:14.5px;">3 · Adem diep — 3 keer</div>
+              <div style="background:rgba(255,255,255,.14);border-radius:18px;padding:15px 18px;font-weight:800;font-size:14.5px;">4 · Kom terug. Je bent er doorheen.</div>
+            </div>
+            <div onClick="{{ pBack }}" style="margin-top:18px;display:inline-block;background:rgba(255,255,255,.16);padding:12px 24px;border-radius:16px;font-weight:800;cursor:pointer;">‹ Terug</div>
+            <div onClick="{{ pBeat }}" style="margin-top:12px;background:#fff;color:#1E8A5E;font-weight:900;font-size:15px;padding:14px;border-radius:18px;text-align:center;cursor:pointer;">Gedaan — ik voel me beter ✓</div>
+          </div>
+        </sc-if>
+
+        <!-- GAME -->
+        <sc-if value="{{ pGameV }}" hint-placeholder-val="{{ false }}">
+          <div style="padding-top:6px;">
+            <!-- game menu -->
+            <sc-if value="{{ gameMenu }}" hint-placeholder-val="{{ false }}">
+              <div>
+                <div style="font-family:'Fredoka',sans-serif;font-weight:600;font-size:22px;text-align:center;">Kies je afleiding</div>
+                <div style="font-size:13.5px;font-weight:700;opacity:.85;text-align:center;margin-top:4px;">Even je hoofd ergens anders. Pak er één.</div>
+                <div style="margin-top:18px;display:flex;flex-direction:column;gap:12px;">
+                  <div onClick="{{ pickBubbles }}" style="display:flex;align-items:center;gap:14px;background:rgba(255,255,255,.14);border-radius:22px;padding:18px;cursor:pointer;"><div style="font-size:30px;">🫧</div><div style="flex:1;"><div style="font-weight:900;font-size:16px;">Bubbels knappen</div><div style="font-size:12.5px;opacity:.85;font-weight:700;">Tik en leeg je hoofd</div></div><div style="font-size:20px;opacity:.6;">›</div></div>
+                  <div onClick="{{ pickGround }}" style="display:flex;align-items:center;gap:14px;background:rgba(255,255,255,.14);border-radius:22px;padding:18px;cursor:pointer;"><div style="font-size:30px;">🧭</div><div style="flex:1;"><div style="font-weight:900;font-size:16px;">5-4-3-2-1 grounding</div><div style="font-size:12.5px;opacity:.85;font-weight:700;">Terug in het hier en nu</div></div><div style="font-size:20px;opacity:.6;">›</div></div>
+                  <div onClick="{{ pickTap }}" style="display:flex;align-items:center;gap:14px;background:rgba(255,255,255,.14);border-radius:22px;padding:18px;cursor:pointer;"><div style="font-size:30px;">⚡</div><div style="flex:1;"><div style="font-weight:900;font-size:16px;">Tik de groene</div><div style="font-size:12.5px;opacity:.85;font-weight:700;">Snelheid &amp; focus</div></div><div style="font-size:20px;opacity:.6;">›</div></div>
+                </div>
+                <div onClick="{{ pBack }}" style="margin-top:18px;display:inline-block;background:rgba(255,255,255,.16);padding:12px 24px;border-radius:16px;font-weight:800;cursor:pointer;">‹ Terug</div>
+              </div>
+            </sc-if>
+            <!-- bubbles -->
+            <sc-if value="{{ gameBubbles }}" hint-placeholder-val="{{ false }}">
+              <div>
+                <div style="font-family:'Fredoka',sans-serif;font-weight:600;font-size:22px;text-align:center;">Tik de bubbels</div>
+                <div style="font-size:13.5px;font-weight:700;opacity:.85;text-align:center;margin-top:4px;">Geknapt: <b>{{ gameScore }}</b></div>
+                <div style="position:relative;height:320px;margin-top:14px;background:rgba(255,255,255,.1);border-radius:24px;overflow:hidden;">
+                  <sc-for list="{{ bubbles }}" as="b" hint-placeholder-count="6">
+                    <div onClick="{{ b.pop }}" style="position:absolute;left:{{ b.x }}px;top:{{ b.y }}px;width:{{ b.size }}px;height:{{ b.size }}px;border-radius:50%;background:{{ b.color }};box-shadow:inset -6px -8px 12px rgba(0,0,0,.12),0 4px 10px rgba(0,0,0,.15);cursor:pointer;animation:pop .3s ease;"></div>
+                  </sc-for>
+                </div>
+                <div onClick="{{ gameBack }}" style="margin-top:14px;display:inline-block;background:rgba(255,255,255,.16);padding:12px 24px;border-radius:16px;font-weight:800;cursor:pointer;">‹ Andere game</div>
+                <div onClick="{{ pBeat }}" style="margin-top:12px;background:#fff;color:#1E8A5E;font-weight:900;font-size:15px;padding:14px;border-radius:18px;text-align:center;cursor:pointer;">De drang is weg ✓</div>
+              </div>
+            </sc-if>
+            <!-- grounding -->
+            <sc-if value="{{ gameGround }}" hint-placeholder-val="{{ false }}">
+              <div>
+                <sc-if value="{{ groundDoneFlag }}" hint-placeholder-val="{{ false }}">
+                  <div style="text-align:center;padding-top:30px;">
+                    <div style="font-size:70px;animation:pop .5s ease;">🌿</div>
+                    <div style="font-family:'Fredoka',sans-serif;font-weight:600;font-size:24px;margin-top:8px;">Je bent terug in het nu</div>
+                    <div style="font-size:15px;font-weight:800;opacity:.9;margin-top:6px;">Voel je de grond onder je voeten? Goed gedaan.</div>
+                    <div onClick="{{ pBeat }}" style="margin-top:24px;background:#fff;color:#1E8A5E;font-weight:900;font-size:15px;padding:14px 28px;border-radius:18px;cursor:pointer;display:inline-block;">Klaar ✓</div>
+                  </div>
+                </sc-if>
+                <sc-if value="{{ groundActive }}" hint-placeholder-val="{{ true }}">
+                  <div style="text-align:center;">
+                    <div style="font-size:12px;font-weight:900;opacity:.7;letter-spacing:1px;margin-top:6px;">STAP {{ groundStepNo }} / {{ groundTotal }}</div>
+                    <div style="font-size:60px;margin-top:10px;">{{ groundIcon }}</div>
+                    <div style="font-family:'Fredoka',sans-serif;font-weight:600;font-size:24px;margin-top:6px;">Vind {{ groundN }}</div>
+                    <div style="font-size:16px;font-weight:800;opacity:.92;">{{ groundLabel }}</div>
+                    <div style="display:flex;justify-content:center;gap:10px;margin-top:20px;">
+                      <sc-for list="{{ groundDots }}" as="d" hint-placeholder-count="5">
+                        <div style="width:26px;height:26px;border-radius:50%;background:{{ d.bg }};border:2px solid rgba(255,255,255,.5);"></div>
+                      </sc-for>
+                    </div>
+                    <div onClick="{{ groundTap }}" style="margin-top:24px;background:rgba(255,255,255,.18);font-weight:900;font-size:15px;padding:16px;border-radius:18px;cursor:pointer;">Ik heb er één gevonden ✓</div>
+                    <sc-if value="{{ groundCanNext }}" hint-placeholder-val="{{ false }}">
+                      <div onClick="{{ groundNext }}" style="margin-top:12px;background:#fff;color:#1E8A5E;font-weight:900;font-size:15px;padding:14px;border-radius:18px;cursor:pointer;">Volgende →</div>
+                    </sc-if>
+                  </div>
+                </sc-if>
+                <div onClick="{{ gameBack }}" style="margin-top:16px;display:inline-block;background:rgba(255,255,255,.16);padding:12px 24px;border-radius:16px;font-weight:800;cursor:pointer;">‹ Andere game</div>
+              </div>
+            </sc-if>
+            <!-- tap green -->
+            <sc-if value="{{ gameTap }}" hint-placeholder-val="{{ false }}">
+              <div>
+                <div style="font-family:'Fredoka',sans-serif;font-weight:600;font-size:22px;text-align:center;">Tik de groene</div>
+                <div style="font-size:13.5px;font-weight:700;opacity:.85;text-align:center;margin-top:4px;">Score: <b>{{ tapScore }}</b></div>
+                <div style="display:grid;grid-template-columns:repeat(3,1fr);gap:12px;margin-top:16px;">
+                  <sc-for list="{{ tapCells }}" as="c" hint-placeholder-count="9">
+                    <div onClick="{{ c.hit }}" style="aspect-ratio:1;border-radius:20px;background:{{ c.bg }};cursor:pointer;transition:background .12s;box-shadow:0 4px 10px rgba(0,0,0,.12);"></div>
+                  </sc-for>
+                </div>
+                <div onClick="{{ gameBack }}" style="margin-top:16px;display:inline-block;background:rgba(255,255,255,.16);padding:12px 24px;border-radius:16px;font-weight:800;cursor:pointer;">‹ Andere game</div>
+                <div onClick="{{ pBeat }}" style="margin-top:12px;background:#fff;color:#1E8A5E;font-weight:900;font-size:15px;padding:14px;border-radius:18px;text-align:center;cursor:pointer;">De drang is weg ✓</div>
+              </div>
+            </sc-if>
+          </div>
+        </sc-if>
+
+        <!-- REASONS -->
+        <sc-if value="{{ pReasonsV }}" hint-placeholder-val="{{ false }}">
+          <div style="padding-top:6px;">
+            <div style="font-family:'Fredoka',sans-serif;font-weight:600;font-size:22px;text-align:center;">Waarom je begon</div>
+            <div style="font-size:13.5px;font-weight:700;opacity:.85;text-align:center;margin-top:4px;">Jouw eigen woorden. Lees ze langzaam.</div>
+            <div style="margin-top:16px;display:flex;flex-direction:column;gap:12px;">
+              <sc-for list="{{ reasons }}" as="r" hint-placeholder-count="3">
+                <div style="background:rgba(255,255,255,.14);border-radius:20px;padding:18px;font-size:16px;font-weight:800;line-height:1.4;">"{{ r }}"</div>
+              </sc-for>
+            </div>
+            <div onClick="{{ pBack }}" style="margin-top:18px;display:inline-block;background:rgba(255,255,255,.16);padding:12px 24px;border-radius:16px;font-weight:800;cursor:pointer;">‹ Terug</div>
+            <div onClick="{{ pBeat }}" style="margin-top:12px;background:#fff;color:#1E8A5E;font-weight:900;font-size:15px;padding:14px;border-radius:18px;text-align:center;cursor:pointer;">Hierom blijf ik sterk ✓</div>
+          </div>
+        </sc-if>
+
+        <!-- DONE -->
+        <sc-if value="{{ pDone }}" hint-placeholder-val="{{ false }}">
+          <div style="text-align:center;padding-top:50px;">
+            <div style="font-size:84px;animation:pop .5s ease;">🎉</div>
+            <div style="font-family:'Fredoka',sans-serif;font-weight:600;font-size:28px;margin-top:8px;">Je hebt 'm verslagen!</div>
+            <div style="font-size:16px;font-weight:800;opacity:.92;margin-top:8px;line-height:1.5;max-width:280px;margin-left:auto;margin-right:auto;">Dít is kracht, man. De golf kwam en jij bleef staan. Je streak leeft nog. Trots op je.</div>
+            <div onClick="{{ closePanic }}" style="margin-top:28px;background:#fff;color:#1E8A5E;font-weight:900;font-size:16px;padding:16px;border-radius:18px;cursor:pointer;">Terug naar mijn dag →</div>
+          </div>
+        </sc-if>
+
+      </div>
+    </div>
+  </sc-if>
+
+  <!-- ============ PLAYER OVERLAY ============ -->
+  <sc-if value="{{ playerOpen }}" hint-placeholder-val="{{ false }}">
+    <div style="position:absolute;inset:0;z-index:62;background:linear-gradient(180deg,#3C8FAE,#2b5e7a);color:#fff;display:flex;flex-direction:column;animation:fadein .25s ease;">
+      <div style="display:flex;justify-content:space-between;align-items:center;padding:18px 22px;">
+        <div onClick="{{ closePlayer }}" style="width:34px;height:34px;border-radius:50%;background:rgba(255,255,255,.18);display:flex;align-items:center;justify-content:center;font-size:18px;cursor:pointer;">✕</div>
+        <div style="font-family:'Fredoka',sans-serif;font-weight:600;font-size:16px;">Meditatie</div>
+        <div style="width:34px;"></div>
+      </div>
+      <div style="flex:1;display:flex;flex-direction:column;align-items:center;justify-content:center;padding:0 30px;">
+        <div style="font-size:50px;">{{ playerIcon }}</div>
+        <div style="font-family:'Fredoka',sans-serif;font-weight:600;font-size:28px;margin-top:10px;text-align:center;">{{ playerTitle }}</div>
+        <div style="font-size:14px;font-weight:700;opacity:.85;margin-top:4px;text-align:center;max-width:260px;">{{ playerSub }}</div>
+        <div style="position:relative;width:226px;height:226px;margin-top:28px;border-radius:50%;background:{{ playerRing }};display:flex;align-items:center;justify-content:center;">
+          <div style="width:194px;height:194px;border-radius:50%;background:#2b5e7a;display:flex;flex-direction:column;align-items:center;justify-content:center;">
+            <div style="font-family:'Fredoka',sans-serif;font-size:44px;font-weight:600;">{{ playerLeftFmt }}</div>
+            <div style="font-size:12px;font-weight:800;opacity:.7;">resterend</div>
+          </div>
+        </div>
+        <sc-if value="{{ playerRunning }}" hint-placeholder-val="{{ true }}">
+          <div onClick="{{ togglePlay }}" style="margin-top:26px;width:70px;height:70px;border-radius:50%;background:#fff;color:#2b5e7a;display:flex;align-items:center;justify-content:center;font-size:24px;font-weight:900;cursor:pointer;box-shadow:0 10px 22px rgba(0,0,0,.25);">{{ playPauseIcon }}</div>
+        </sc-if>
+        <sc-if value="{{ playerDone }}" hint-placeholder-val="{{ false }}">
+          <div style="margin-top:24px;text-align:center;">
+            <div style="font-weight:900;font-size:16px;">Mooi. Je nam tijd voor jezelf. 🌱</div>
+            <div onClick="{{ closePlayer }}" style="margin-top:14px;background:#fff;color:#2b5e7a;font-weight:900;font-size:15px;padding:14px 28px;border-radius:18px;cursor:pointer;display:inline-block;">Klaar ✓</div>
+          </div>
+        </sc-if>
+      </div>
+    </div>
+  </sc-if>
+
+  <!-- ============ BORED OVERLAY ============ -->
+  <sc-if value="{{ bored }}" hint-placeholder-val="{{ false }}">
+    <div onClick="{{ closeBored }}" style="position:absolute;inset:0;z-index:55;background:rgba(20,40,30,.4);animation:fadein .2s ease;"></div>
+    <div style="position:absolute;left:0;right:0;bottom:0;z-index:56;background:#EAF6EF;border-radius:30px 30px 0 0;padding:10px 22px 30px;max-height:88%;overflow-y:auto;animation:sheetup .3s cubic-bezier(.2,.8,.2,1);">
+      <div style="width:44px;height:5px;border-radius:3px;background:#cdddd4;margin:6px auto 14px;"></div>
+      <div style="font-family:'Fredoka',sans-serif;font-size:23px;font-weight:600;">Vul de leegte 🎯</div>
+      <div style="font-size:13.5px;color:#4A6A5A;font-weight:700;">Verveling is de #1 trigger. Doe gewoon één ding — klein telt.</div>
+
+      <!-- mini goal -->
+      <div style="margin-top:16px;border-radius:22px;padding:18px;background:linear-gradient(135deg,#2EA873,#1E8A5E);color:#fff;display:flex;align-items:center;gap:14px;box-shadow:0 12px 24px rgba(30,138,94,.28);">
+        <div style="font-size:30px;">⭐</div>
+        <div style="flex:1;"><div style="font-size:12px;font-weight:800;opacity:.9;">MINI-DOEL VAN NU</div><div style="font-weight:900;font-size:16px;">Drink een groot glas water</div></div>
+        <div onClick="{{ doGoal }}" style="background:#fff;color:#1E8A5E;font-weight:900;font-size:13px;padding:10px 14px;border-radius:14px;cursor:pointer;">Doe 't!</div>
+      </div>
+
+      <div style="margin-top:16px;font-family:'Fredoka',sans-serif;font-size:16px;font-weight:600;">Snelle acties</div>
+      <div style="margin-top:10px;display:grid;grid-template-columns:1fr 1fr;gap:10px;">
+        <sc-for list="{{ activities }}" as="a" hint-placeholder-count="6">
+          <div onClick="{{ a.do }}" style="background:#fff;border-radius:20px;padding:16px;box-shadow:0 5px 14px rgba(27,58,46,.06);cursor:pointer;display:flex;flex-direction:column;gap:8px;">
+            <div style="font-size:28px;">{{ a.icon }}</div>
+            <div style="font-weight:900;font-size:14px;line-height:1.25;">{{ a.label }}</div>
+          </div>
+        </sc-for>
+      </div>
+      <div onClick="{{ goJournalFromBored }}" style="margin-top:12px;background:linear-gradient(135deg,#6C5CE0,#8B7AE8);color:#fff;border-radius:20px;padding:16px 18px;display:flex;align-items:center;gap:12px;cursor:pointer;box-shadow:0 10px 22px rgba(108,92,224,.28);">
+        <div style="font-size:26px;">🌳</div><div style="flex:1;"><div style="font-weight:900;font-size:15px;">Schrijf 3 dingen waar je dankbaar voor bent</div><div style="font-size:12px;font-weight:700;opacity:.9;">Naar je boomhut →</div></div>
+      </div>
+    </div>
+  </sc-if>
+
+  <!-- ============ SETTINGS OVERLAY ============ -->
+  <sc-if value="{{ showSettings }}" hint-placeholder-val="{{ false }}">
+    <div style="position:absolute;inset:0;z-index:58;background:#EAF6EF;display:flex;flex-direction:column;animation:fadein .25s ease;">
+      <div style="display:flex;align-items:center;gap:12px;padding:16px 20px;">
+        <div onClick="{{ closeSettings }}" style="width:38px;height:38px;border-radius:50%;background:#fff;display:flex;align-items:center;justify-content:center;font-size:20px;cursor:pointer;box-shadow:0 4px 12px rgba(27,58,46,.06);">‹</div>
+        <div style="font-family:'Fredoka',sans-serif;font-weight:600;font-size:22px;">Instellingen</div>
+      </div>
+      <div style="flex:1;overflow-y:auto;padding:4px 20px 30px;">
+        <div style="background:#fff;border-radius:22px;padding:18px;box-shadow:0 6px 16px rgba(27,58,46,.06);">
+          <div style="font-size:12px;font-weight:900;color:#9bb0a6;letter-spacing:.5px;">JOUW NAAM</div>
+          <input value="{{ nameField }}" onInput="{{ onName }}" style="width:100%;margin-top:8px;border:none;border-bottom:2px solid #e6efe9;background:transparent;font-family:'Fredoka',sans-serif;font-size:20px;font-weight:600;color:#1B3A2E;outline:none;padding:4px 0;"/>
+        </div>
+
+        <div style="margin-top:18px;font-family:'Fredoka',sans-serif;font-size:17px;font-weight:600;">Herinneringen</div>
+        <div style="font-size:12.5px;color:#4A6A5A;font-weight:700;">Ochtend, avond, en als je 't even kwijt bent.</div>
+        <div style="margin-top:10px;display:flex;flex-direction:column;gap:10px;">
+          <sc-for list="{{ reminders }}" as="r" hint-placeholder-count="4">
+            <div style="display:flex;align-items:center;gap:14px;background:#fff;border-radius:20px;padding:14px 16px;box-shadow:0 4px 12px rgba(27,58,46,.05);">
+              <div style="font-size:24px;">{{ r.icon }}</div>
+              <div style="flex:1;"><div style="font-weight:900;font-size:14.5px;">{{ r.label }}</div><div style="font-size:12px;color:#9bb0a6;font-weight:800;">{{ r.sub }}</div></div>
+              <div onClick="{{ r.toggle }}" style="width:48px;height:28px;border-radius:16px;background:{{ r.trackBg }};position:relative;cursor:pointer;transition:background .15s;flex-shrink:0;">
+                <div style="position:absolute;top:2px;left:{{ r.knobX }};width:24px;height:24px;border-radius:50%;background:#fff;box-shadow:0 2px 4px rgba(0,0,0,.2);transition:left .15s;"></div>
+              </div>
+            </div>
+          </sc-for>
+        </div>
+
+        <div style="margin-top:18px;font-family:'Fredoka',sans-serif;font-size:17px;font-weight:600;">Waarom ik begon ❤️</div>
+        <div style="font-size:12.5px;color:#4A6A5A;font-weight:700;">Jouw redenen. Deze zie je terug bij de Hulp-knop.</div>
+        <div style="margin-top:10px;display:flex;flex-direction:column;gap:10px;">
+          <sc-for list="{{ reasonsEdit }}" as="r" hint-placeholder-count="3">
+            <div style="display:flex;align-items:flex-start;gap:10px;background:#fff;border-radius:20px;padding:14px 14px;box-shadow:0 4px 12px rgba(27,58,46,.05);">
+              <textarea value="{{ r.value }}" onInput="{{ r.onChange }}" placeholder="Schrijf je reden…" style="flex:1;border:none;background:transparent;font-family:'Nunito',sans-serif;font-size:14px;font-weight:800;color:#1B3A2E;resize:none;height:48px;outline:none;"></textarea>
+              <div onClick="{{ r.remove }}" style="width:28px;height:28px;border-radius:50%;background:#FBEAE6;color:#E0603C;display:flex;align-items:center;justify-content:center;font-weight:900;cursor:pointer;flex-shrink:0;">✕</div>
+            </div>
+          </sc-for>
+          <div onClick="{{ addReason }}" style="background:#E3F2E9;border:2px dashed #9fd3ba;border-radius:20px;padding:14px;text-align:center;font-weight:900;font-size:14px;color:#2EA873;cursor:pointer;">+ Reden toevoegen</div>
+        </div>
+      </div>
+    </div>
+  </sc-if>
+
+  <!-- ============ TOAST ============ -->
+  <sc-if value="{{ toast }}" hint-placeholder-val="{{ false }}">
+    <div style="position:absolute;left:50%;bottom:130px;z-index:80;background:#1B3A2E;color:#fff;padding:14px 22px;border-radius:18px;font-weight:900;font-size:14.5px;box-shadow:0 14px 30px rgba(0,0,0,.3);animation:toastpop .3s cubic-bezier(.2,.8,.2,1);max-width:300px;text-align:center;">{{ toast }}</div>
+  </sc-if>
+
+</div>
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props="{&quot;$preview&quot;:{&quot;width&quot;:390,&quot;height&quot;:844},&quot;userName&quot;:{&quot;editor&quot;:&quot;text&quot;,&quot;default&quot;:&quot;Beau&quot;,&quot;tsType&quot;:&quot;string&quot;},&quot;heroStyle&quot;:{&quot;editor&quot;:&quot;enum&quot;,&quot;options&quot;:[&quot;number&quot;,&quot;plant&quot;],&quot;default&quot;:&quot;plant&quot;,&quot;tsType&quot;:&quot;string&quot;},&quot;greenPrimary&quot;:{&quot;editor&quot;:&quot;color&quot;,&quot;default&quot;:&quot;#2EA873&quot;,&quot;tsType&quot;:&quot;string&quot;}}">
+class Component extends DCLogic {
+  state = {
+    tab: 'home',
+    panic: null,        // null | menu | breathing | water | game | reasons | done
+    bored: false,
+    toast: null,
+    bubbleSeed: 0,
+    gameScore: 0,
+    bubbles: [],
+    journalText: '',
+    tasks: [
+      { id: 1, time: '08:00', label: 'Ochtend check-in', icon: '\u2600\uFE0F', done: true },
+      { id: 2, time: '12:30', label: '15 min wandelen', icon: '\uD83D\uDEB6', done: true },
+      { id: 3, time: '17:00', label: '10-min meditatie', icon: '\uD83E\uDDD8', done: false },
+      { id: 4, time: '21:30', label: 'Avond check-in', icon: '\uD83C\uDF19', done: false },
+    ],
+    moodPicked: null,
+    showSettings: false,
+    nameInput: null,
+    reminders: { morning: true, evening: true, daytime: true, boredom: true },
+    morningTime: '08:00', eveningTime: '21:30',
+    reasons: [
+      'Ik wil \u2019s ochtends wakker worden zonder schuldgevoel.',
+      'Ik wil echte connectie met mensen, niet met een scherm.',
+      'Ik wil mijn tijd en energie terug voor wat ik echt wil.',
+    ],
+    activeGame: null,
+    groundStep: 0, groundFilled: 0, groundDone: false,
+    tapScore: 0, tapTarget: 4, tapTime: 20, tapRunning: false, tapOver: false, tapRecord: 0,
+    player: null, playerTotal: 1, playerLeft: 0, playerPlaying: false, playerDone: false,
+  };
+
+  affirmations = ['Goed bezig, man! \uD83D\uDCAA', 'Trots op je. Echt waar.', 'Dat is een win. Pak de volgende.', 'Jij koos jezelf. Sterk.', 'Zo bouw je je streak \uD83C\uDF31', 'Yes! Weer een stap vooruit.'];
+
+  componentDidMount() { this.spawnBubbles(); try { this.setState({ tapRecord: parseInt(localStorage.getItem('rise_tap_record') || '0', 10) }); } catch (e) {} }
+
+  affirm(msg) {
+    clearTimeout(this._t);
+    this.setState({ toast: msg });
+    this._t = setTimeout(() => this.setState({ toast: null }), 2400);
+  }
+  rndAffirm() { return this.affirmations[Math.floor(Math.random() * this.affirmations.length)]; }
+
+  spawnBubbles() {
+    const colors = ['#7EE0FF', '#A8E6CF', '#FFD3B6', '#FFAAA5', '#C3B0FF', '#9AE6B4'];
+    const arr = [];
+    for (let i = 0; i < 7; i++) arr.push(this.mkBubble(colors));
+    this.setState({ bubbles: arr });
+  }
+  mkBubble(colors) {
+    colors = colors || ['#7EE0FF', '#A8E6CF', '#FFD3B6', '#FFAAA5', '#C3B0FF', '#9AE6B4'];
+    const size = 42 + Math.floor(Math.random() * 34);
+    const id = ++this.state.bubbleSeed;
+    return {
+      id,
+      size,
+      x: Math.floor(Math.random() * (300 - size)),
+      y: Math.floor(Math.random() * (320 - size)),
+      color: colors[Math.floor(Math.random() * colors.length)],
+    };
+  }
+  popBubble(id) {
+    this.setState(s => {
+      const left = s.bubbles.filter(b => b.id !== id);
+      left.push(this.mkBubble());
+      return { bubbles: left, gameScore: s.gameScore + 1 };
+    });
+  }
+
+  toggleTask(id) {
+    let became = false;
+    this.setState(s => ({
+      tasks: s.tasks.map(t => {
+        if (t.id === id) { became = !t.done; return { ...t, done: !t.done }; }
+        return t;
+      })
+    }));
+    if (became) this.affirm(this.rndAffirm());
+  }
+
+  logMood(m) {
+    this.setState({ moodPicked: m.key });
+    this.affirm('Genoteerd. ' + m.note);
+  }
+
+  doActivity(label) { this.affirm(this.rndAffirm()); }
+
+  componentWillUnmount() { clearInterval(this._tapInt); clearInterval(this._tapTimer); clearInterval(this._playInt); clearTimeout(this._t); }
+
+  toggleReminder(k) { this.setState(s => ({ reminders: { ...s.reminders, [k]: !s.reminders[k] } })); }
+  setRemTime(k, v) { this.setState(k === 'morning' ? { morningTime: v } : { eveningTime: v }); }
+  editReason(i, v) { this.setState(s => { const r = s.reasons.slice(); r[i] = v; return { reasons: r }; }); }
+  addReason() { this.setState(s => ({ reasons: [...s.reasons, ''] })); }
+  removeReason(i) { this.setState(s => ({ reasons: s.reasons.filter((_, j) => j !== i) })); }
+
+  tapGround(n) { this.setState(s => (s.groundFilled >= n ? {} : { groundFilled: s.groundFilled + 1 })); }
+  nextGround(total) { this.setState(s => (s.groundStep >= total - 1 ? { groundDone: true } : { groundStep: s.groundStep + 1, groundFilled: 0 })); }
+  resetGround() { this.setState({ groundStep: 0, groundFilled: 0, groundDone: false }); }
+
+  startTap() { clearInterval(this._tapInt); clearInterval(this._tapTimer); this.setState({ tapScore: 0, tapTime: 20, tapRunning: true, tapOver: false, tapTarget: Math.floor(Math.random() * 9) }); this._tapInt = setInterval(() => this.setState({ tapTarget: Math.floor(Math.random() * 9) }), 900); this._tapTimer = setInterval(() => this.tickTap(), 1000); }
+  tickTap() { this.setState(s => { if (s.tapTime <= 1) { this.endTap(); return { tapTime: 0 }; } return { tapTime: s.tapTime - 1 }; }); }
+  endTap() { clearInterval(this._tapInt); clearInterval(this._tapTimer); this.setState(s => { let rec = s.tapRecord; if (s.tapScore > rec) { rec = s.tapScore; try { localStorage.setItem('rise_tap_record', '' + rec); } catch (e) {} } return { tapRunning: false, tapOver: true, tapRecord: rec }; }); }
+  hitTap(i) { this.setState(s => { if (!s.tapRunning || i !== s.tapTarget) return {}; let t; do { t = Math.floor(Math.random() * 9); } while (t === s.tapTarget); return { tapScore: s.tapScore + 1, tapTarget: t }; }); }
+  stopTap() { clearInterval(this._tapInt); clearInterval(this._tapTimer); }
+
+  openPlayer(course) { clearInterval(this._playInt); const total = (course.min || 5) * 60; this.setState({ player: course, playerTotal: total, playerLeft: total, playerPlaying: true, playerDone: false }); this._playInt = setInterval(() => this.tickPlayer(), 1000); }
+  tickPlayer() { this.setState(s => { if (!s.playerPlaying) return {}; if (s.playerLeft <= 1) { clearInterval(this._playInt); return { playerLeft: 0, playerPlaying: false, playerDone: true }; } return { playerLeft: s.playerLeft - 1 }; }); }
+  togglePlay() { this.setState(s => ({ playerPlaying: !s.playerPlaying })); }
+  closePlayer() { clearInterval(this._playInt); this.setState({ player: null, playerPlaying: false }); }
+
+  renderVals() {
+    const s = this.state;
+    const nameField = (s.nameInput != null) ? s.nameInput : (this.props.userName || 'maat');
+    const userName = (nameField && nameField.trim()) ? nameField : 'maat';
+    const heroStyle = this.props.heroStyle || 'plant';
+    const accent = this.props.greenPrimary || '#2EA873';
+
+    const doneCount = s.tasks.filter(t => t.done).length;
+
+    const tasks = s.tasks.map(t => ({
+      time: t.time, label: t.label, icon: t.icon,
+      check: t.done ? '\u2713' : '',
+      dotBg: t.done ? '#2EA873' : 'transparent',
+      dotBorder: t.done ? 'none' : '2px solid #cfe0d7',
+      txtColor: t.done ? '#9bb0a6' : '#1B3A2E',
+      strike: t.done ? 'line-through' : 'none',
+      anim: t.done ? 'pop .35s ease' : 'none',
+      toggle: () => this.toggleTask(t.id),
+    }));
+
+    const courses = [
+      { title: 'Ademruimte', sub: 'Kalmeer in 5 minuten', len: '5 min', min: 5, icon: '\uD83C\uDF2C\uFE0F', bg: '#E6F2F6' },
+      { title: 'Slaap & loslaten', sub: 'Avondroutine, val makkelijk in slaap', len: '12 min', min: 12, icon: '\uD83C\uDF19', bg: '#E9E2FB' },
+      { title: 'Ochtendkracht', sub: 'Begin de dag met intentie', len: '7 min', min: 7, icon: '\u2600\uFE0F', bg: '#FFF1D6' },
+      { title: 'Zelfcompassie', sub: 'Geen schaamte. Je doet het goed.', len: '10 min', min: 10, icon: '\uD83D\uDC9A', bg: '#E3F2E9' },
+      { title: 'Focus reset', sub: 'Verveling ombuigen naar rust', len: '6 min', min: 6, icon: '\uD83C\uDFAF', bg: '#E6F2F6' },
+    ].map(c => ({ ...c, play: () => this.openPlayer(c) }));
+
+    const moodDefs = [
+      { key: 'great', face: '\uD83D\uDE04', label: 'Top', bg: '#9AE6B4', note: 'Mooi, geniet ervan!' },
+      { key: 'good', face: '\uD83D\uDE42', label: 'Goed', bg: '#C8EFA0', note: 'Fijn dat het lekker gaat.' },
+      { key: 'ok', face: '\uD83D\uDE10', label: 'Oké', bg: '#FBE08A', note: 'Oké is helemaal prima.' },
+      { key: 'down', face: '\uD83D\uDE1F', label: 'Matig', bg: '#FFC48A', note: 'Je voelt het — dat is moedig.' },
+      { key: 'rough', face: '\uD83D\uDE23', label: 'Zwaar', bg: '#FFAA9E', note: 'Zware dag mag. Ik ben er.' },
+    ];
+    const moods = moodDefs.map(m => ({
+      face: m.face, label: m.label, bg: m.bg,
+      scale: s.moodPicked === m.key ? 1.18 : 1,
+      pick: () => this.logMood(m),
+    }));
+
+    // calendar
+    const weekdays = ['M', 'D', 'W', 'D', 'V', 'Z', 'Z'];
+    const moodColors = ['#9AE6B4', '#C8EFA0', '#FBE08A', '#FFC48A', '#FFAA9E'];
+    const faces = ['\uD83D\uDE04', '\uD83D\uDE42', '\uD83D\uDE10', '\uD83D\uDE1F', '\uD83D\uDE23'];
+    const seed = [2, 1, 0, 2, 1, 3, 0, 1, 1, 0, 2, 4, 1, 0, 0, 1, 2, 1, 0, 3, 1, 0, 0, 1, 2];
+    const calendar = [];
+    for (let i = 0; i < 35; i++) {
+      const day = i - 1; // offset: first 2 cells empty
+      if (day < 1 || day > 30) { calendar.push({ content: '', bg: 'transparent', color: 'transparent' }); continue; }
+      if (day <= 25) {
+        const mi = seed[(day - 1) % seed.length];
+        calendar.push({ content: faces[mi], bg: moodColors[mi], color: '#1B3A2E' });
+      } else {
+        calendar.push({ content: '' + day, bg: '#F0F6F2', color: '#bcccc3' });
+      }
+    }
+
+    // stats
+    const streakBars = [];
+    for (let i = 0; i < 14; i++) streakBars.push({ h: 40 + Math.round((i / 13) * 58), color: i === 13 ? '#FF7A59' : '#2EA873' });
+    const triggers = [
+      { label: 'Verveling', icon: '\uD83D\uDE2A', pct: 42, color: '#FF7A59' },
+      { label: '\u2019s Avonds laat', icon: '\uD83C\uDF19', pct: 28, color: '#6C5CE0' },
+      { label: '\u2019s Ochtends', icon: '\u2600\uFE0F', pct: 18, color: '#4FB8CE' },
+      { label: 'Stress / down', icon: '\uD83D\uDCAD', pct: 12, color: '#2EA873' },
+    ];
+    const weeks = [
+      { label: 'wk1', h: 60 }, { label: 'wk2', h: 72 }, { label: 'wk3', h: 85 }, { label: 'wk4', h: 95 },
+    ];
+
+    const bubbles = s.bubbles.map(b => ({ ...b, pop: () => this.popBubble(b.id) }));
+
+    const remDefs = [
+      { k: 'morning', icon: '\u2600\uFE0F', label: 'Ochtend check-in', sub: 'Sterke start', editable: true, time: s.morningTime },
+      { k: 'evening', icon: '\uD83C\uDF19', label: 'Avond check-in', sub: 'Reflecteer & sluit af', editable: true, time: s.eveningTime },
+      { k: 'daytime', icon: '\uD83D\uDCAC', label: 'Steun-pings overdag', sub: 'Willekeurige positieve berichten', editable: false, time: '' },
+      { k: 'boredom', icon: '\uD83C\uDFAF', label: 'Bij verveling', sub: 'Seintje als je lang stil bent', editable: false, time: '' },
+    ];
+    const reminders = remDefs.map(r => ({
+      icon: r.icon, label: r.label, sub: r.sub, editable: r.editable, time: r.time,
+      trackBg: s.reminders[r.k] ? '#2EA873' : '#cfd9d3',
+      knobX: s.reminders[r.k] ? '22px' : '2px',
+      toggle: () => this.toggleReminder(r.k),
+      onTime: (e) => this.setRemTime(r.k, e.target.value),
+    }));
+    const reasonsEdit = s.reasons.map((r, i) => ({
+      value: r,
+      onChange: (e) => this.editReason(i, e.target.value),
+      remove: () => this.removeReason(i),
+    }));
+
+    const groundSteps = [
+      { n: 5, label: 'dingen die je ZIET', icon: '\uD83D\uDC40' },
+      { n: 4, label: 'dingen die je HOORT', icon: '\uD83D\uDC42' },
+      { n: 3, label: 'dingen die je VOELT', icon: '\u270B' },
+      { n: 2, label: 'dingen die je RUIKT', icon: '\uD83D\uDC43' },
+      { n: 1, label: 'goede eigenschap van jezelf', icon: '\u2764\uFE0F' },
+    ];
+    const gStep = groundSteps[Math.min(s.groundStep, groundSteps.length - 1)];
+    const groundDots = Array.from({ length: gStep.n }).map((_, i) => ({ bg: i < s.groundFilled ? '#9AE6B4' : 'transparent' }));
+
+    const tapCells = Array.from({ length: 9 }).map((_, i) => ({
+      bg: i === s.tapTarget ? '#9AE6B4' : 'rgba(255,255,255,.14)',
+      hit: () => this.hitTap(i),
+    }));
+
+    const pTotal = s.playerTotal || 1;
+    const pPct = Math.round(((pTotal - s.playerLeft) / pTotal) * 100);
+    const mm = Math.floor(s.playerLeft / 60);
+    const ss = s.playerLeft % 60;
+    const playerLeftFmt = mm + ':' + (ss < 10 ? '0' + ss : ss);
+    const pl = s.player || {};
+
+    const reasons = s.reasons;
+
+    const activities = [
+      { icon: '\uD83D\uDCAA', label: '10 push-ups nu' },
+      { icon: '\uD83D\uDEB6', label: 'Loop naar buiten' },
+      { icon: '\uD83D\uDCDE', label: 'App een vriend' },
+      { icon: '\uD83C\uDFA7', label: 'Zet je favo nummer' },
+      { icon: '\uD83D\uDEBF', label: 'Koude douche' },
+      { icon: '\uD83E\uDDF9', label: 'Ruim 5 min op' },
+    ].map(a => ({ ...a, do: () => { this.doActivity(a.label); this.setState({ bored: false }); } }));
+
+    return {
+      userName,
+      streak: 14, urgePct: 92, doneCount, taskTotal: s.tasks.length,
+      plantGenerations: Math.max(2, Math.min(6, 2 + Math.floor(14 / 3))),
+      heroNumber: heroStyle === 'number', heroPlant: heroStyle === 'plant',
+      isHome: s.tab === 'home', isRust: s.tab === 'rust', isMood: s.tab === 'mood', isStats: s.tab === 'stats',
+      navHome: s.tab === 'home' ? accent : '#aab9b1',
+      navRust: s.tab === 'rust' ? accent : '#aab9b1',
+      navMood: s.tab === 'mood' ? accent : '#aab9b1',
+      navStats: s.tab === 'stats' ? accent : '#aab9b1',
+      goHome: () => this.setState({ tab: 'home' }),
+      goRust: () => this.setState({ tab: 'rust' }),
+      goMood: () => this.setState({ tab: 'mood' }),
+      goStats: () => this.setState({ tab: 'stats' }),
+      playUrge: () => this.openPlayer({ title: 'Urge surfen', sub: 'Rij de golf uit \u2014 hij zakt altijd.', len: '8 min', min: 8, icon: '\uD83C\uDF0A' }),
+      tasks, courses, moods, weekdays, calendar, streakBars, triggers, weeks, reasons, activities, bubbles,
+      journalText: s.journalText,
+      journalPrompt: 'Wat zijn 3 dingen die je vandaag goed deed?',
+      onJournal: (e) => this.setState({ journalText: e.target.value }),
+      saveJournal: () => { this.setState({ journalText: '' }); this.affirm('Bewaard in je boomhut \u2728'); },
+      // panic
+      panicOpen: s.panic !== null,
+      pMenu: s.panic === 'menu', pBreathing: s.panic === 'breathing', pWaterV: s.panic === 'water',
+      pGameV: s.panic === 'game', pReasonsV: s.panic === 'reasons', pDone: s.panic === 'done',
+      gameScore: s.gameScore,
+      openPanic: () => this.setState({ panic: 'menu' }),
+      closePanic: () => { this.stopTap(); this.setState({ panic: null, activeGame: null }); },
+      pBreath: () => this.setState({ panic: 'breathing' }),
+      pWater: () => this.setState({ panic: 'water' }),
+      pGame: () => { this.stopTap(); this.setState({ panic: 'game', activeGame: null }); },
+      pReasons: () => this.setState({ panic: 'reasons' }),
+      pBack: () => this.setState({ panic: 'menu' }),
+      pBeat: () => { this.stopTap(); this.setState({ panic: 'done', activeGame: null }); },
+      // bored
+      bored: s.bored,
+      openBored: () => this.setState({ bored: true }),
+      closeBored: () => this.setState({ bored: false }),
+      doGoal: () => { this.setState({ bored: false }); this.affirm('Top! Klein doel = grote win \uD83D\uDCAA'); },
+      goJournalFromBored: () => this.setState({ bored: false, tab: 'mood' }),
+      showSettings: s.showSettings,
+      openSettings: () => this.setState({ showSettings: true }),
+      closeSettings: () => this.setState({ showSettings: false }),
+      nameField,
+      onName: (e) => this.setState({ nameInput: e.target.value }),
+      reminders, reasonsEdit,
+      addReason: () => this.addReason(),
+      gameMenu: s.activeGame === null,
+      gameBubbles: s.activeGame === 'bubbles',
+      gameGround: s.activeGame === 'ground',
+      gameTap: s.activeGame === 'tap',
+      gameBack: () => { this.stopTap(); this.setState({ activeGame: null }); },
+      pickBubbles: () => { this.spawnBubbles(); this.setState({ activeGame: 'bubbles', gameScore: 0 }); },
+      pickGround: () => { this.resetGround(); this.setState({ activeGame: 'ground' }); },
+      pickTap: () => { this.startTap(); this.setState({ activeGame: 'tap' }); },
+      groundIcon: gStep.icon, groundN: gStep.n, groundLabel: gStep.label,
+      groundStepNo: s.groundStep + 1, groundTotal: groundSteps.length,
+      groundDots, groundCanNext: s.groundFilled >= gStep.n,
+      groundDoneFlag: s.groundDone, groundActive: !s.groundDone,
+      groundTap: () => this.tapGround(gStep.n),
+      groundNext: () => this.nextGround(groundSteps.length),
+      tapCells, tapScore: s.tapScore, tapTime: s.tapTime, tapRecord: s.tapRecord, tapOver: s.tapOver, tapPlaying: !s.tapOver, restartTap: () => this.startTap(),
+      playerOpen: s.player !== null,
+      playerTitle: pl.title, playerSub: pl.sub, playerIcon: pl.icon,
+      playerLeftFmt, playerRing: 'conic-gradient(#fff ' + pPct + '%, rgba(255,255,255,.22) 0)',
+      playerDone: s.playerDone, playerRunning: !s.playerDone,
+      playPauseIcon: s.playerPlaying ? '\u23F8' : '\u25B6',
+      togglePlay: () => this.togglePlay(),
+      closePlayer: () => this.closePlayer(),
+      toast: s.toast,
+    };
+  }
+}
+</script>
+</body>
+</html>
