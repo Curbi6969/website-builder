@@ -250,10 +250,10 @@ Port faithfully into `ui/plant/PlantCanvas.kt`:
 - [x] Game menu (3 choices). Bubbles: 7 placed bubbles, tap pops+respawns+score. Grounding 5-4-3-2-1: dots fill per step, "Volgende" when filled, done screen. Tap-green: 3×3 grid, random target/900ms + 20s timer (VM), score + caption, record persisted, "Opnieuw" on game over.
 - [x] **Verify:** `:app:assembleDebug` green. Committed.
 
-### Task 11: Bored sheet
+### Task 11: Bored sheet — DONE
 **Files:** `ui/overlays/BoredSheet.kt`.
-- [ ] Bottom-sheet (scrim + slide-up): grabber, title "Vul de leegte 🎯", mini-goal card (Doe 't! → toast + close), 6 quick-action grid (→ affirm + close), journal CTA (→ close + go Mood tab).
-- [ ] **Verify:** builds; sheet slides up, actions work. Commit `feat: bored sheet`.
+- [x] Bottom-sheet (scrim + slideInVertically, capped at 88% via BoxWithConstraints): grabber, title, mini-goal card (Doe 't! → toast+close), 6 quick-action grid (→ affirm+close), journal CTA (→ close + Mood tab).
+- [x] **Verify:** `:app:assembleDebug` green. Committed.
 
 ### Task 12: Settings overlay
 **Files:** `ui/overlays/SettingsOverlay.kt`.
