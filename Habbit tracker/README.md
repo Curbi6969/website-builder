@@ -9,7 +9,7 @@ mini-games, your reasons), a "bored" quick-action sheet, and settings.
 
 1. Open this folder (`Habbit tracker/`) in **Android Studio** (it bundles the JDK 21 + Gradle this project needs).
 2. Let Gradle sync. The SDK path is read from `local.properties` (`sdk.dir`) — Android Studio creates/fixes this automatically.
-3. Pick an emulator or device and press **Run** (`▶`). App id: `com.beaunolten.rise`, minSdk 24.
+3. Pick an emulator or device and press **Run** (`▶`). App id: `com.rise.app`, minSdk 24.
 
 Command-line build (uses the bundled JBR):
 
@@ -21,7 +21,7 @@ export JAVA_HOME="/c/Program Files/Android/Android Studio/jbr"
 ## Project layout
 
 ```
-app/src/main/java/com/beaunolten/rise/
+app/src/main/java/com/rise/app/
   MainActivity.kt            entry point → RiseTheme { RiseApp() }
   RiseApp.kt                 shell: status bar, tab host, bottom nav, panic FAB, overlay host
   data/                      RiseUiState, RiseDefaults (seeded content), RisePreferences (DataStore)

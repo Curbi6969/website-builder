@@ -12,12 +12,12 @@
 
 ## Global Constraints
 
-- **Package:** `com.beaunolten.rise`  ·  **App module:** `app`
+- **Package:** `com.rise.app`  ·  **App module:** `app`
 - **SDK:** `minSdk 24`, `compileSdk 35`, `targetSdk 35`
-- **SDK location (local):** `C:\Users\beaun\AppData\Local\Android\Sdk` — referenced via `local.properties` (`sdk.dir=...`). System Java is 8, BUT Android Studio's JBR (JDK 21) at `C:\Program Files\Android\Android Studio\jbr` works from the shell. **To build/verify from this agent shell:**
+- **SDK location (local):** `C:\Users\<user>\AppData\Local\Android\Sdk` — referenced via `local.properties` (`sdk.dir=...`). System Java is 8, BUT Android Studio's JBR (JDK 21) at `C:\Program Files\Android\Android Studio\jbr` works from the shell. **To build/verify from this agent shell:**
   ```bash
   export JAVA_HOME="/c/Program Files/Android/Android Studio/jbr"
-  export ANDROID_HOME="/c/Users/beaun/AppData/Local/Android/Sdk"
+  export ANDROID_HOME="/c/Users/<user>/AppData/Local/Android/Sdk"
   bash "c:/Code/website-builder/Habbit tracker/gradlew" -p "c:/Code/website-builder/Habbit tracker" :app:assembleDebug --no-daemon
   ```
   Task 0 produced a green `:app:assembleDebug` (BUILD SUCCESSFUL). Re-run this after each task to verify it still compiles.
@@ -81,7 +81,7 @@
 - Triggers: Verveling 😪 42% `#FF7A59`; ’s Avonds laat 🌙 28% `#6C5CE0`; ’s Ochtends ☀️ 18% `#4FB8CE`; Stress / down 💭 12% `#2EA873`.
 - Weeks beaten: wk1 60, wk2 72, wk3 85, wk4 95 (gradient `#FF8A65→#FF6B43`).
 - Affirmations: `["Goed bezig, man! 💪","Trots op je. Echt waar.","Dat is een win. Pak de volgende.","Jij koos jezelf. Sterk.","Zo bouw je je streak 🌱","Yes! Weer een stap vooruit."]`
-- Default name `Beau` (falls back to `maat` when blank). Greeting line: `Kom op {name}, jij kan dit 💪`; date label `Dinsdag 25 juni`; streak subtitle `Sterk & vrij. Record: 21 dagen.`
+- Default name (leeg) (falls back to `maat` when blank). Greeting line: `Kom op {name}, jij kan dit 💪`; date label `Dinsdag 25 juni`; streak subtitle `Sterk & vrij. Record: 21 dagen.`
 - Reasons (default 3): `"Ik wil ’s ochtends wakker worden zonder schuldgevoel."`, `"Ik wil echte connectie met mensen, niet met een scherm."`, `"Ik wil mijn tijd en energie terug voor wat ik echt wil."`
 - Reminders: morning ☀️ "Ochtend check-in"/"Sterke start" (on); evening 🌙 "Avond check-in"/"Reflecteer & sluit af" (on); daytime 💬 "Steun-pings overdag"/"Willekeurige positieve berichten" (on); boredom 🎯 "Bij verveling"/"Seintje als je lang stil bent" (on).
 - Grounding steps: 5 dingen die je ZIET 👀; 4 dingen die je HOORT 👂; 3 dingen die je VOELT ✋; 2 dingen die je RUIKT 👃; 1 goede eigenschap van jezelf ❤️.
@@ -106,7 +106,7 @@ Habbit tracker/
     └─ src/main/
         ├─ AndroidManifest.xml
         ├─ res/values/(themes.xml, strings.xml), res/font/(google fonts certs), res/xml, mipmap/…
-        └─ java/com/beaunolten/rise/
+        └─ java/com/rise/app/
             ├─ MainActivity.kt              # setContent { RiseTheme { RiseApp() } }
             ├─ RiseApp.kt                   # scaffold: bg, statusbar, content host, bottom nav, FAB, overlays
             ├─ data/
@@ -140,7 +140,7 @@ data class Bubble(val id: Int, val size: Int, val x: Int, val y: Int, val color:
 data class RiseUiState(
     val tab: Tab = Tab.HOME,
     val heroStyle: HeroStyle = HeroStyle.PLANT,
-    val userName: String = "Beau",
+    val userName: String = "",
     val tasks: List<TaskItem> = RiseDefaults.tasks,
     val moodPicked: String? = null,
     val journalText: String = "",

@@ -2,14 +2,15 @@ plugins {
     alias(libs.plugins.android.application)
     alias(libs.plugins.kotlin.android)
     alias(libs.plugins.kotlin.compose)
+    id("org.jetbrains.kotlin.plugin.serialization") version "2.0.21"
 }
 
 android {
-    namespace = "com.beaunolten.rise"
+    namespace = "com.rise.app"
     compileSdk = 35
 
     defaultConfig {
-        applicationId = "com.beaunolten.rise"
+        applicationId = "com.rise.app"
         minSdk = 24
         targetSdk = 35
         versionCode = 1
@@ -18,17 +19,22 @@ android {
 
     buildTypes {
         release {
-            isMinifyEnabled = false
+            isMinifyEnabled = true
+            isShrinkResources = true
             proguardFiles(
                 getDefaultProguardFile("proguard-android-optimize.txt"),
                 "proguard-rules.pro"
             )
+            // Sign release with the debug key so it installs locally for perf testing.
+            signingConfig = signingConfigs.getByName("debug")
         }
     }
 
     compileOptions {
         sourceCompatibility = JavaVersion.VERSION_17
         targetCompatibility = JavaVersion.VERSION_17
+        // java.time on minSdk 24 (available natively from API 26).
+        isCoreLibraryDesugaringEnabled = true
     }
     kotlinOptions {
         jvmTarget = "17"
@@ -49,9 +55,16 @@ dependencies {
     implementation(libs.androidx.ui.graphics)
     implementation(libs.androidx.ui.tooling.preview)
     implementation(libs.androidx.material3)
+    implementation(libs.androidx.material.icons.extended)
     implementation(libs.androidx.ui.text.google.fonts)
 
-    implementation(libs.androidx.datastore.preferences)
+    coreLibraryDesugaring("com.android.tools:desugar_jdk_libs:2.1.2")
+
+    // Supabase (auth + database) + Ktor engine
+    implementation(platform("io.github.jan-tennert.supabase:bom:3.1.4"))
+    implementation("io.github.jan-tennert.supabase:auth-kt")
+    implementation("io.github.jan-tennert.supabase:postgrest-kt")
+    implementation("io.ktor:ktor-client-okhttp:3.1.3")
 
     debugImplementation(libs.androidx.ui.tooling)
 }
