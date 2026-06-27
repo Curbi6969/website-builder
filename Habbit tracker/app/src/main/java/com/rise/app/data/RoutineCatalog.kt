@@ -1,5 +1,7 @@
 package com.rise.app.data
 
+import com.rise.app.R
+
 /**
  * Static catalogue for the Inspiratie tab — prebuilt routines and non-diagnostic
  * self-checks. Mirrors the pattern of [RiseDefaults]: all Dutch copy lives here,
@@ -53,7 +55,7 @@ object RoutineCatalog {
             name = "Ochtendroutine — Sterke start",
             category = RoutineCategory.OCHTEND,
             accent = InspoAccent.GREEN,
-            illustration = 0,
+            illustration = R.drawable.inspo_ochtend,
             why = "Koppel kleine stappen aan wakker worden. Een vaste cue (opstaan) plus een " +
                 "concrete intentie (implementatie-intentie) maakt een gewoonte veel waarschijnlijker.",
             steps = listOf(
@@ -68,7 +70,7 @@ object RoutineCatalog {
             name = "Drang de baas — HALT & golf",
             category = RoutineCategory.DRANG,
             accent = InspoAccent.TEAL,
-            illustration = 0,
+            illustration = R.drawable.inspo_drang,
             why = "Veel drang is een onvervulde basisbehoefte (HALT). Vul die eerst, en surf dan " +
                 "de golf: drang piekt en zakt altijd weer — hij gaat vanzelf voorbij.",
             steps = listOf(
@@ -83,7 +85,7 @@ object RoutineCatalog {
             name = "Zelfcompassie — Wees zacht voor jezelf",
             category = RoutineCategory.ZELFZORG,
             accent = InspoAccent.LAVENDER,
-            illustration = 0,
+            illustration = R.drawable.inspo_zelfcompassie,
             why = "De drie bouwstenen van zelfcompassie (Kristin Neff): mindfulness, gedeelde " +
                 "menselijkheid en vriendelijkheid. Zachter én effectiever dan zelfkritiek.",
             steps = listOf(
@@ -98,7 +100,7 @@ object RoutineCatalog {
             name = "Avond wind-down — Zacht afsluiten",
             category = RoutineCategory.SLAAP,
             accent = InspoAccent.YELLOW,
-            illustration = 0,
+            illustration = R.drawable.inspo_avond,
             why = "Schermrust, dankbaarheid en reflectie kalmeren je systeem voor de nacht. " +
                 "Betere slaap betekent overdag meer veerkracht tegen drang.",
             steps = listOf(
@@ -113,7 +115,7 @@ object RoutineCatalog {
             name = "Dankbaarheid — 3 goede dingen",
             category = RoutineCategory.ZELFZORG,
             accent = InspoAccent.CORAL,
-            illustration = 0,
+            illustration = R.drawable.inspo_dankbaarheid,
             why = "Dagelijks 3 concrete dingen opschrijven traint je brein om het goede te zien — " +
                 "dat verbetert je stemming en je motivatie om door te gaan.",
             steps = listOf(
@@ -127,7 +129,7 @@ object RoutineCatalog {
             name = "1% beter — Mini-gewoontes",
             category = RoutineCategory.OCHTEND,
             accent = InspoAccent.GREEN,
-            illustration = 0,
+            illustration = R.drawable.inspo_1procent,
             why = "Maak het zó klein dat falen onmogelijk is en koppel het aan een bestaande " +
                 "gewoonte (habit stacking). 1% beter per dag is na een jaar een enorme sprong.",
             steps = listOf(
@@ -145,7 +147,7 @@ object RoutineCatalog {
             name = "HALT-check",
             category = RoutineCategory.DRANG,
             accent = InspoAccent.TEAL,
-            illustration = 0,
+            illustration = R.drawable.inspo_halt,
             intro = "Vier korte vragen. Geen score — gewoon checken wat je nu nodig hebt.",
             questions = listOf(
                 SelfCheckQuestion("Heb je honger?", CheckKind.YES_NO),
@@ -173,7 +175,7 @@ object RoutineCatalog {
             name = "Zelfcompassie-check",
             category = RoutineCategory.ZELFZORG,
             accent = InspoAccent.LAVENDER,
-            illustration = 0,
+            illustration = R.drawable.inspo_zelfcompassie_check,
             intro = "Vijf stellingen. Hoe meer iets klopt, hoe hoger. Er is geen goed of fout.",
             questions = listOf(
                 SelfCheckQuestion("Als ik het moeilijk heb, ben ik vriendelijk voor mezelf.", CheckKind.LIKERT_1_5),
@@ -205,7 +207,7 @@ object RoutineCatalog {
             name = "Drang-check",
             category = RoutineCategory.DRANG,
             accent = InspoAccent.TEAL,
-            illustration = 0,
+            illustration = R.drawable.inspo_drang_check,
             intro = "Hoe sterk is je drang op dit moment?",
             questions = listOf(
                 SelfCheckQuestion("Sleep om je drang aan te geven (0 = niets, 10 = heel sterk).", CheckKind.SCALE_0_10),
@@ -230,7 +232,7 @@ object RoutineCatalog {
             name = "Stemming-check",
             category = RoutineCategory.ZELFZORG,
             accent = InspoAccent.BERRY,
-            illustration = 0,
+            illustration = R.drawable.inspo_stemming,
             intro = "Even checken hoe je je nu voelt.",
             questions = listOf(
                 SelfCheckQuestion("Hoe voel je je op dit moment? (1 = zwaar, 5 = top)", CheckKind.LIKERT_1_5),
