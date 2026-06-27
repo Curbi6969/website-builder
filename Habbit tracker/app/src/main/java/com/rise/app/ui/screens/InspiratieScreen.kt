@@ -78,14 +78,14 @@ fun InspiratieScreen(state: RiseUiState, vm: RiseViewModel) {
         Spacer(Modifier.height(22.dp))
 
         // ---- grouped routine sections ----
-        RoutineSection("Bij drang", RoutineCategory.DRANG, vm)
-        RoutineSection("Sterke ochtend", RoutineCategory.OCHTEND, vm)
-        RoutineSection("Zacht voor jezelf", RoutineCategory.ZELFZORG, vm)
-        RoutineSection("Beter slapen", RoutineCategory.SLAAP, vm)
-        RoutineSection("Life hacks", RoutineCategory.LIFEHACK, vm)
+        RoutineSection("Bij drang", "Als de golf opkomt", RoutineCategory.DRANG, vm)
+        RoutineSection("Life hacks", "Kleine slimme zetten", RoutineCategory.LIFEHACK, vm)
+        RoutineSection("Zacht voor jezelf", "Zelfzorg & zelfwaardering", RoutineCategory.ZELFZORG, vm)
+        RoutineSection("Sterke ochtend", "Begin met intentie", RoutineCategory.OCHTEND, vm)
+        RoutineSection("Beter slapen", "Zacht afsluiten", RoutineCategory.SLAAP, vm)
 
         // ---- meditations (open the timer player) ----
-        SectionHeader("Meditaties")
+        SectionHeader("Meditaties", "Even tot rust komen")
         CardRow {
             RiseDefaults.courses.forEachIndexed { i, course ->
                 InspoCard(
@@ -100,7 +100,7 @@ fun InspiratieScreen(state: RiseUiState, vm: RiseViewModel) {
         }
 
         // ---- non-diagnostic self-checks ----
-        SectionHeader("Check even in")
+        SectionHeader("Check even in", "Hoe gaat het nu echt?")
         CardRow {
             RoutineCatalog.selfChecks.forEach { check ->
                 InspoCard(
@@ -118,10 +118,10 @@ fun InspiratieScreen(state: RiseUiState, vm: RiseViewModel) {
 }
 
 @Composable
-private fun RoutineSection(title: String, category: RoutineCategory, vm: RiseViewModel) {
+private fun RoutineSection(title: String, subtitle: String, category: RoutineCategory, vm: RiseViewModel) {
     val routines = RoutineCatalog.routines.filter { it.category == category }
     if (routines.isEmpty()) return
-    SectionHeader(title)
+    SectionHeader(title, subtitle)
     CardRow {
         routines.forEach { r ->
             InspoCard(
@@ -137,12 +137,11 @@ private fun RoutineSection(title: String, category: RoutineCategory, vm: RiseVie
 }
 
 @Composable
-private fun SectionHeader(title: String) {
-    Text(
-        title,
-        fontFamily = Fredoka, fontWeight = FontWeight.SemiBold, fontSize = 18.sp, color = Ink,
-        modifier = Modifier.padding(top = 4.dp, bottom = 12.dp),
-    )
+private fun SectionHeader(title: String, subtitle: String) {
+    Column(Modifier.padding(top = 4.dp, bottom = 12.dp)) {
+        Text(title, fontFamily = Fredoka, fontWeight = FontWeight.SemiBold, fontSize = 18.sp, color = Ink)
+        Text(subtitle, fontFamily = Nunito, fontWeight = FontWeight.Bold, fontSize = 12.5.sp, color = InkSoft)
+    }
 }
 
 /** A horizontally-scrolling row of cards. The parent screen scrolls vertically. */

@@ -201,10 +201,23 @@ private fun BottomNav(active: Tab, onPanic: () -> Unit, onTab: (Tab) -> Unit, mo
         horizontalArrangement = Arrangement.SpaceEvenly,
         verticalAlignment = Alignment.CenterVertically,
     ) {
-        ExpandableTab(Icons.Rounded.Home, "Start", active == Tab.HOME) { onTab(Tab.HOME) }
-        ExpandableTab(Icons.Rounded.AutoAwesome, "Inspiratie", active == Tab.INSPIRATIE) { onTab(Tab.INSPIRATIE) }
+        // Two equal-weight halves keep the central Hulp button dead-centre with an odd tab count.
+        Row(
+            Modifier.weight(1f),
+            horizontalArrangement = Arrangement.SpaceEvenly,
+            verticalAlignment = Alignment.CenterVertically,
+        ) {
+            ExpandableTab(Icons.Rounded.Home, "Start", active == Tab.HOME) { onTab(Tab.HOME) }
+            ExpandableTab(Icons.Rounded.AutoAwesome, "Inspiratie", active == Tab.INSPIRATIE) { onTab(Tab.INSPIRATIE) }
+        }
         HulpButton(onPanic)
-        ExpandableTab(Icons.Rounded.Mood, "Stemming", active == Tab.MOOD) { onTab(Tab.MOOD) }
+        Row(
+            Modifier.weight(1f),
+            horizontalArrangement = Arrangement.SpaceEvenly,
+            verticalAlignment = Alignment.CenterVertically,
+        ) {
+            ExpandableTab(Icons.Rounded.Mood, "Stemming", active == Tab.MOOD) { onTab(Tab.MOOD) }
+        }
     }
 }
 
