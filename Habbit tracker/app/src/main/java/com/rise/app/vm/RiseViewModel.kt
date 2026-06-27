@@ -134,6 +134,14 @@ class RiseViewModel(app: Application) : AndroidViewModel(app) {
         affirm("Taak verwijderd")
     }
 
+    /** Rename a routine chip (session-only; not yet persisted). */
+    fun renameRoutine(id: String, name: String) {
+        val trimmed = name.trim()
+        if (trimmed.isEmpty()) return
+        _state.update { it.copy(routineNames = it.routineNames + (id to trimmed)) }
+        affirm("Naam opgeslagen")
+    }
+
     fun setInspoCategory(cat: RoutineCategory?) = _state.update { it.copy(inspoCategory = cat) }
     fun openRoutine(id: String) = _state.update { it.copy(openRoutine = id) }
     fun closeRoutine() = _state.update { it.copy(openRoutine = null) }

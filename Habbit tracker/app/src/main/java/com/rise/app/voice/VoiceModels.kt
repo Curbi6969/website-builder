@@ -18,8 +18,8 @@ object VoiceModels {
         SMALL("sherpa-onnx-whisper-small", "asr-models/sherpa-onnx-whisper-small.tar.bz2", "small"),
     }
 
-    /** The active STT model, change to [Whisper.SMALL] for max Dutch accuracy. */
-    val whisper = Whisper.BASE
+    /** The active STT model. SMALL is much better at Dutch than BASE. */
+    val whisper = Whisper.SMALL
 
     // Piper Dutch TTS voice, "ronnie" (warm male, int8 ≈ 21 MB).
     // Other nl_NL voices: pim, alex (medium); miro, dii (high).
@@ -31,8 +31,8 @@ object VoiceModels {
     fun voiceArchiveUrl() = "$RELEASES/$VOICE_ARCHIVE"
 
     // Resolved paths after extraction under [base].
-    fun whisperEncoder(base: File) = File(base, "${whisper.dir}/${whisper.prefix}-encoder.int8.onnx").absolutePath
-    fun whisperDecoder(base: File) = File(base, "${whisper.dir}/${whisper.prefix}-decoder.int8.onnx").absolutePath
+    fun whisperEncoder(base: File) = File(base, "${whisper.dir}/${whisper.prefix}-encoder.onnx").absolutePath
+    fun whisperDecoder(base: File) = File(base, "${whisper.dir}/${whisper.prefix}-decoder.onnx").absolutePath
     fun whisperTokens(base: File) = File(base, "${whisper.dir}/${whisper.prefix}-tokens.txt").absolutePath
     fun voiceModel(base: File) = File(base, "$VOICE_DIR/$VOICE_MODEL").absolutePath
     fun voiceTokens(base: File) = File(base, "$VOICE_DIR/tokens.txt").absolutePath

@@ -91,11 +91,10 @@ fun VoiceLab(modifier: Modifier = Modifier) {
                     } else {
                         status = "Opnemen (4s)..."
                         runCatching {
-                            withContext(Dispatchers.IO) {
-                                val samples = AudioIO.recordSeconds(4)
-                                engine().transcribe(samples)
-                            }
-                        }.onSuccess { transcript = it; status = "Transcript klaar ✓" }
+                            val samples = withContext(Dispatchers.IO) { AudioIO.recordSeconds(4) }
+                            status = "Transcriberen..."
+                            withContext(Dispatchers.IO) { engine().transcribe(samples) }
+                        }.onSuccess { transcript = it; status = "Transcript klaar" }
                             .onFailure { status = "STT faalde: ${it.message}" }
                     }
                 }

@@ -9,9 +9,11 @@ import com.rise.app.ui.theme.Teal
 /** All seeded content from the design's renderVals(), reproduced verbatim. */
 object RiseDefaults {
 
+    // All start not-done; the real per-day state loads from Supabase on launch.
+    // (Seeding any as done caused a flicker: briefly struck-through, then corrected.)
     val tasks = listOf(
-        TaskItem(1, "08:00", "Ochtend check-in", "☀️", true),
-        TaskItem(2, "12:30", "15 min wandelen", "🚶", true),
+        TaskItem(1, "08:00", "Ochtend check-in", "☀️", false),
+        TaskItem(2, "12:30", "15 min wandelen", "🚶", false),
         TaskItem(3, "17:00", "10-min meditatie", "🧘", false),
         TaskItem(4, "21:30", "Avond check-in", "🌙", false),
     )

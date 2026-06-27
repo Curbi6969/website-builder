@@ -24,15 +24,20 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.material3.AlertDialog
 import androidx.compose.material3.ExperimentalMaterial3Api
+import androidx.compose.material3.OutlinedTextField
 import androidx.compose.material3.SwipeToDismissBox
 import androidx.compose.material3.SwipeToDismissBoxValue
 import androidx.compose.material3.Text
+import androidx.compose.material3.TextButton
 import androidx.compose.material3.rememberSwipeToDismissBoxState
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.key
+import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
@@ -50,6 +55,7 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.rise.app.data.PERSONAL_ROUTINE
 import com.rise.app.data.RiseUiState
+import com.rise.app.data.RoutineChip
 import com.rise.app.data.TaskItem
 import com.rise.app.data.HeroStyle
 import com.rise.app.ui.common.cardSurface
@@ -239,6 +245,10 @@ private fun SwipeableTaskRow(task: TaskItem, onToggle: () -> Unit, onDelete: () 
 @OptIn(ExperimentalFoundationApi::class)
 @Composable
 private fun RoutineChips(state: RiseUiState, vm: RiseViewModel) {
+    var menuChip by remember { mutableStateOf<RoutineChip?>(null) }
+    var mode by remember { mutableStateOf("menu") }
+    var renameText by remember { mutableStateOf("") }
+
     Row(
         Modifier
             .fillMaxWidth()
@@ -255,10 +265,8 @@ private fun RoutineChips(state: RiseUiState, vm: RiseViewModel) {
                     .combinedClickable(
                         onClick = { vm.setActiveRoutine(chip.id) },
                         onLongClick = {
-                            if (chip.id != PERSONAL_ROUTINE) {
-                                vm.removeRoutine(chip.id)
-                                vm.affirm("Routine verwijderd")
-                            }
+                            menuChip = chip
+                            mode = "menu"
                         },
                     )
                     .padding(horizontal = 14.dp, vertical = 9.dp),
@@ -273,6 +281,57 @@ private fun RoutineChips(state: RiseUiState, vm: RiseViewModel) {
                     maxLines = 1,
                 )
             }
+        }
+    }
+
+    val chip = menuChip
+    if (chip != null) {
+        when (mode) {
+            "rename" -> AlertDialog(
+                onDismissRequest = { menuChip = null },
+                title = { Text("Hernoemen") },
+                text = {
+                    OutlinedTextField(
+                        value = renameText,
+                        onValueChange = { renameText = it },
+                        singleLine = true,
+                    )
+                },
+                confirmButton = {
+                    TextButton(onClick = { vm.renameRoutine(chip.id, renameText); menuChip = null }) {
+                        Text("Opslaan")
+                    }
+                },
+                dismissButton = { TextButton(onClick = { menuChip = null }) { Text("Annuleren") } },
+            )
+            "delete" -> AlertDialog(
+                onDismissRequest = { menuChip = null },
+                title = { Text("Routine verwijderen?") },
+                text = { Text("'${chip.name}' verdwijnt uit je chips.") },
+                confirmButton = {
+                    TextButton(onClick = { vm.removeRoutine(chip.id); vm.affirm("Routine verwijderd"); menuChip = null }) {
+                        Text("Verwijderen", color = Color(0xFFD64545))
+                    }
+                },
+                dismissButton = { TextButton(onClick = { menuChip = null }) { Text("Annuleren") } },
+            )
+            else -> AlertDialog(
+                onDismissRequest = { menuChip = null },
+                title = { Text(chip.name) },
+                text = { Text("Wat wil je met deze routine doen?") },
+                confirmButton = {
+                    TextButton(onClick = { renameText = chip.name; mode = "rename" }) { Text("Hernoemen") }
+                },
+                dismissButton = {
+                    if (chip.id != PERSONAL_ROUTINE) {
+                        TextButton(onClick = { mode = "delete" }) {
+                            Text("Verwijderen", color = Color(0xFFD64545))
+                        }
+                    } else {
+                        TextButton(onClick = { menuChip = null }) { Text("Sluiten") }
+                    }
+                },
+            )
         }
     }
 }

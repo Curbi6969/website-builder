@@ -124,6 +124,7 @@ data class RiseUiState(
     val addedRoutineIds: List<String> = emptyList(),
     val routineTaskDone: Map<Int, Boolean> = emptyMap(),
     val hiddenTaskIds: Set<Int> = emptySet(),
+    val routineNames: Map<String, String> = emptyMap(),
     val inspoCategory: RoutineCategory? = null,
     val openRoutine: String? = null,
     val openSelfCheck: String? = null,
@@ -133,9 +134,10 @@ data class RiseUiState(
 
     /** Chips shown on Home: Persoonlijk first, then any added catalogue routines. */
     val homeChips: List<RoutineChip> get() =
-        listOf(RoutineChip(PERSONAL_ROUTINE, "Persoonlijk")) +
+        listOf(RoutineChip(PERSONAL_ROUTINE, routineNames[PERSONAL_ROUTINE] ?: "Persoonlijk")) +
             addedRoutineIds.mapNotNull { id ->
-                RoutineCatalog.routines.find { it.id == id }?.let { RoutineChip(it.id, it.name) }
+                RoutineCatalog.routines.find { it.id == id }
+                    ?.let { RoutineChip(it.id, routineNames[it.id] ?: it.name) }
             }
 
     /** Tasks for the active chip: Persoonlijk = the seeded [tasks]; else the catalogue routine's steps. */
