@@ -57,6 +57,9 @@ class RiseViewModel(app: Application) : AndroidViewModel(app) {
                             urgeThisWeek = r.urgeThisWeek,
                             urgeWeekly = r.urgeWeekly,
                             checkedInToday = r.checkedInToday,
+                            addedRoutineIds = r.addedRoutineIds,
+                            activeRoutineId = r.activeRoutineId,
+                            routineTaskDone = r.routineTaskDone,
                         )
                     }
                 }
@@ -77,36 +80,52 @@ class RiseViewModel(app: Application) : AndroidViewModel(app) {
     // ----- tasks -----
     fun toggleTask(id: Int) {
         var newDone = false
-        if (_state.value.activeRoutineId == PERSONAL_ROUTINE) {
+        val routineId = _state.value.activeRoutineId
+        if (routineId == PERSONAL_ROUTINE) {
             _state.update { s ->
                 s.copy(tasks = s.tasks.map { t ->
                     if (t.id == id) { newDone = !t.done; t.copy(done = newDone) } else t
                 })
             }
-            write { repo.setTaskDone(id, newDone) }
         } else {
             _state.update { s ->
                 newDone = !(s.routineTaskDone[id] ?: false)
                 s.copy(routineTaskDone = s.routineTaskDone + (id to newDone))
             }
-            // Per-routine persistence is wired in Task 9.
         }
+        write { repo.setTaskDone(id, newDone, routineId) }
         if (newDone) affirm(rndAffirm())
     }
 
     // ----- routines (Inspiratie) -----
-    fun setActiveRoutine(id: String) = _state.update { it.copy(activeRoutineId = id) }
-
-    fun addRoutine(catalogId: String) = _state.update {
-        if (it.addedRoutineIds.contains(catalogId)) it
-        else it.copy(addedRoutineIds = it.addedRoutineIds + catalogId)
+    fun setActiveRoutine(id: String) {
+        _state.update { it.copy(activeRoutineId = id) }
+        write { repo.setActiveRoutine(id) }
     }
 
-    fun removeRoutine(id: String) = _state.update {
-        it.copy(
-            addedRoutineIds = it.addedRoutineIds - id,
-            activeRoutineId = if (it.activeRoutineId == id) PERSONAL_ROUTINE else it.activeRoutineId,
-        )
+    fun addRoutine(catalogId: String) {
+        var position = 0
+        _state.update {
+            if (it.addedRoutineIds.contains(catalogId)) it
+            else {
+                position = it.addedRoutineIds.size
+                it.copy(addedRoutineIds = it.addedRoutineIds + catalogId)
+            }
+        }
+        write { repo.addRoutine(catalogId, position) }
+    }
+
+    fun removeRoutine(id: String) {
+        var resetActive = false
+        _state.update {
+            resetActive = it.activeRoutineId == id
+            it.copy(
+                addedRoutineIds = it.addedRoutineIds - id,
+                activeRoutineId = if (resetActive) PERSONAL_ROUTINE else it.activeRoutineId,
+            )
+        }
+        write { repo.removeRoutine(id) }
+        if (resetActive) write { repo.setActiveRoutine(PERSONAL_ROUTINE) }
     }
 
     fun setInspoCategory(cat: RoutineCategory?) = _state.update { it.copy(inspoCategory = cat) }

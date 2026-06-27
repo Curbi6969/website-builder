@@ -16,6 +16,7 @@ private data class ProfileRow(
     @SerialName("sober_since") val soberSince: String? = null,
     @SerialName("hero_style") val heroStyle: String = "plant",
     val onboarded: Boolean = false,
+    @SerialName("active_routine") val activeRoutine: String = "personal",
 )
 
 @Serializable
@@ -57,6 +58,14 @@ private data class TaskRow(
     val date: String,
     @SerialName("task_id") val taskId: Int,
     val done: Boolean,
+    @SerialName("routine_id") val routineId: String = "personal",
+)
+
+@Serializable
+private data class UserRoutineRow(
+    @SerialName("user_id") val userId: String,
+    @SerialName("routine_id") val routineId: String,
+    val position: Int,
 )
 
 @Serializable
@@ -102,6 +111,9 @@ data class RemoteState(
     val urgeThisWeek: Int,
     val urgeWeekly: List<Int>,
     val checkedInToday: Boolean,
+    val addedRoutineIds: List<String>,
+    val activeRoutineId: String,
+    val routineTaskDone: Map<Int, Boolean>,
 )
 
 /**
@@ -186,6 +198,14 @@ class RiseRepository {
             .select { filter { eq("user_id", uid); eq("date", todayStr) } }
             .decodeSingleOrNull<CheckinRow>() != null
 
+        val addedRoutineIds = supabase.from("user_routines")
+            .select {
+                filter { eq("user_id", uid) }
+                order("position", Order.ASCENDING)
+            }
+            .decodeList<UserRoutineRow>()
+            .map { it.routineId }
+
         return RemoteState(
             name = profile?.name.orEmpty(),
             soberSince = LocalDate.parse(soberSince),
@@ -199,6 +219,9 @@ class RiseRepository {
             urgeThisWeek = urgeWeekly.last(),
             urgeWeekly = urgeWeekly,
             checkedInToday = checkedInToday,
+            addedRoutineIds = addedRoutineIds,
+            activeRoutineId = profile?.activeRoutine ?: "personal",
+            routineTaskDone = todayTasksDone,
         )
     }
 
@@ -248,12 +271,28 @@ class RiseRepository {
         supabase.from("journal_entries").insert(JournalRow(uid, text))
     }
 
-    suspend fun setTaskDone(taskId: Int, done: Boolean) {
+    suspend fun setTaskDone(taskId: Int, done: Boolean, routineId: String = "personal") {
         val uid = uid ?: return
         supabase.from("task_completions")
-            .upsert(TaskRow(uid, LocalDate.now().toString(), taskId, done)) {
+            .upsert(TaskRow(uid, LocalDate.now().toString(), taskId, done, routineId)) {
                 onConflict = "user_id,date,task_id"
             }
+    }
+
+    suspend fun addRoutine(routineId: String, position: Int) {
+        val uid = uid ?: return
+        supabase.from("user_routines")
+            .upsert(UserRoutineRow(uid, routineId, position)) { onConflict = "user_id,routine_id" }
+    }
+
+    suspend fun removeRoutine(routineId: String) {
+        val uid = uid ?: return
+        supabase.from("user_routines").delete { filter { eq("user_id", uid); eq("routine_id", routineId) } }
+    }
+
+    suspend fun setActiveRoutine(routineId: String) {
+        val uid = uid ?: return
+        supabase.from("profiles").update({ set("active_routine", routineId) }) { filter { eq("id", uid) } }
     }
 
     suspend fun setMood(moodKey: String) {
