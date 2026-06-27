@@ -4,6 +4,13 @@ Behavioral guidelines to reduce common LLM coding mistakes. Merge with project-s
 
 **Tradeoff:** These guidelines bias toward caution over speed. For trivial tasks, use judgment.
 
+## 0. Geen em-dashes (hard verbod)
+
+Gebruik NOOIT em-dashes (—) of en-dashes (–) in welke output dan ook: UI-tekst, code,
+comments, commit messages, docs of chat. Vervang ze door een komma, dubbele punt, punt of
+een gewoon koppelteken (-). Vermijd ook de ellipsis (…); schrijf gewoon "...". Dit geldt voor
+alle projecten in deze workspace en mag nooit meer gebeuren.
+
 ## 1. Think Before Coding
 
 Don't assume. Don't hide confusion. Surface tradeoffs.

@@ -170,7 +170,7 @@ fun RiseApp(vm: RiseViewModel = viewModel()) {
             modifier = Modifier.align(Alignment.BottomCenter),
         )
 
-        // Overlays — drawn over nav/FAB, lowest z first.
+        // Overlays, drawn over nav/FAB, lowest z first.
         if (state.bored) BoredSheet(state, vm)
         if (state.openRoutine != null) RoutineDetailOverlay(state, vm)
         if (state.openSelfCheck != null) SelfCheckOverlay(state, vm)
@@ -252,7 +252,7 @@ private fun ExpandableTab(icon: ImageVector, label: String, active: Boolean, onC
     }
 }
 
-/** Docked panic button — orange, centre of the nav, gently breathing. */
+/** Docked panic button, orange, centre of the nav, gently breathing. */
 @Composable
 private fun HulpButton(onClick: () -> Unit) {
     val infinite = rememberInfiniteTransition(label = "hulp")

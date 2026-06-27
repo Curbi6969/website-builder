@@ -20,7 +20,7 @@ import com.rise.app.ui.theme.Card
 import com.rise.app.ui.theme.Ink
 import com.rise.app.ui.theme.Nunito
 
-/** Affirmation toast — slides up + fades in, auto-dismissed by the ViewModel. */
+/** Affirmation toast, slides up + fades in, auto-dismissed by the ViewModel. */
 @Composable
 fun RiseToast(message: String?, modifier: Modifier = Modifier) {
     AnimatedVisibility(

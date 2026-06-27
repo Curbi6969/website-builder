@@ -6,7 +6,7 @@ import io.github.jan.supabase.createSupabaseClient
 import io.github.jan.supabase.postgrest.Postgrest
 
 /**
- * App-wide Supabase client. The publishable key is safe to ship — row-level security
+ * App-wide Supabase client. The publishable key is safe to ship, row-level security
  * on every table is what actually protects user data. Auth session persists automatically
  * on Android (supabase-kt auto-initializes from the app context).
  */

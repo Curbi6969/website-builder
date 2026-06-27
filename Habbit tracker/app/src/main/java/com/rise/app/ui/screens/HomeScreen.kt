@@ -6,8 +6,10 @@ import androidx.compose.animation.core.Spring
 import androidx.compose.animation.core.animateFloatAsState
 import androidx.compose.animation.core.spring
 import androidx.compose.animation.core.tween
+import androidx.compose.foundation.ExperimentalFoundationApi
 import androidx.compose.foundation.background
 import androidx.compose.foundation.border
+import androidx.compose.foundation.combinedClickable
 import androidx.compose.foundation.horizontalScroll
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.layout.Arrangement
@@ -15,15 +17,21 @@ import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
+import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.material3.ExperimentalMaterial3Api
+import androidx.compose.material3.SwipeToDismissBox
+import androidx.compose.material3.SwipeToDismissBoxValue
 import androidx.compose.material3.Text
+import androidx.compose.material3.rememberSwipeToDismissBoxState
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
+import androidx.compose.runtime.key
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -40,6 +48,7 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextDecoration
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import com.rise.app.data.PERSONAL_ROUTINE
 import com.rise.app.data.RiseUiState
 import com.rise.app.data.TaskItem
 import com.rise.app.data.HeroStyle
@@ -146,7 +155,7 @@ fun HomeScreen(state: RiseUiState, vm: RiseViewModel) {
             Text("🎯", fontSize = 30.sp)
             Column(Modifier.weight(1f)) {
                 Text("Voel je je leeg of verveeld?", fontFamily = Nunito, fontWeight = FontWeight.Black, fontSize = 15.sp, color = Color(0xFF7A5A14))
-                Text("Pak een snelle actie — vul de leegte →", fontFamily = Nunito, fontWeight = FontWeight.ExtraBold, fontSize = 12.5.sp, color = Color(0xFF9A7826))
+                Text("Pak een snelle actie, vul de leegte →", fontFamily = Nunito, fontWeight = FontWeight.ExtraBold, fontSize = 12.5.sp, color = Color(0xFF9A7826))
             }
         }
 
@@ -171,13 +180,63 @@ fun HomeScreen(state: RiseUiState, vm: RiseViewModel) {
 
         Column(verticalArrangement = Arrangement.spacedBy(9.dp)) {
             state.activeRoutineTasks.forEach { task ->
-                TaskRow(task) { vm.toggleTask(task.id) }
+                key(task.id) {
+                    SwipeableTaskRow(
+                        task = task,
+                        onToggle = { vm.toggleTask(task.id) },
+                        onDelete = { vm.removeTask(task.id) },
+                    )
+                }
             }
         }
     }
 }
 
-/** Horizontal row of routine chips: Persoonlijk + any added routines. Tapping switches the active routine. */
+/** Task row that deletes itself when swiped left. */
+@OptIn(ExperimentalMaterial3Api::class)
+@Composable
+private fun SwipeableTaskRow(task: TaskItem, onToggle: () -> Unit, onDelete: () -> Unit) {
+    val dismissState = rememberSwipeToDismissBoxState(
+        confirmValueChange = { value ->
+            if (value == SwipeToDismissBoxValue.EndToStart) {
+                onDelete()
+                true
+            } else {
+                false
+            }
+        },
+    )
+    SwipeToDismissBox(
+        state = dismissState,
+        enableDismissFromStartToEnd = false,
+        backgroundContent = {
+            Box(
+                Modifier
+                    .fillMaxSize()
+                    .clip(RoundedCornerShape(20.dp))
+                    .background(Color(0xFFFF6B6B))
+                    .padding(horizontal = 20.dp),
+                contentAlignment = Alignment.CenterEnd,
+            ) {
+                Text(
+                    "Verwijderen 🗑️",
+                    color = Card,
+                    fontFamily = Nunito,
+                    fontWeight = FontWeight.Black,
+                    fontSize = 13.sp,
+                )
+            }
+        },
+    ) {
+        TaskRow(task, onToggle)
+    }
+}
+
+/**
+ * Horizontal row of routine chips: Persoonlijk + any added routines. Tap switches the
+ * active routine; long-press an added routine to remove it (Persoonlijk can't be removed).
+ */
+@OptIn(ExperimentalFoundationApi::class)
 @Composable
 private fun RoutineChips(state: RiseUiState, vm: RiseViewModel) {
     Row(
@@ -193,7 +252,15 @@ private fun RoutineChips(state: RiseUiState, vm: RiseViewModel) {
                     .clip(RoundedCornerShape(16.dp))
                     .background(if (active) Green.copy(alpha = 0.15f) else Card)
                     .then(if (active) Modifier else Modifier.border(1.dp, CheckBorder, RoundedCornerShape(16.dp)))
-                    .pressable { vm.setActiveRoutine(chip.id) }
+                    .combinedClickable(
+                        onClick = { vm.setActiveRoutine(chip.id) },
+                        onLongClick = {
+                            if (chip.id != PERSONAL_ROUTINE) {
+                                vm.removeRoutine(chip.id)
+                                vm.affirm("Routine verwijderd")
+                            }
+                        },
+                    )
                     .padding(horizontal = 14.dp, vertical = 9.dp),
                 verticalAlignment = Alignment.CenterVertically,
             ) {

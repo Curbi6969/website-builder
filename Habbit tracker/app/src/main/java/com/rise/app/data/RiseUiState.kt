@@ -123,6 +123,7 @@ data class RiseUiState(
     val activeRoutineId: String = PERSONAL_ROUTINE,
     val addedRoutineIds: List<String> = emptyList(),
     val routineTaskDone: Map<Int, Boolean> = emptyMap(),
+    val hiddenTaskIds: Set<Int> = emptySet(),
     val inspoCategory: RoutineCategory? = null,
     val openRoutine: String? = null,
     val openSelfCheck: String? = null,
@@ -139,13 +140,13 @@ data class RiseUiState(
 
     /** Tasks for the active chip: Persoonlijk = the seeded [tasks]; else the catalogue routine's steps. */
     val activeRoutineTasks: List<TaskItem> get() =
-        if (activeRoutineId == PERSONAL_ROUTINE) tasks
+        (if (activeRoutineId == PERSONAL_ROUTINE) tasks
         else RoutineCatalog.routines.find { it.id == activeRoutineId }?.let { r ->
             r.steps.mapIndexed { i, step ->
                 val tid = routineTaskId(r.id, i)
                 TaskItem(tid, step.time, step.label, step.icon, routineTaskDone[tid] ?: false)
             }
-        } ?: tasks
+        } ?: tasks).filterNot { hiddenTaskIds.contains(it.id) }
 
     val activeDoneCount: Int get() = activeRoutineTasks.count { it.done }
     val activeTaskTotal: Int get() = activeRoutineTasks.size

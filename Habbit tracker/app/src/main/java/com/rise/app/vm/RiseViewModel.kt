@@ -128,6 +128,12 @@ class RiseViewModel(app: Application) : AndroidViewModel(app) {
         if (resetActive) write { repo.setActiveRoutine(PERSONAL_ROUTINE) }
     }
 
+    /** Swipe-to-delete a task from the active list (session-only; not yet persisted). */
+    fun removeTask(id: Int) {
+        _state.update { it.copy(hiddenTaskIds = it.hiddenTaskIds + id) }
+        affirm("Taak verwijderd")
+    }
+
     fun setInspoCategory(cat: RoutineCategory?) = _state.update { it.copy(inspoCategory = cat) }
     fun openRoutine(id: String) = _state.update { it.copy(openRoutine = id) }
     fun closeRoutine() = _state.update { it.copy(openRoutine = null) }

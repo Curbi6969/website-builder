@@ -18,10 +18,10 @@ object VoiceModels {
         SMALL("sherpa-onnx-whisper-small", "asr-models/sherpa-onnx-whisper-small.tar.bz2", "small"),
     }
 
-    /** The active STT model — change to [Whisper.SMALL] for max Dutch accuracy. */
+    /** The active STT model, change to [Whisper.SMALL] for max Dutch accuracy. */
     val whisper = Whisper.BASE
 
-    // Piper Dutch TTS voice — "ronnie" (warm male, int8 ≈ 21 MB).
+    // Piper Dutch TTS voice, "ronnie" (warm male, int8 ≈ 21 MB).
     // Other nl_NL voices: pim, alex (medium); miro, dii (high).
     private const val VOICE_DIR = "vits-piper-nl_NL-ronnie-medium-int8"
     private const val VOICE_ARCHIVE = "tts-models/vits-piper-nl_NL-ronnie-medium-int8.tar.bz2"

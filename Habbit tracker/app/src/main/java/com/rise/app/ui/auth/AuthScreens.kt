@@ -107,7 +107,7 @@ private fun LoginScreen() {
             modifier = Modifier.padding(top = 12.dp),
         )
         Text(
-            if (step == Step.EMAIL) "Log in met je e-mail — je krijgt een code."
+            if (step == Step.EMAIL) "Log in met je e-mail, je krijgt een code."
             else "Vul de 6-cijferige code in die we naar $email stuurden.",
             fontFamily = Nunito,
             fontWeight = FontWeight.Bold,

@@ -31,7 +31,7 @@ fun Modifier.cardSurface(
     .clip(shape)
 
 /**
- * Clickable for cards/buttons. The default Material ripple fills the surface — because
+ * Clickable for cards/buttons. The default Material ripple fills the surface, because
  * callers clip to their shape (via [cardSurface] or `.clip`) before this, the ripple
  * covers the whole rounded card. No press-scale (that detached the highlight from the edges).
  */

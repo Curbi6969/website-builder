@@ -247,7 +247,7 @@ class RiseRepository {
         }
     }
 
-    /** Reasons are a small ordered list — replace the set on every change. */
+    /** Reasons are a small ordered list, replace the set on every change. */
     suspend fun saveReasons(list: List<String>) {
         val uid = uid ?: return
         supabase.from("reasons").delete { filter { eq("user_id", uid) } }

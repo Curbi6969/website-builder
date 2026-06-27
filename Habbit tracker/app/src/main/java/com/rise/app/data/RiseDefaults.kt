@@ -6,7 +6,7 @@ import com.rise.app.ui.theme.Orange
 import com.rise.app.ui.theme.Purple
 import com.rise.app.ui.theme.Teal
 
-/** All seeded content from the design's renderVals() — reproduced verbatim. */
+/** All seeded content from the design's renderVals(), reproduced verbatim. */
 object RiseDefaults {
 
     val tasks = listOf(
@@ -28,7 +28,7 @@ object RiseDefaults {
         MoodDef("great", "😄", "Top", Color(0xFF9AE6B4), "Mooi, geniet ervan!"),
         MoodDef("good", "🙂", "Goed", Color(0xFFC8EFA0), "Fijn dat het lekker gaat."),
         MoodDef("ok", "😐", "Oké", Color(0xFFFBE08A), "Oké is helemaal prima."),
-        MoodDef("down", "😟", "Matig", Color(0xFFFFC48A), "Je voelt het — dat is moedig."),
+        MoodDef("down", "😟", "Matig", Color(0xFFFFC48A), "Je voelt het, dat is moedig."),
         MoodDef("rough", "😣", "Zwaar", Color(0xFFFFAA9E), "Zware dag mag. Ik ben er."),
     )
 
@@ -97,5 +97,5 @@ object RiseDefaults {
     val moodCalFaces = listOf("😄", "🙂", "😐", "😟", "😣")
     val moodCalSeed = listOf(2, 1, 0, 2, 1, 3, 0, 1, 1, 0, 2, 4, 1, 0, 0, 1, 2, 1, 0, 3, 1, 0, 0, 1, 2)
 
-    val urgeSurf = PlayerContent("Urge surfen", "Rij de golf uit — hij zakt altijd.", "🌊", 8)
+    val urgeSurf = PlayerContent("Urge surfen", "Rij de golf uit, hij zakt altijd.", "🌊", 8)
 }

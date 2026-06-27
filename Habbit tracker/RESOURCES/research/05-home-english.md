@@ -24,7 +24,7 @@ The Vessel of Self-Worth is a standalone psychological model for behavioral chan
 - Experience more calmness and less stress
 - Connect better with others
 
-These are significant changes that can be achieved through a seemingly simple thought model and straightforward homework exercises. The core of the method is that self-worth—a positive rather than judgmental relationship with oneself—is crucial for achieving and maintaining behavior change. Self-worth is strengthened by seeking out concrete, small, achievable experiences that provide a small sense of satisfaction. The aim is not intense positive experiences; it’s about frequency and systematics: people are taught to regularly and consistently engage in small self-rewarding activities and thoughts, creating a new mindset.
+These are significant changes that can be achieved through a seemingly simple thought model and straightforward homework exercises. The core of the method is that self-worth-a positive rather than judgmental relationship with oneself-is crucial for achieving and maintaining behavior change. Self-worth is strengthened by seeking out concrete, small, achievable experiences that provide a small sense of satisfaction. The aim is not intense positive experiences; it’s about frequency and systematics: people are taught to regularly and consistently engage in small self-rewarding activities and thoughts, creating a new mindset.
 
 As self-worth increases, the composition of the self changes. When the level of positive self-worth in the “vessel” rises, the critical, deficient, destructive part of the self must shrink: the vessel of self-worth always has 100% capacity. Where self-worth exists, there can be no emptiness, and vice versa.
 

@@ -120,7 +120,7 @@ fun SettingsOverlay(state: RiseUiState, vm: RiseViewModel) {
                     ) {
                         Box(Modifier.weight(1f)) {
                             if (reason.isEmpty()) {
-                                Text("Schrijf je reden…", fontFamily = Nunito, fontWeight = FontWeight.ExtraBold, fontSize = 14.sp, color = InkFaint)
+                                Text("Schrijf je reden...", fontFamily = Nunito, fontWeight = FontWeight.ExtraBold, fontSize = 14.sp, color = InkFaint)
                             }
                             BasicTextField(
                                 value = reason,

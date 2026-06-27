@@ -50,7 +50,7 @@ class RiseSpeech(private val baseDir: File) {
         OfflineTts(config = OfflineTtsConfig(model = model))
     }
 
-    /** Sample rate the Piper voice produces — drives the playback AudioTrack. */
+    /** Sample rate the Piper voice produces, drives the playback AudioTrack. */
     fun ttsSampleRate(): Int = tts.sampleRate()
 
     /** Transcribe 16 kHz mono float samples (range −1..1) to Dutch text. */

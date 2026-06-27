@@ -39,7 +39,7 @@ import com.rise.app.ui.theme.InkSoft
 import com.rise.app.ui.theme.Nunito
 import com.rise.app.vm.RiseViewModel
 
-/** "Is het je vandaag gelukt?" — Ja, or No with an optional trigger. */
+/** "Is het je vandaag gelukt?", Ja, or No with an optional trigger. */
 @OptIn(ExperimentalLayoutApi::class)
 @Composable
 fun CheckinOverlay(state: RiseUiState, vm: RiseViewModel) {
@@ -68,7 +68,7 @@ fun CheckinOverlay(state: RiseUiState, vm: RiseViewModel) {
                 modifier = Modifier.padding(top = 12.dp),
             )
             Text(
-                if (!askTrigger) "Eerlijk antwoorden helpt je groeien — niemand oordeelt."
+                if (!askTrigger) "Eerlijk antwoorden helpt je groeien, niemand oordeelt."
                 else "Zo leer je je patroon kennen. Of sla over.",
                 fontFamily = Nunito,
                 fontWeight = FontWeight.Bold,

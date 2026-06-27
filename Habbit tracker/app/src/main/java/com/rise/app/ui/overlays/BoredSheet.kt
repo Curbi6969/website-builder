@@ -80,7 +80,7 @@ fun BoredSheet(state: RiseUiState, vm: RiseViewModel) {
                 )
                 Spacer(Modifier.height(8.dp))
                 Text("Vul de leegte 🎯", fontFamily = Fredoka, fontWeight = FontWeight.SemiBold, fontSize = 23.sp, color = Ink)
-                Text("Verveling is de #1 trigger. Doe gewoon één ding — klein telt.", fontFamily = Nunito, fontWeight = FontWeight.Bold, fontSize = 13.5.sp, color = InkSoft, modifier = Modifier.padding(top = 2.dp))
+                Text("Verveling is de #1 trigger. Doe gewoon één ding, klein telt.", fontFamily = Nunito, fontWeight = FontWeight.Bold, fontSize = 13.5.sp, color = InkSoft, modifier = Modifier.padding(top = 2.dp))
 
                 // mini-goal
                 Row(

@@ -6,7 +6,7 @@ import android.media.AudioTrack
 import android.media.MediaRecorder
 import kotlin.math.sqrt
 
-/** Mic capture + PCM playback for the on-device voice engine. Both calls block — run on IO. */
+/** Mic capture + PCM playback for the on-device voice engine. Both calls block, run on IO. */
 object AudioIO {
     private const val SAMPLE_RATE = 16000
 

@@ -78,7 +78,7 @@ fun PanicOverlay(state: RiseUiState, vm: RiseViewModel) {
 private fun PanicMenu(vm: RiseViewModel) {
     Column {
         Text(
-            "Deze drang is een golf. Hij piekt en zakt — altijd. Kies iets en rij 'm uit, man. 💪",
+            "Deze drang is een golf. Hij piekt en zakt, altijd. Kies iets en rij 'm uit, man. 💪",
             fontFamily = Nunito,
             fontWeight = FontWeight.ExtraBold,
             fontSize = 15.sp,
@@ -127,7 +127,7 @@ private fun ColdWater(vm: RiseViewModel) {
         Text("💧", fontSize = 64.sp, modifier = Modifier.fillMaxWidth(), textAlign = TextAlign.Center)
         Text("Koud water reset", fontFamily = Fredoka, fontWeight = FontWeight.SemiBold, fontSize = 22.sp, color = Card, textAlign = TextAlign.Center, modifier = Modifier.fillMaxWidth().padding(top = 6.dp))
         Text(
-            "Sta op. Beweeg je lijf. Dit breekt het patroon direct — het werkt echt.",
+            "Sta op. Beweeg je lijf. Dit breekt het patroon direct, het werkt echt.",
             fontFamily = Nunito,
             fontWeight = FontWeight.Bold,
             fontSize = 14.sp,
@@ -141,14 +141,14 @@ private fun ColdWater(vm: RiseViewModel) {
             listOf(
                 "1 · Loop naar de kraan of douche",
                 "2 · Koud water op je gezicht / nek",
-                "3 · Adem diep — 3 keer",
+                "3 · Adem diep, 3 keer",
                 "4 · Kom terug. Je bent er doorheen.",
             ).forEach { step -> StepRow(step) }
         }
         Spacer(Modifier.height(18.dp))
         BackPill { vm.panicBack() }
         Spacer(Modifier.height(12.dp))
-        WhiteCta("Gedaan — ik voel me beter ✓") { vm.panicBeat() }
+        WhiteCta("Gedaan, ik voel me beter ✓") { vm.panicBeat() }
     }
 }
 

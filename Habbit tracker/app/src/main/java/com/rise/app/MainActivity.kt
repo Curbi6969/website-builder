@@ -67,7 +67,7 @@ class MainActivity : ComponentActivity() {
     /**
      * A clicked magic link may arrive without a usable session (e.g. a mail provider
      * pre-opened the link and burned the one-time token). handleDeeplinks throws in
-     * that case — swallow it so the app never crashes; the 6-digit code path remains.
+     * that case, swallow it so the app never crashes; the 6-digit code path remains.
      */
     private fun handleAuthDeeplink(intent: Intent?) {
         intent ?: return

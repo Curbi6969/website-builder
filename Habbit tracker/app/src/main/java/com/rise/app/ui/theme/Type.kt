@@ -10,7 +10,7 @@ import com.rise.app.R
 // One file per weight keeps rendering reliable across devices (the variable
 // `variationSettings` path silently fell back to the system font).
 
-/** Fredoka — rounded display/headings. */
+/** Fredoka, rounded display/headings. */
 val Fredoka = FontFamily(
     Font(R.font.fredoka_regular, FontWeight.Normal),
     Font(R.font.fredoka_medium, FontWeight.Medium),
@@ -18,7 +18,7 @@ val Fredoka = FontFamily(
     Font(R.font.fredoka_bold, FontWeight.Bold),
 )
 
-/** Nunito — body. */
+/** Nunito, body. */
 val Nunito = FontFamily(
     Font(R.font.nunito_regular, FontWeight.Normal),
     Font(R.font.nunito_semibold, FontWeight.SemiBold),

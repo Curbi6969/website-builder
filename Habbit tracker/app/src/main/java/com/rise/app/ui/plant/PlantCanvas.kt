@@ -48,7 +48,7 @@ import kotlin.math.sin
 import kotlin.random.Random
 
 /**
- * Animated L-system plant — a faithful port of design-reference/lsys-plant.js.
+ * Animated L-system plant, a faithful port of design-reference/lsys-plant.js.
  * Grows generation by generation (lerping the freshly-sprouted growth in), then
  * idles with a gentle wind sway.
  */
@@ -63,10 +63,10 @@ private class PlantState(seed: Int, val maxGeneration: Int) {
 
     val ang: Float = (24.0 * PI / 180.0).toFloat()
 
-    /** Bounding box of the fully-grown plant (unit segments) — used to fit it in the canvas. */
+    /** Bounding box of the fully-grown plant (unit segments), used to fit it in the canvas. */
     val bounds: PlantBounds by lazy { computePlantBounds(seed0, maxGeneration, ang) }
 
-    /** xorshift32 — deterministic per seed. */
+    /** xorshift32, deterministic per seed. */
     private fun rand(): Float {
         var x = s
         x = x xor (x shl 13)

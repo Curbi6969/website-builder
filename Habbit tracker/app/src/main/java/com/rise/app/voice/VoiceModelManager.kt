@@ -18,18 +18,19 @@ class VoiceModelManager(context: Context) {
 
     fun isReady(): Boolean = VoiceModels.allReady(baseDir)
 
-    /** Downloads + extracts whatever is missing. [onProgress] reports 0f..1f (rough). */
-    suspend fun ensureModels(onProgress: (Float) -> Unit = {}) = withContext(Dispatchers.IO) {
+    /** Downloads + extracts whatever is missing, reporting a human-readable [onStatus]. */
+    suspend fun ensureModels(onStatus: (String) -> Unit = {}) = withContext(Dispatchers.IO) {
         if (!VoiceModels.whisperReady(baseDir)) {
-            downloadAndExtract(VoiceModels.whisperArchiveUrl()) { onProgress(it * 0.9f) }
+            downloadAndExtract("Spraakmodel", VoiceModels.whisperArchiveUrl(), onStatus)
         }
         if (!VoiceModels.voiceReady(baseDir)) {
-            downloadAndExtract(VoiceModels.voiceArchiveUrl()) { onProgress(0.9f + it * 0.1f) }
+            downloadAndExtract("Stem", VoiceModels.voiceArchiveUrl(), onStatus)
         }
-        onProgress(1f)
+        onStatus("Klaar")
     }
 
-    private fun downloadAndExtract(url: String, onProgress: (Float) -> Unit) {
+    private fun downloadAndExtract(label: String, url: String, onStatus: (String) -> Unit) {
+        onStatus("$label downloaden...")
         val tmp = File(baseDir, "download.tar.bz2")
         val conn = URL(url).openConnection()
         conn.connect()
@@ -39,13 +40,17 @@ class VoiceModelManager(context: Context) {
                 val buf = ByteArray(1 shl 16)
                 var read = 0L
                 var n: Int
+                var lastPct = -1
                 while (input.read(buf).also { n = it } >= 0) {
                     out.write(buf, 0, n)
                     read += n
-                    onProgress((read.toFloat() / total).coerceIn(0f, 1f))
+                    val pct = ((read.toFloat() / total) * 100).toInt().coerceIn(0, 100)
+                    if (pct != lastPct) { lastPct = pct; onStatus("$label downloaden... $pct%") }
                 }
             }
         }
+        // Extraction has no byte-level progress and can take a minute on a phone; say so.
+        onStatus("$label uitpakken... (kan even duren)")
         extractTarBz2(tmp, baseDir)
         tmp.delete()
     }

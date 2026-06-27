@@ -59,7 +59,7 @@ fun MoodScreen(state: RiseUiState, vm: RiseViewModel) {
     Column(Modifier.fillMaxWidth()) {
         Spacer(Modifier.height(8.dp))
         Text("Stemming", fontFamily = Fredoka, fontWeight = FontWeight.SemiBold, fontSize = 26.sp, color = Ink)
-        Text("Leer jezelf kennen — zonder oordeel.", fontFamily = Nunito, fontWeight = FontWeight.Bold, fontSize = 13.5.sp, color = InkSoft)
+        Text("Leer jezelf kennen, zonder oordeel.", fontFamily = Nunito, fontWeight = FontWeight.Bold, fontSize = 13.5.sp, color = InkSoft)
 
         Spacer(Modifier.height(16.dp))
 
@@ -119,7 +119,7 @@ fun MoodScreen(state: RiseUiState, vm: RiseViewModel) {
                     .padding(horizontal = 14.dp, vertical = 12.dp),
             ) {
                 if (state.journalText.isEmpty()) {
-                    Text("Typ hier… niemand leest mee.", fontFamily = Nunito, fontWeight = FontWeight.Bold, fontSize = 14.sp, color = PurpleInk2.copy(alpha = 0.55f))
+                    Text("Typ hier... niemand leest mee.", fontFamily = Nunito, fontWeight = FontWeight.Bold, fontSize = 14.sp, color = PurpleInk2.copy(alpha = 0.55f))
                 }
                 BasicTextField(
                     value = state.journalText,

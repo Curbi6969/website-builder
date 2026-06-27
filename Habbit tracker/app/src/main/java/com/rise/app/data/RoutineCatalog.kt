@@ -3,7 +3,7 @@ package com.rise.app.data
 import com.rise.app.R
 
 /**
- * Static catalogue for the Inspiratie tab — prebuilt routines and non-diagnostic
+ * Static catalogue for the Inspiratie tab, prebuilt routines and non-diagnostic
  * self-checks. Mirrors the pattern of [RiseDefaults]: all Dutch copy lives here,
  * verbatim. Content is grounded in evidence-based methods (Atomic Habits / habit
  * stacking & implementation intentions, HALT, urge surfing, Kristin Neff's
@@ -52,7 +52,7 @@ object RoutineCatalog {
     val routines = listOf(
         Routine(
             id = "ochtend",
-            name = "Ochtendroutine — Sterke start",
+            name = "Ochtendroutine, Sterke start",
             category = RoutineCategory.OCHTEND,
             accent = InspoAccent.GREEN,
             illustration = R.drawable.inspo_ochtend,
@@ -67,22 +67,22 @@ object RoutineCatalog {
         ),
         Routine(
             id = "drang",
-            name = "Drang de baas — HALT & golf",
+            name = "Drang de baas, HALT & golf",
             category = RoutineCategory.DRANG,
             accent = InspoAccent.TEAL,
             illustration = R.drawable.inspo_drang,
             why = "Veel drang is een onvervulde basisbehoefte (HALT). Vul die eerst, en surf dan " +
-                "de golf: drang piekt en zakt altijd weer — hij gaat vanzelf voorbij.",
+                "de golf: drang piekt en zakt altijd weer, hij gaat vanzelf voorbij.",
             steps = listOf(
                 RoutineStep("", "Check HALT: honger, boos, eenzaam, moe?", "🔍"),
                 RoutineStep("", "Drink water of eet iets kleins", "🍎"),
-                RoutineStep("", "Surf de golf — 8 min", "🌊"),
+                RoutineStep("", "Surf de golf, 8 min", "🌊"),
                 RoutineStep("", "App iemand of loop naar buiten", "🚶"),
             ),
         ),
         Routine(
             id = "zelfcompassie",
-            name = "Zelfcompassie — Wees zacht voor jezelf",
+            name = "Zelfcompassie, Wees zacht voor jezelf",
             category = RoutineCategory.ZELFZORG,
             accent = InspoAccent.LAVENDER,
             illustration = R.drawable.inspo_zelfcompassie,
@@ -97,7 +97,7 @@ object RoutineCatalog {
         ),
         Routine(
             id = "avond",
-            name = "Avond wind-down — Zacht afsluiten",
+            name = "Avond wind-down, Zacht afsluiten",
             category = RoutineCategory.SLAAP,
             accent = InspoAccent.YELLOW,
             illustration = R.drawable.inspo_avond,
@@ -112,11 +112,11 @@ object RoutineCatalog {
         ),
         Routine(
             id = "dankbaarheid",
-            name = "Dankbaarheid — 3 goede dingen",
+            name = "Dankbaarheid, 3 goede dingen",
             category = RoutineCategory.ZELFZORG,
             accent = InspoAccent.CORAL,
             illustration = R.drawable.inspo_dankbaarheid,
-            why = "Dagelijks 3 concrete dingen opschrijven traint je brein om het goede te zien — " +
+            why = "Dagelijks 3 concrete dingen opschrijven traint je brein om het goede te zien, " +
                 "dat verbetert je stemming en je motivatie om door te gaan.",
             steps = listOf(
                 RoutineStep("", "Schrijf 3 concrete dingen op", "✍️"),
@@ -126,7 +126,7 @@ object RoutineCatalog {
         ),
         Routine(
             id = "1procent",
-            name = "1% beter — Mini-gewoontes",
+            name = "1% beter, Mini-gewoontes",
             category = RoutineCategory.OCHTEND,
             accent = InspoAccent.GREEN,
             illustration = R.drawable.inspo_1procent,
@@ -141,11 +141,11 @@ object RoutineCatalog {
         ),
         Routine(
             id = "beweeg",
-            name = "Beweeg & boost — 10 minuten",
+            name = "Beweeg & boost, 10 minuten",
             category = RoutineCategory.ZELFZORG,
             accent = InspoAccent.CORAL,
             illustration = R.drawable.inspo_beweeg,
-            why = "Beweging geeft je brein dopamine en endorfine — een gezonde, natuurlijke kick die drang dempt en je stemming optilt.",
+            why = "Beweging geeft je brein dopamine en endorfine, een gezonde, natuurlijke kick die drang dempt en je stemming optilt.",
             steps = listOf(
                 RoutineStep("", "5 push-ups of squats", "💪"),
                 RoutineStep("", "10 min stevig wandelen", "🚶"),
@@ -155,11 +155,11 @@ object RoutineCatalog {
         ),
         Routine(
             id = "verbinding",
-            name = "Verbinding zoeken — niet alleen",
+            name = "Verbinding zoeken, niet alleen",
             category = RoutineCategory.ZELFZORG,
             accent = InspoAccent.BERRY,
             illustration = R.drawable.inspo_verbinding,
-            why = "Eenzaamheid is een grote terugval-trigger (de L in HALT). Echt contact beschermt je — één bericht doorbreekt het al.",
+            why = "Eenzaamheid is een grote terugval-trigger (de L in HALT). Echt contact beschermt je, één bericht doorbreekt het al.",
             steps = listOf(
                 RoutineStep("", "App of bel iemand die je vertrouwt", "💬"),
                 RoutineStep("", "Zeg eerlijk hoe het met je gaat", "🫶"),
@@ -168,7 +168,7 @@ object RoutineCatalog {
         ),
         Routine(
             id = "triggerplan",
-            name = "Trigger-plan — als-dan",
+            name = "Trigger-plan, als-dan",
             category = RoutineCategory.DRANG,
             accent = InspoAccent.TEAL,
             illustration = R.drawable.inspo_triggerplan,
@@ -182,7 +182,7 @@ object RoutineCatalog {
         ),
         Routine(
             id = "tien_minuten",
-            name = "10-minuten-regel — stel drang uit",
+            name = "10-minuten-regel, stel drang uit",
             category = RoutineCategory.LIFEHACK,
             accent = InspoAccent.TEAL,
             illustration = 0,
@@ -197,12 +197,12 @@ object RoutineCatalog {
         ),
         Routine(
             id = "opruimen_triggers",
-            name = "Digitale opruiming — minder triggers",
+            name = "Digitale opruiming, minder triggers",
             category = RoutineCategory.LIFEHACK,
             accent = InspoAccent.GREEN,
             illustration = 0,
             why = "Wilskracht verliest het van een omgeving vol triggers. Maak de verkeerde keuze " +
-                "moeilijker en de goede makkelijker — dan hoef je veel minder te 'vechten'.",
+                "moeilijker en de goede makkelijker, dan hoef je veel minder te 'vechten'.",
             steps = listOf(
                 RoutineStep("", "Verwijder of verberg trigger-apps", "📵"),
                 RoutineStep("", "Zet meldingen uit voor de rest van de dag", "🔕"),
@@ -212,12 +212,12 @@ object RoutineCatalog {
         ),
         Routine(
             id = "halt_snack",
-            name = "Eerst eten & drinken — HALT-hack",
+            name = "Eerst eten & drinken, HALT-hack",
             category = RoutineCategory.LIFEHACK,
             accent = InspoAccent.CORAL,
             illustration = 0,
             why = "Honger en uitdroging maken drang sterker dan hij echt is. Een glas water en iets " +
-                "kleins eten neemt vaak de scherpe randjes er al af — simpel, maar het werkt.",
+                "kleins eten neemt vaak de scherpe randjes er al af, simpel, maar het werkt.",
             steps = listOf(
                 RoutineStep("", "Drink een groot glas water", "💧"),
                 RoutineStep("", "Eet iets kleins met eiwit", "🥜"),
@@ -228,16 +228,16 @@ object RoutineCatalog {
         // Gebaseerd op de methode 'Vat van Zelfwaardering' (Gertjan van Zessen).
         Routine(
             id = "vat_vullen",
-            name = "Vul je vat — kleine acties die tellen",
+            name = "Vul je vat, kleine acties die tellen",
             category = RoutineCategory.ZELFZORG,
             accent = InspoAccent.GREEN,
             illustration = 0,
             why = "Uit de methode 'Vat van Zelfwaardering': je binnenwereld is een vat dat altijd " +
-                "vol is — deels zelfwaardering, deels leegte. Je vecht niet tegen de leegte (of de " +
+                "vol is, deels zelfwaardering, deels leegte. Je vecht niet tegen de leegte (of de " +
                 "drang), je vult je vat met piepkleine acties én beloont jezelf ervoor. Die kleine " +
                 "beloonde daden zetten een vliegwiel in gang: meer initiatief, minder vastlopen.",
             steps = listOf(
-                RoutineStep("", "Kies één piepkleine actie — hoe kleiner, hoe beter", "🧩"),
+                RoutineStep("", "Kies één piepkleine actie, hoe kleiner, hoe beter", "🧩"),
                 RoutineStep("", "Doe 'm nu, niet straks", "▶️"),
                 RoutineStep("", "Beloon jezelf hardop: 'goed gedaan'", "🎉"),
                 RoutineStep("", "Herhaal een paar keer per dag", "🔁"),
@@ -251,7 +251,7 @@ object RoutineCatalog {
             illustration = 0,
             why = "De kern van het Vat van Zelfwaardering: we zijn veel vaker kritisch dan belonend. " +
                 "Doe een minuscule actie en geef jezelf bewust een complimentje. Niet het gedrag dat " +
-                "je wilt veranderen aanpakken — je zelfwaardering voeden. De rest volgt vanzelf.",
+                "je wilt veranderen aanpakken, je zelfwaardering voeden. De rest volgt vanzelf.",
             steps = listOf(
                 RoutineStep("", "Pak iets piepkleins (afwas, glas water, 1 push-up)", "🧩"),
                 RoutineStep("", "Doe het bewust, met aandacht", "🎯"),
@@ -261,7 +261,7 @@ object RoutineCatalog {
         ),
         Routine(
             id = "niet_vechten",
-            name = "Niet vechten — vat vullen",
+            name = "Niet vechten, vat vullen",
             category = RoutineCategory.LIFEHACK,
             accent = InspoAccent.TEAL,
             illustration = 0,
@@ -284,7 +284,7 @@ object RoutineCatalog {
             category = RoutineCategory.DRANG,
             accent = InspoAccent.TEAL,
             illustration = R.drawable.inspo_halt,
-            intro = "Vier korte vragen. Geen score — gewoon checken wat je nu nodig hebt.",
+            intro = "Vier korte vragen. Geen score, gewoon checken wat je nu nodig hebt.",
             questions = listOf(
                 SelfCheckQuestion("Heb je honger?", CheckKind.YES_NO),
                 SelfCheckQuestion("Ben je boos of geïrriteerd?", CheckKind.YES_NO),
@@ -294,13 +294,13 @@ object RoutineCatalog {
             heavy = { ans -> ans.count { it == 1 } >= 3 },
             feedback = { ans, _ ->
                 val needs = buildList {
-                    if (ans.getOrNull(0) == 1) add("Eet iets — ook iets kleins helpt al. 🍎")
+                    if (ans.getOrNull(0) == 1) add("Eet iets, ook iets kleins helpt al. 🍎")
                     if (ans.getOrNull(1) == 1) add("Je bent boos. Adem 3x lang uit, of beweeg het eruit. 🌬️")
-                    if (ans.getOrNull(2) == 1) add("Eenzaam? App of bel iemand — één bericht is genoeg. 💬")
-                    if (ans.getOrNull(3) == 1) add("Je bent moe. Rust mag — leg even alles neer. 😴")
+                    if (ans.getOrNull(2) == 1) add("Eenzaam? App of bel iemand, één bericht is genoeg. 💬")
+                    if (ans.getOrNull(3) == 1) add("Je bent moe. Rust mag, leg even alles neer. 😴")
                 }
                 if (needs.isEmpty())
-                    "Mooi — je basis is op orde. Komt de drang toch? Onthoud: de golf zakt altijd weer. 🌊"
+                    "Mooi, je basis is op orde. Komt de drang toch? Onthoud: de golf zakt altijd weer. 🌊"
                 else
                     "Dit heb je nu nodig:\n\n" + needs.joinToString("\n") +
                         "\n\nVeel drang is gewoon een onvervulde basisbehoefte. Zorg hier eerst voor."
@@ -325,15 +325,15 @@ object RoutineCatalog {
                 val avg = if (ans.isEmpty()) 0.0 else ans.average()
                 when {
                     avg >= 4 ->
-                        "Je bent al behoorlijk zacht voor jezelf — dat is een kracht, geen luxe. " +
+                        "Je bent al behoorlijk zacht voor jezelf, dat is een kracht, geen luxe. " +
                             "Blijf zo tegen jezelf praten als tegen een vriend. 💚"
                     avg >= 2.5 ->
-                        "Je bent soms streng voor jezelf — heel menselijk. Zelfcompassie heeft " +
+                        "Je bent soms streng voor jezelf, heel menselijk. Zelfcompassie heeft " +
                             "dezelfde voordelen als zelfwaardering, maar zonder de nadelen. Probeer eens " +
                             "de Zelfcompassie-routine. 🌱"
                     else ->
                         "Je bent vaak hard voor jezelf. Dat hoeft niet. Moeilijk hebben hoort bij " +
-                            "mens-zijn — je bent niet de enige. Wees net zo mild voor jezelf als voor " +
+                            "mens-zijn, je bent niet de enige. Wees net zo mild voor jezelf als voor " +
                             "iemand van wie je houdt. 💚"
                 }
             },
@@ -352,13 +352,13 @@ object RoutineCatalog {
             feedback = { ans, _ ->
                 when (val v = ans.firstOrNull() ?: 0) {
                     in 8..10 ->
-                        "Sterke drang nu. Dat is zwaar — én tijdelijk. De golf piekt en zakt altijd " +
+                        "Sterke drang nu. Dat is zwaar, én tijdelijk. De golf piekt en zakt altijd " +
                             "weer, meestal binnen 20 minuten. Wil je 'm samen uitrijden? 🌊"
                     in 4..7 ->
                         "Er is drang, maar je staat er nog boven. Goed moment voor een korte actie: " +
                             "water, een blokje om, of iemand appen. 🚶"
                     else ->
-                        "Lichte of geen drang — fijn. Dit is precies het moment om je routine te doen " +
+                        "Lichte of geen drang, fijn. Dit is precies het moment om je routine te doen " +
                             "terwijl het rustig is. 🌱"
                 }
             },
@@ -383,9 +383,9 @@ object RoutineCatalog {
                     if (nl != null) "Je gaf vandaag '$nl' aan in Stemming. " else ""
                 } ?: ""
                 when (val v = ans.firstOrNull() ?: 3) {
-                    in 4..5 -> moodLine + "Fijn dat het goed gaat — geniet ervan en onthoud wat hieraan bijdroeg. 🌞"
+                    in 4..5 -> moodLine + "Fijn dat het goed gaat, geniet ervan en onthoud wat hieraan bijdroeg. 🌞"
                     3 -> moodLine + "Oké is helemaal prima. Niet elke dag hoeft top te zijn. 🌿"
-                    else -> moodLine + "Zware dag mag er zijn. Wees zacht voor jezelf — wat heb je nu nodig? 💚"
+                    else -> moodLine + "Zware dag mag er zijn. Wees zacht voor jezelf, wat heb je nu nodig? 💚"
                 }
             },
         ),

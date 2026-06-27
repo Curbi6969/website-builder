@@ -50,7 +50,7 @@ private val courseAccents = listOf(
 )
 
 /**
- * Inspiratie tab — the app's "inspire" hub. A featured card on top, then grouped
+ * Inspiratie tab, the app's "inspire" hub. A featured card on top, then grouped
  * horizontal rows: routines per theme, meditations (open the player), life hacks and
  * self-checks. Routine/life-hack cards open [RoutineDetailOverlay] with "Voeg toe aan
  * mijn routines"; meditation cards open the timer player (merged here from the old Rust tab).
@@ -71,7 +71,7 @@ fun InspiratieScreen(state: RiseUiState, vm: RiseViewModel) {
         FeaturedCard(
             tag = "AANBEVOLEN BIJ DRANG",
             title = "Urge surfen",
-            body = "Rij de golf uit. Hij komt op, piekt, en zakt — altijd.",
+            body = "Rij de golf uit. Hij komt op, piekt, en zakt, altijd.",
             cta = "▶ Start · 8 min",
             emoji = "🌊",
         ) { vm.openUrgeSurf() }
@@ -114,7 +114,7 @@ fun InspiratieScreen(state: RiseUiState, vm: RiseViewModel) {
             }
         }
 
-        // TEMPORARY on-device voice smoke test — remove once the real journal UI lands.
+        // TEMPORARY on-device voice smoke test, remove once the real journal UI lands.
         VoiceLab()
 
         Spacer(Modifier.height(8.dp))

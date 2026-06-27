@@ -120,7 +120,7 @@ fun WizardScreen(onDone: () -> Unit) {
                     }
                 }
                 3 -> {
-                    Heading("Waarom doe je dit?", "Je eigen woorden — je leest ze terug bij drang.")
+                    Heading("Waarom doe je dit?", "Je eigen woorden, je leest ze terug bij drang.")
                     reasons.forEachIndexed { i, r ->
                         OutlinedTextField(
                             value = r,
@@ -157,7 +157,7 @@ fun WizardScreen(onDone: () -> Unit) {
                 Pill("Terug", bg = Color(0xFFEFF2F0), fg = Ink, modifier = Modifier.weight(1f)) { step-- }
             }
             Pill(
-                if (step == LAST_STEP) (if (saving) "Bezig…" else "Beginnen 🚀") else "Volgende",
+                if (step == LAST_STEP) (if (saving) "Bezig..." else "Beginnen 🚀") else "Volgende",
                 bg = if (canNext && !saving) Green else Green.copy(alpha = 0.4f),
                 fg = Card,
                 modifier = Modifier.weight(2f),

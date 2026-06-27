@@ -25,7 +25,7 @@ import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 
 /**
- * TEMPORARY smoke test for the on-device Dutch voice pipeline — remove once the real
+ * TEMPORARY smoke test for the on-device Dutch voice pipeline, remove once the real
  * voice-journal UI lands. Proves: model download+extract, Piper Dutch TTS playback,
  * and Whisper Dutch transcription, end-to-end on the device.
  */
@@ -52,13 +52,13 @@ fun VoiceLab(modifier: Modifier = Modifier) {
         modifier.fillMaxWidth().padding(top = 12.dp),
         verticalArrangement = Arrangement.spacedBy(8.dp),
     ) {
-        Text("🎙️ Stemtest (tijdelijk) — $status")
+        Text("🎙️ Stemtest (tijdelijk), $status")
 
         Button(onClick = {
             scope.launch {
-                status = "Downloaden…"
-                runCatching { manager.ensureModels { p -> status = "Downloaden… ${(p * 100).toInt()}%" } }
-                    .onSuccess { status = "Modellen klaar ✓" }
+                status = "Starten..."
+                runCatching { manager.ensureModels { s -> status = s } }
+                    .onSuccess { status = "Modellen klaar" }
                     .onFailure { status = "Download faalde: ${it.message}" }
             }
         }) { Text("1 · Download Nederlandse modellen") }
@@ -68,7 +68,7 @@ fun VoiceLab(modifier: Modifier = Modifier) {
                 if (!manager.isReady()) {
                     status = "Eerst downloaden"
                 } else {
-                    status = "Spreken…"
+                    status = "Spreken..."
                     runCatching {
                         withContext(Dispatchers.IO) {
                             val s = engine()
@@ -89,7 +89,7 @@ fun VoiceLab(modifier: Modifier = Modifier) {
                     if (!manager.isReady()) {
                         status = "Eerst downloaden"
                     } else {
-                        status = "Opnemen (4s)…"
+                        status = "Opnemen (4s)..."
                         runCatching {
                             withContext(Dispatchers.IO) {
                                 val samples = AudioIO.recordSeconds(4)
