@@ -39,6 +39,7 @@ import com.rise.app.ui.theme.InkSoft
 import com.rise.app.ui.theme.Nunito
 import com.rise.app.ui.theme.Teal
 import com.rise.app.ui.theme.TealDark
+import com.rise.app.voice.VoiceLab
 import com.rise.app.vm.RiseViewModel
 
 private val CardWidth = 158.dp
@@ -112,6 +113,9 @@ fun InspiratieScreen(state: RiseUiState, vm: RiseViewModel) {
                 )
             }
         }
+
+        // TEMPORARY on-device voice smoke test — remove once the real journal UI lands.
+        VoiceLab()
 
         Spacer(Modifier.height(8.dp))
     }
