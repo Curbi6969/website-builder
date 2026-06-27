@@ -8,6 +8,8 @@ import androidx.compose.animation.core.spring
 import androidx.compose.animation.core.tween
 import androidx.compose.foundation.background
 import androidx.compose.foundation.border
+import androidx.compose.foundation.horizontalScroll
+import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
@@ -150,6 +152,11 @@ fun HomeScreen(state: RiseUiState, vm: RiseViewModel) {
 
         Spacer(Modifier.height(18.dp))
 
+        // ---- routine chips ----
+        RoutineChips(state, vm)
+
+        Spacer(Modifier.height(12.dp))
+
         // ---- today ----
         Row(
             Modifier.fillMaxWidth(),
@@ -157,14 +164,47 @@ fun HomeScreen(state: RiseUiState, vm: RiseViewModel) {
             verticalAlignment = Alignment.CenterVertically,
         ) {
             Text("Plan van vandaag", fontFamily = Fredoka, fontWeight = FontWeight.SemiBold, fontSize = 18.sp, color = Ink)
-            Text("${state.doneCount} / ${state.taskTotal} gedaan", fontFamily = Nunito, fontWeight = FontWeight.ExtraBold, fontSize = 12.sp, color = Green)
+            Text("${state.activeDoneCount} / ${state.activeTaskTotal} gedaan", fontFamily = Nunito, fontWeight = FontWeight.ExtraBold, fontSize = 12.sp, color = Green)
         }
 
         Spacer(Modifier.height(10.dp))
 
         Column(verticalArrangement = Arrangement.spacedBy(9.dp)) {
-            state.tasks.forEach { task ->
+            state.activeRoutineTasks.forEach { task ->
                 TaskRow(task) { vm.toggleTask(task.id) }
+            }
+        }
+    }
+}
+
+/** Horizontal row of routine chips: Persoonlijk + any added routines. Tapping switches the active routine. */
+@Composable
+private fun RoutineChips(state: RiseUiState, vm: RiseViewModel) {
+    Row(
+        Modifier
+            .fillMaxWidth()
+            .horizontalScroll(rememberScrollState()),
+        horizontalArrangement = Arrangement.spacedBy(8.dp),
+    ) {
+        state.homeChips.forEach { chip ->
+            val active = chip.id == state.activeRoutineId
+            Row(
+                Modifier
+                    .clip(RoundedCornerShape(16.dp))
+                    .background(if (active) Green.copy(alpha = 0.15f) else Card)
+                    .then(if (active) Modifier else Modifier.border(1.dp, CheckBorder, RoundedCornerShape(16.dp)))
+                    .pressable { vm.setActiveRoutine(chip.id) }
+                    .padding(horizontal = 14.dp, vertical = 9.dp),
+                verticalAlignment = Alignment.CenterVertically,
+            ) {
+                Text(
+                    chip.name,
+                    fontFamily = Nunito,
+                    fontWeight = FontWeight.ExtraBold,
+                    fontSize = 12.5.sp,
+                    color = if (active) GreenDark else InkSoft,
+                    maxLines = 1,
+                )
             }
         }
     }
@@ -262,7 +302,7 @@ private fun TaskRow(task: TaskItem, onToggle: () -> Unit) {
             }
         }
         Text(
-            "${task.time} · ${task.label}",
+            if (task.time.isBlank()) task.label else "${task.time} · ${task.label}",
             modifier = Modifier.weight(1f),
             fontFamily = Nunito,
             fontWeight = FontWeight.ExtraBold,
