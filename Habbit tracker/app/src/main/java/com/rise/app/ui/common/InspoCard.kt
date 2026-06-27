@@ -5,6 +5,7 @@ import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.aspectRatio
+import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.shape.RoundedCornerShape
@@ -17,6 +18,10 @@ import androidx.compose.ui.draw.shadow
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.res.painterResource
+import androidx.compose.ui.semantics.Role
+import androidx.compose.ui.semantics.contentDescription
+import androidx.compose.ui.semantics.role
+import androidx.compose.ui.semantics.semantics
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
@@ -57,12 +62,13 @@ fun InspoCard(
             .shadow(6.dp, RoundedCornerShape(24.dp), clip = false)
             .clip(RoundedCornerShape(24.dp))
             .background(Card)
-            .pressable { onClick() },
+            .pressable { onClick() }
+            .semantics { this.contentDescription = title; role = Role.Button },
     ) {
         Box(
             Modifier
                 .fillMaxWidth()
-                .aspectRatio(1f)
+                .aspectRatio(0.82f)
                 .background(accent.color().copy(alpha = 0.22f)),
             contentAlignment = Alignment.Center,
         ) {
@@ -70,7 +76,7 @@ fun InspoCard(
                 Image(
                     painter = painterResource(illustration),
                     contentDescription = null,
-                    modifier = Modifier.fillMaxWidth().aspectRatio(1f),
+                    modifier = Modifier.fillMaxSize(),
                     contentScale = ContentScale.Crop,
                 )
             }

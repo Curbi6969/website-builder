@@ -84,13 +84,20 @@ fun InspiratieScreen(state: RiseUiState, vm: RiseViewModel) {
         Spacer(Modifier.height(16.dp))
 
         // ---- card grid (2 columns; parent already scrolls) ----
-        Column(verticalArrangement = Arrangement.spacedBy(14.dp)) {
-            items.chunked(2).forEach { rowItems ->
-                Row(horizontalArrangement = Arrangement.spacedBy(14.dp), modifier = Modifier.fillMaxWidth()) {
-                    rowItems.forEach { item ->
-                        InspoCard(item.title, item.illustration, item.accent, item.onClick, Modifier.weight(1f))
+        if (items.isEmpty()) {
+            Text(
+                "Nog niks in deze categorie.",
+                fontFamily = Nunito, fontWeight = FontWeight.Bold, fontSize = 13.5.sp, color = InkSoft,
+            )
+        } else {
+            Column(verticalArrangement = Arrangement.spacedBy(14.dp)) {
+                items.chunked(2).forEach { rowItems ->
+                    Row(horizontalArrangement = Arrangement.spacedBy(14.dp), modifier = Modifier.fillMaxWidth()) {
+                        rowItems.forEach { item ->
+                            InspoCard(item.title, item.illustration, item.accent, item.onClick, Modifier.weight(1f))
+                        }
+                        if (rowItems.size == 1) Spacer(Modifier.weight(1f))
                     }
-                    if (rowItems.size == 1) Spacer(Modifier.weight(1f))
                 }
             }
         }
