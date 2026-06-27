@@ -12,7 +12,7 @@ import com.rise.app.R
  * [illustration] is a drawable res id; 0 until the real art is wired in (Task 8).
  */
 enum class RoutineCategory(val label: String) {
-    OCHTEND("Ochtend"), DRANG("Drang"), ZELFZORG("Zelfzorg"), SLAAP("Slaap")
+    OCHTEND("Ochtend"), DRANG("Drang"), ZELFZORG("Zelfzorg"), SLAAP("Slaap"), LIFEHACK("Life hacks")
 }
 
 enum class InspoAccent { GREEN, LAVENDER, TEAL, YELLOW, CORAL, BERRY }
@@ -137,6 +137,142 @@ object RoutineCatalog {
                 RoutineStep("", "Koppel het aan iets dat je al doet", "🔗"),
                 RoutineStep("", "Doe het direct na je anker", "▶️"),
                 RoutineStep("", "Vink af, vier de win", "🎉"),
+            ),
+        ),
+        Routine(
+            id = "beweeg",
+            name = "Beweeg & boost — 10 minuten",
+            category = RoutineCategory.ZELFZORG,
+            accent = InspoAccent.CORAL,
+            illustration = R.drawable.inspo_beweeg,
+            why = "Beweging geeft je brein dopamine en endorfine — een gezonde, natuurlijke kick die drang dempt en je stemming optilt.",
+            steps = listOf(
+                RoutineStep("", "5 push-ups of squats", "💪"),
+                RoutineStep("", "10 min stevig wandelen", "🚶"),
+                RoutineStep("", "Rek je even goed uit", "🤸"),
+                RoutineStep("", "Merk hoe je je nu voelt", "✨"),
+            ),
+        ),
+        Routine(
+            id = "verbinding",
+            name = "Verbinding zoeken — niet alleen",
+            category = RoutineCategory.ZELFZORG,
+            accent = InspoAccent.BERRY,
+            illustration = R.drawable.inspo_verbinding,
+            why = "Eenzaamheid is een grote terugval-trigger (de L in HALT). Echt contact beschermt je — één bericht doorbreekt het al.",
+            steps = listOf(
+                RoutineStep("", "App of bel iemand die je vertrouwt", "💬"),
+                RoutineStep("", "Zeg eerlijk hoe het met je gaat", "🫶"),
+                RoutineStep("", "Plan iets samen deze week", "📅"),
+            ),
+        ),
+        Routine(
+            id = "triggerplan",
+            name = "Trigger-plan — als-dan",
+            category = RoutineCategory.DRANG,
+            accent = InspoAccent.TEAL,
+            illustration = R.drawable.inspo_triggerplan,
+            why = "Als-dan-plannen (implementatie-intenties) werken bewezen beter dan goede voornemens: je beslist vooraf wat je doet bij een trigger.",
+            steps = listOf(
+                RoutineStep("", "Schrijf je grootste trigger op", "📝"),
+                RoutineStep("", "Maak een als-dan: 'Als ___, dan ___'", "🔗"),
+                RoutineStep("", "Bedenk 1 concrete uitweg", "🚪"),
+                RoutineStep("", "Oefen het rustig in je hoofd", "🧠"),
+            ),
+        ),
+        Routine(
+            id = "tien_minuten",
+            name = "10-minuten-regel — stel drang uit",
+            category = RoutineCategory.LIFEHACK,
+            accent = InspoAccent.TEAL,
+            illustration = 0,
+            why = "Drang voelt als 'nu of nooit', maar dat is een illusie. Spreek met jezelf af: " +
+                "ik wacht eerst 10 minuten. Vaak is de piek dan al voorbij en heb je de keuze terug.",
+            steps = listOf(
+                RoutineStep("", "Zet een timer van 10 minuten", "⏱️"),
+                RoutineStep("", "Doe iets met je handen tot hij afgaat", "🤲"),
+                RoutineStep("", "Check daarna: is de drang gezakt?", "🌊"),
+                RoutineStep("", "Zo niet: rek 'm met nog 10 minuten", "🔁"),
+            ),
+        ),
+        Routine(
+            id = "opruimen_triggers",
+            name = "Digitale opruiming — minder triggers",
+            category = RoutineCategory.LIFEHACK,
+            accent = InspoAccent.GREEN,
+            illustration = 0,
+            why = "Wilskracht verliest het van een omgeving vol triggers. Maak de verkeerde keuze " +
+                "moeilijker en de goede makkelijker — dan hoef je veel minder te 'vechten'.",
+            steps = listOf(
+                RoutineStep("", "Verwijder of verberg trigger-apps", "📵"),
+                RoutineStep("", "Zet meldingen uit voor de rest van de dag", "🔕"),
+                RoutineStep("", "Leg een gezond alternatief klaar", "🍏"),
+                RoutineStep("", "Vertel 1 iemand wat je doet", "💬"),
+            ),
+        ),
+        Routine(
+            id = "halt_snack",
+            name = "Eerst eten & drinken — HALT-hack",
+            category = RoutineCategory.LIFEHACK,
+            accent = InspoAccent.CORAL,
+            illustration = 0,
+            why = "Honger en uitdroging maken drang sterker dan hij echt is. Een glas water en iets " +
+                "kleins eten neemt vaak de scherpe randjes er al af — simpel, maar het werkt.",
+            steps = listOf(
+                RoutineStep("", "Drink een groot glas water", "💧"),
+                RoutineStep("", "Eet iets kleins met eiwit", "🥜"),
+                RoutineStep("", "Wacht 5 minuten", "⏳"),
+                RoutineStep("", "Merk het verschil op", "✨"),
+            ),
+        ),
+        // Gebaseerd op de methode 'Vat van Zelfwaardering' (Gertjan van Zessen).
+        Routine(
+            id = "vat_vullen",
+            name = "Vul je vat — kleine acties die tellen",
+            category = RoutineCategory.ZELFZORG,
+            accent = InspoAccent.GREEN,
+            illustration = 0,
+            why = "Uit de methode 'Vat van Zelfwaardering': je binnenwereld is een vat dat altijd " +
+                "vol is — deels zelfwaardering, deels leegte. Je vecht niet tegen de leegte (of de " +
+                "drang), je vult je vat met piepkleine acties én beloont jezelf ervoor. Die kleine " +
+                "beloonde daden zetten een vliegwiel in gang: meer initiatief, minder vastlopen.",
+            steps = listOf(
+                RoutineStep("", "Kies één piepkleine actie — hoe kleiner, hoe beter", "🧩"),
+                RoutineStep("", "Doe 'm nu, niet straks", "▶️"),
+                RoutineStep("", "Beloon jezelf hardop: 'goed gedaan'", "🎉"),
+                RoutineStep("", "Herhaal een paar keer per dag", "🔁"),
+            ),
+        ),
+        Routine(
+            id = "mini_beloon",
+            name = "Mini-actie + beloon jezelf",
+            category = RoutineCategory.LIFEHACK,
+            accent = InspoAccent.LAVENDER,
+            illustration = 0,
+            why = "De kern van het Vat van Zelfwaardering: we zijn veel vaker kritisch dan belonend. " +
+                "Doe een minuscule actie en geef jezelf bewust een complimentje. Niet het gedrag dat " +
+                "je wilt veranderen aanpakken — je zelfwaardering voeden. De rest volgt vanzelf.",
+            steps = listOf(
+                RoutineStep("", "Pak iets piepkleins (afwas, glas water, 1 push-up)", "🧩"),
+                RoutineStep("", "Doe het bewust, met aandacht", "🎯"),
+                RoutineStep("", "Zeg tegen jezelf: 'dit telt, goed bezig'", "💚"),
+                RoutineStep("", "Voel even dat het klopt", "✨"),
+            ),
+        ),
+        Routine(
+            id = "niet_vechten",
+            name = "Niet vechten — vat vullen",
+            category = RoutineCategory.LIFEHACK,
+            accent = InspoAccent.TEAL,
+            illustration = 0,
+            why = "Bij drang is de reflex om te vechten. Het Vat van Zelfwaardering draait het om: " +
+                "laat de drang met rust en doe iets kleins en fijns voor jezelf. Een voller vat maakt " +
+                "dat je vanzelf eerder afstand neemt van wat je niet wilt.",
+            steps = listOf(
+                RoutineStep("", "Erken de drang, zonder het gevecht aan te gaan", "🌊"),
+                RoutineStep("", "Doe iets kleins en aardigs voor jezelf", "🫶"),
+                RoutineStep("", "Beloon jezelf voor die keuze", "🎉"),
+                RoutineStep("", "Merk dat de drang minder grip heeft", "🍃"),
             ),
         ),
     )

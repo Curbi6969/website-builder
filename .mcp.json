@@ -3,6 +3,13 @@
     "claude_design": {
       "type": "http",
       "url": "https://api.anthropic.com/v1/design/mcp"
+    },
+    "firecrawl": {
+      "command": "npx",
+      "args": ["-y", "firecrawl-mcp"],
+      "env": {
+        "FIRECRAWL_API_KEY": "${FIRECRAWL_API_KEY}"
+      }
     }
   }
 }

@@ -56,6 +56,7 @@ fun InspoCard(
     accent: InspoAccent,
     onClick: () -> Unit,
     modifier: Modifier = Modifier,
+    emoji: String = "",
 ) {
     Column(
         modifier
@@ -79,6 +80,8 @@ fun InspoCard(
                     modifier = Modifier.fillMaxSize(),
                     contentScale = ContentScale.Crop,
                 )
+            } else if (emoji.isNotBlank()) {
+                Text(emoji, fontSize = 48.sp)
             }
         }
         Box(
