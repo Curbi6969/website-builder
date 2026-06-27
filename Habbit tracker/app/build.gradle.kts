@@ -15,6 +15,12 @@ android {
         targetSdk = 35
         versionCode = 1
         versionName = "1.0"
+
+        // On-device voice (sherpa-onnx) ships native .so per ABI; limit to the common
+        // phone architectures to keep the APK from carrying x86 desktop/emulator libs.
+        ndk {
+            abiFilters += setOf("arm64-v8a", "armeabi-v7a")
+        }
     }
 
     buildTypes {
@@ -65,6 +71,12 @@ dependencies {
     implementation("io.github.jan-tennert.supabase:auth-kt")
     implementation("io.github.jan-tennert.supabase:postgrest-kt")
     implementation("io.ktor:ktor-client-okhttp:3.1.3")
+
+    // On-device Dutch speech: sherpa-onnx (Whisper STT + Piper TTS), prebuilt AAR in libs/.
+    // Run scripts/fetch-voice-libs.sh to download it (gitignored, 57 MB).
+    implementation(files("libs/sherpa-onnx-1.13.3.aar"))
+    // tar.bz2 extraction for the downloaded voice models.
+    implementation("org.apache.commons:commons-compress:1.27.1")
 
     debugImplementation(libs.androidx.ui.tooling)
 }
