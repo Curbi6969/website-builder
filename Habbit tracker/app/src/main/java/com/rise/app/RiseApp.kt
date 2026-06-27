@@ -73,6 +73,7 @@ import com.rise.app.ui.overlays.CheckinOverlay
 import com.rise.app.ui.overlays.PanicOverlay
 import com.rise.app.ui.overlays.PlayerOverlay
 import com.rise.app.ui.overlays.RoutineDetailOverlay
+import com.rise.app.ui.overlays.SelfCheckOverlay
 import com.rise.app.ui.overlays.SettingsOverlay
 import com.rise.app.ui.screens.HomeScreen
 import com.rise.app.ui.screens.InspiratieScreen
@@ -175,6 +176,7 @@ fun RiseApp(vm: RiseViewModel = viewModel()) {
         // Overlays — drawn over nav/FAB, lowest z first.
         if (state.bored) BoredSheet(state, vm)
         if (state.openRoutine != null) RoutineDetailOverlay(state, vm)
+        if (state.openSelfCheck != null) SelfCheckOverlay(state, vm)
         if (state.showSettings) SettingsOverlay(state, vm)
         if (state.panic != Panic.NONE) PanicOverlay(state, vm)
         if (state.player != null) PlayerOverlay(state, vm)
