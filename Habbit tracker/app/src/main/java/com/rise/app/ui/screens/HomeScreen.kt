@@ -95,6 +95,7 @@ fun HomeScreen(state: RiseUiState, vm: RiseViewModel) {
                 )
             }
             Row(horizontalArrangement = Arrangement.spacedBy(8.dp)) {
+                CircleButton("📊", Card, elevated = true, label = "Cijfers") { vm.goTab(com.rise.app.data.Tab.STATS) }
                 CircleButton("⚙️", Card, elevated = true, label = "Instellingen") { vm.openSettings() }
                 CircleButton("🙂", CardMint, elevated = false, label = "Stemming bijhouden") { vm.goTab(com.rise.app.data.Tab.MOOD) }
             }

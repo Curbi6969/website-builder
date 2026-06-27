@@ -4,7 +4,7 @@ import androidx.compose.ui.graphics.Color
 import java.time.LocalDate
 import java.time.temporal.ChronoUnit
 
-enum class Tab { HOME, RUST, MOOD, STATS }
+enum class Tab { HOME, RUST, MOOD, STATS, INSPIRATIE }
 enum class Panic { NONE, MENU, BREATHING, WATER, GAME, REASONS, DONE }
 enum class Game { NONE, BUBBLES, GROUND, TAP }
 enum class HeroStyle { PLANT, NUMBER }

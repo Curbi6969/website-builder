@@ -39,8 +39,8 @@ import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.rounded.AutoAwesome
 import androidx.compose.material.icons.rounded.Home
-import androidx.compose.material.icons.rounded.Insights
 import androidx.compose.material.icons.rounded.Mood
 import androidx.compose.material.icons.rounded.SelfImprovement
 import androidx.compose.material3.Icon
@@ -74,6 +74,7 @@ import com.rise.app.ui.overlays.PanicOverlay
 import com.rise.app.ui.overlays.PlayerOverlay
 import com.rise.app.ui.overlays.SettingsOverlay
 import com.rise.app.ui.screens.HomeScreen
+import com.rise.app.ui.screens.InspiratieScreen
 import com.rise.app.ui.screens.MoodScreen
 import com.rise.app.ui.screens.RustScreen
 import com.rise.app.ui.screens.StatsScreen
@@ -153,6 +154,7 @@ fun RiseApp(vm: RiseViewModel = viewModel()) {
                             Tab.RUST -> RustScreen(state, vm)
                             Tab.MOOD -> MoodScreen(state, vm)
                             Tab.STATS -> StatsScreen(state, vm)
+                            Tab.INSPIRATIE -> InspiratieScreen(state, vm)
                         }
                     }
                 }
@@ -199,7 +201,7 @@ private fun BottomNav(active: Tab, onPanic: () -> Unit, onTab: (Tab) -> Unit, mo
         ExpandableTab(Icons.Rounded.SelfImprovement, "Rust", active == Tab.RUST) { onTab(Tab.RUST) }
         HulpButton(onPanic)
         ExpandableTab(Icons.Rounded.Mood, "Stemming", active == Tab.MOOD) { onTab(Tab.MOOD) }
-        ExpandableTab(Icons.Rounded.Insights, "Cijfers", active == Tab.STATS) { onTab(Tab.STATS) }
+        ExpandableTab(Icons.Rounded.AutoAwesome, "Inspiratie", active == Tab.INSPIRATIE) { onTab(Tab.INSPIRATIE) }
     }
 }
 
