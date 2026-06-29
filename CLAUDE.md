@@ -145,11 +145,21 @@ Websites/
   Website soos/    <- WordPress (SCS Duiven)
 Projecten/
   Habbit tracker/  <- Rise: on-device Android-app (Kotlin/Compose)
+    app/             <- de Android-app zelf
+    server/          <- backend die ALLEEN bij Rise hoort (bv. voice-server)
   GlowByGhaiya/    <- website
-  <volgende>/      <- elk nieuw project krijgt zijn eigen map + eigen git-repo
+  <volgende>/      <- elk nieuw, op zichzelf staand product krijgt zijn eigen map + eigen git-repo
 ```
 
 Beide mappen worden door de parent-repo genegeerd (`.gitignore`): elk project pusht naar zijn eigen GitHub-remote, niet naar de website-builder repo.
+
+### Organisatieregel: onderdelen horen IN hun project (verplicht)
+
+Een nieuwe top-level map onder `Websites/` of `Projecten/` is alleen voor een **op zichzelf staand product**. Alles wat bij een bestaand project hoort, hoort **in de map van dat project**, niet als losse zustermap ernaast.
+
+- Een backend, server, API, deploy-tooling of companion die alleen een bepaald project bedient, komt in een submap van dat project (bv. `Projecten/Habbit tracker/server/`), in dezelfde git-repo als dat project. Niet als `Projecten/<iets-server>/` ernaast.
+- Vraag jezelf af: "Bestaat dit losse ding nog als ik het bijbehorende project weghaal?" Nee -> het is een onderdeel, zet het erin. Ja -> het mag een eigen top-level map zijn.
+- Reden: gerelateerde dingen bij elkaar houden. Een server die los van zijn app in de workspace rondzwerft is verkeerd georganiseerd, ook al heeft hij een andere stack (Python naast Kotlin).
 
 ---
 
