@@ -11,6 +11,7 @@ Websites/
 # Website projects with their own git repos
 beau-nolten-cv/
 van-den-dam/
+Projecten/
 
 # Python bytecode
 __pycache__/
