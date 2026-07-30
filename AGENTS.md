@@ -153,27 +153,7 @@ Skills worden aangeroepen met `/skill-naam` of via de `Skill` tool.
 
 Werkt door eerst een duidelijke design-richting te kiezen (brutalist, maximalist, retro-futuristisch, refined minimal, etc.) vóór er een regel code geschreven wordt. Geen generieke AI-slop — elke output heeft een eigen, intentionele stijl.
 
-Geef altijd mee: doel van de pagina, doelgroep, gewenste sfeer. Voor iteraties op bestaand werk: geef de bestaande design tokens mee.
-
----
-
-### `/nano-banana`
-**Gebruik voor:** afbeeldingen genereren of bewerken — thumbnails, icons, diagrammen, illustraties, patronen, foto-edits.
-
-Vereist `GEMINI_API_KEY` in `.env`. Gebruikt Gemini CLI onder de motorkap.
-
-| Wat je wil | Commando intern |
-|---|---|
-| Afbeelding genereren | `/generate 'prompt'` |
-| App-icoon / favicon | `/icon 'beschrijving'` |
-| Flowchart / diagram | `/diagram 'beschrijving'` |
-| Bestaande afbeelding aanpassen | `/edit bestand.png 'instructie'` |
-| Naadloos patroon / texture | `/pattern 'beschrijving'` |
-| Foto restaureren | `/restore foto.jpg` |
-
-Output belandt in `./nanobanana-output/`.
-
----
+Geef altijd mee: doel van de pagina, doelgroep, gewenste sfeer. Voor iteraties op bestaand werk: geef de bestaande design tokens 
 
 ### Impeccable skills (design-verfijning)
 
