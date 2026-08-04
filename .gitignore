@@ -16,3 +16,8 @@ Projecten/
 # Python bytecode
 __pycache__/
 *.pyc
+
+# Machine-generated, never commit
+node_modules/
+.playwright-cli/
+.claude/screenshots/

@@ -1,0 +1,1170 @@
+<title>Hermes Orchestration Runbook</title>
+
+<style>
+  :root {
+    --ground: #f7f8f9;
+    --surface: #ffffff;
+    --surface-2: #eef1f4;
+    --line: #dde2e7;
+    --line-strong: #c3ccd4;
+    --ink: #171c22;
+    --ink-2: #3b454f;
+    --muted: #5c6773;
+    --accent: #2f6f8f;
+    --accent-soft: #e4eef4;
+    --signal: #9d6620;
+    --signal-soft: #f7eddd;
+    --positive: #35704f;
+    --positive-soft: #e2efe8;
+    --negative: #9b3d34;
+    --negative-soft: #f7e6e4;
+
+    --mono: ui-monospace, "SFMono-Regular", "Cascadia Mono", "Segoe UI Mono", "Roboto Mono", Menlo, Consolas, monospace;
+    --sans: -apple-system, BlinkMacSystemFont, "Segoe UI", system-ui, Roboto, "Helvetica Neue", Arial, sans-serif;
+
+    --rail: 264px;
+    --pad: clamp(1.25rem, 4vw, 3.25rem);
+  }
+
+  @media (prefers-color-scheme: dark) {
+    :root {
+      --ground: #10141a;
+      --surface: #171c23;
+      --surface-2: #1e242c;
+      --line: #262e37;
+      --line-strong: #38434f;
+      --ink: #e6eaee;
+      --ink-2: #bcc6d0;
+      --muted: #8c97a3;
+      --accent: #74b4d4;
+      --accent-soft: #17303d;
+      --signal: #d9a253;
+      --signal-soft: #33260f;
+      --positive: #6fb58c;
+      --positive-soft: #14291d;
+      --negative: #d98078;
+      --negative-soft: #2e1815;
+    }
+  }
+
+  :root[data-theme="dark"] {
+    --ground: #10141a;
+    --surface: #171c23;
+    --surface-2: #1e242c;
+    --line: #262e37;
+    --line-strong: #38434f;
+    --ink: #e6eaee;
+    --ink-2: #bcc6d0;
+    --muted: #8c97a3;
+    --accent: #74b4d4;
+    --accent-soft: #17303d;
+    --signal: #d9a253;
+    --signal-soft: #33260f;
+    --positive: #6fb58c;
+    --positive-soft: #14291d;
+    --negative: #d98078;
+    --negative-soft: #2e1815;
+  }
+
+  :root[data-theme="light"] {
+    --ground: #f7f8f9;
+    --surface: #ffffff;
+    --surface-2: #eef1f4;
+    --line: #dde2e7;
+    --line-strong: #c3ccd4;
+    --ink: #171c22;
+    --ink-2: #3b454f;
+    --muted: #5c6773;
+    --accent: #2f6f8f;
+    --accent-soft: #e4eef4;
+    --signal: #9d6620;
+    --signal-soft: #f7eddd;
+    --positive: #35704f;
+    --positive-soft: #e2efe8;
+    --negative: #9b3d34;
+    --negative-soft: #f7e6e4;
+  }
+
+  * { box-sizing: border-box; }
+
+  body {
+    margin: 0;
+    background: var(--ground);
+    color: var(--ink);
+    font-family: var(--sans);
+    font-size: 16px;
+    line-height: 1.62;
+    -webkit-font-smoothing: antialiased;
+  }
+
+  :focus-visible {
+    outline: 2px solid var(--accent);
+    outline-offset: 2px;
+    border-radius: 2px;
+  }
+
+  /* ---------- shell ---------- */
+
+  .shell {
+    display: grid;
+    grid-template-columns: var(--rail) minmax(0, 1fr);
+    min-height: 100vh;
+  }
+
+  .rail {
+    border-right: 1px solid var(--line);
+    background: var(--surface);
+    position: sticky;
+    top: 0;
+    height: 100vh;
+    overflow-y: auto;
+    display: flex;
+    flex-direction: column;
+  }
+
+  .rail-head {
+    padding: 1.5rem 1.25rem 1.1rem;
+    border-bottom: 1px solid var(--line);
+  }
+
+  .wordmark {
+    font-family: var(--mono);
+    font-size: 0.94rem;
+    font-weight: 700;
+    letter-spacing: 0.02em;
+    line-height: 1.25;
+    margin: 0;
+    text-transform: uppercase;
+  }
+
+  .wordmark span { color: var(--accent); }
+
+  .rail-sub {
+    font-family: var(--mono);
+    font-size: 0.68rem;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    color: var(--muted);
+    margin: 0.5rem 0 0;
+  }
+
+  .rail-nav { padding: 0.9rem 0.7rem 1.5rem; flex: 1; }
+
+  .nav-group {
+    font-family: var(--mono);
+    font-size: 0.63rem;
+    letter-spacing: 0.13em;
+    text-transform: uppercase;
+    color: var(--muted);
+    padding: 1.05rem 0.55rem 0.45rem;
+  }
+
+  .nav-group:first-child { padding-top: 0.2rem; }
+
+  .nav-btn {
+    display: flex;
+    align-items: baseline;
+    gap: 0.6rem;
+    width: 100%;
+    text-align: left;
+    background: none;
+    border: 0;
+    border-radius: 5px;
+    padding: 0.44rem 0.55rem;
+    color: var(--ink-2);
+    font-family: var(--sans);
+    font-size: 0.875rem;
+    line-height: 1.35;
+    cursor: pointer;
+  }
+
+  .nav-btn:hover { background: var(--surface-2); color: var(--ink); }
+
+  .nav-btn .idx {
+    font-family: var(--mono);
+    font-size: 0.72rem;
+    font-variant-numeric: tabular-nums;
+    color: var(--muted);
+    flex: none;
+    width: 1.4em;
+  }
+
+  .nav-btn[aria-current="true"] {
+    background: var(--accent-soft);
+    color: var(--ink);
+    font-weight: 600;
+    box-shadow: inset 2px 0 0 var(--accent);
+  }
+
+  .nav-btn[aria-current="true"] .idx { color: var(--accent); }
+
+  .rail-foot {
+    border-top: 1px solid var(--line);
+    padding: 0.85rem 1.25rem;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 0.75rem;
+  }
+
+  .prog-text {
+    font-family: var(--mono);
+    font-size: 0.68rem;
+    letter-spacing: 0.06em;
+    color: var(--muted);
+    font-variant-numeric: tabular-nums;
+  }
+
+  .theme-btn {
+    background: none;
+    border: 1px solid var(--line-strong);
+    color: var(--muted);
+    border-radius: 4px;
+    font-family: var(--mono);
+    font-size: 0.63rem;
+    letter-spacing: 0.09em;
+    text-transform: uppercase;
+    padding: 0.24rem 0.5rem;
+    cursor: pointer;
+  }
+
+  .theme-btn:hover { color: var(--ink); border-color: var(--accent); }
+
+  /* ---------- main ---------- */
+
+  main { min-width: 0; }
+
+  .page {
+    display: none;
+    padding: clamp(2rem, 5vw, 3.75rem) var(--pad) 2rem;
+    max-width: 62rem;
+    animation: rise 0.26s ease-out;
+  }
+
+  .page.on { display: block; }
+
+  @keyframes rise {
+    from { opacity: 0; transform: translateY(6px); }
+    to { opacity: 1; transform: none; }
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .page { animation: none; }
+    * { transition: none !important; }
+  }
+
+  .eyebrow {
+    font-family: var(--mono);
+    font-size: 0.68rem;
+    letter-spacing: 0.15em;
+    text-transform: uppercase;
+    color: var(--accent);
+    margin: 0 0 0.7rem;
+  }
+
+  h1 {
+    font-family: var(--mono);
+    font-size: clamp(1.6rem, 3.4vw, 2.3rem);
+    font-weight: 700;
+    letter-spacing: -0.02em;
+    line-height: 1.14;
+    margin: 0 0 0.85rem;
+    text-wrap: balance;
+  }
+
+  .lede {
+    font-size: 1.06rem;
+    color: var(--ink-2);
+    max-width: 40em;
+    margin: 0 0 2rem;
+  }
+
+  h2 {
+    font-family: var(--mono);
+    font-size: 0.95rem;
+    font-weight: 700;
+    letter-spacing: 0.02em;
+    margin: 2.4rem 0 0.9rem;
+    padding-bottom: 0.45rem;
+    border-bottom: 1px solid var(--line);
+  }
+
+  h3 {
+    font-family: var(--mono);
+    font-size: 0.82rem;
+    font-weight: 700;
+    letter-spacing: 0.04em;
+    text-transform: uppercase;
+    margin: 1.6rem 0 0.5rem;
+    color: var(--ink);
+  }
+
+  p { margin: 0 0 1rem; max-width: 42em; }
+
+  ul, ol { margin: 0 0 1rem; padding-left: 1.2rem; max-width: 42em; }
+  li { margin-bottom: 0.42rem; }
+
+  strong { font-weight: 650; color: var(--ink); }
+
+  code {
+    font-family: var(--mono);
+    font-size: 0.855em;
+    background: var(--surface-2);
+    border: 1px solid var(--line);
+    border-radius: 3px;
+    padding: 0.08em 0.34em;
+  }
+
+  /* ---------- components ---------- */
+
+  .tiles {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+    gap: 1px;
+    background: var(--line);
+    border: 1px solid var(--line);
+    border-radius: 7px;
+    overflow: hidden;
+    margin-bottom: 2.2rem;
+  }
+
+  .tile { background: var(--surface); padding: 1rem 1.1rem; }
+
+  .tile .k {
+    font-family: var(--mono);
+    font-size: 0.63rem;
+    letter-spacing: 0.11em;
+    text-transform: uppercase;
+    color: var(--muted);
+    display: block;
+    margin-bottom: 0.35rem;
+  }
+
+  .tile .v {
+    font-family: var(--mono);
+    font-size: 1.28rem;
+    font-weight: 700;
+    font-variant-numeric: tabular-nums;
+    line-height: 1.1;
+    display: block;
+  }
+
+  .tile .n { font-size: 0.76rem; color: var(--muted); font-family: var(--sans); }
+
+  .tbl-wrap { overflow-x: auto; margin: 0 0 1.6rem; border: 1px solid var(--line); border-radius: 7px; }
+
+  table { border-collapse: collapse; width: 100%; font-size: 0.885rem; background: var(--surface); }
+
+  th {
+    font-family: var(--mono);
+    font-size: 0.65rem;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    text-align: left;
+    color: var(--muted);
+    padding: 0.7rem 0.9rem;
+    border-bottom: 1px solid var(--line-strong);
+    white-space: nowrap;
+    font-weight: 600;
+  }
+
+  td {
+    padding: 0.66rem 0.9rem;
+    border-bottom: 1px solid var(--line);
+    vertical-align: top;
+    color: var(--ink-2);
+  }
+
+  tr:last-child td { border-bottom: 0; }
+  td:first-child { color: var(--ink); font-weight: 550; }
+
+  .note {
+    border-left: 3px solid var(--accent);
+    background: var(--accent-soft);
+    padding: 0.95rem 1.1rem;
+    border-radius: 0 6px 6px 0;
+    margin: 1.4rem 0;
+    max-width: 44em;
+  }
+
+  .note.warn { border-left-color: var(--signal); background: var(--signal-soft); }
+  .note.stop { border-left-color: var(--negative); background: var(--negative-soft); }
+  .note p:last-child { margin-bottom: 0; }
+
+  .note .lbl {
+    font-family: var(--mono);
+    font-size: 0.63rem;
+    letter-spacing: 0.13em;
+    text-transform: uppercase;
+    display: block;
+    margin-bottom: 0.4rem;
+    color: var(--accent);
+    font-weight: 700;
+  }
+
+  .note.warn .lbl { color: var(--signal); }
+  .note.stop .lbl { color: var(--negative); }
+
+  .cards { display: grid; grid-template-columns: repeat(auto-fit, minmax(255px, 1fr)); gap: 1rem; margin: 1.3rem 0 1.8rem; }
+
+  .card {
+    border: 1px solid var(--line);
+    border-radius: 7px;
+    background: var(--surface);
+    padding: 1.15rem 1.2rem;
+  }
+
+  .card-top { display: flex; align-items: center; justify-content: space-between; gap: 0.6rem; margin-bottom: 0.55rem; }
+
+  .card h4 {
+    font-family: var(--mono);
+    font-size: 1rem;
+    font-weight: 700;
+    margin: 0;
+    letter-spacing: -0.01em;
+  }
+
+  .pill {
+    font-family: var(--mono);
+    font-size: 0.6rem;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    padding: 0.18rem 0.44rem;
+    border-radius: 3px;
+    font-weight: 700;
+    white-space: nowrap;
+  }
+
+  .pill.p1 { background: var(--positive-soft); color: var(--positive); }
+  .pill.p2 { background: var(--surface-2); color: var(--muted); }
+  .pill.gate { background: var(--signal-soft); color: var(--signal); }
+
+  .card p { font-size: 0.875rem; margin-bottom: 0.6rem; }
+  .card dl { margin: 0; font-size: 0.8rem; }
+
+  .card dt {
+    font-family: var(--mono);
+    font-size: 0.6rem;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    color: var(--muted);
+    margin-top: 0.55rem;
+  }
+
+  .card dd { margin: 0.12rem 0 0; color: var(--ink-2); }
+
+  .flow { list-style: none; padding: 0; margin: 1.3rem 0 1.8rem; counter-reset: f; max-width: 44em; }
+
+  .flow li {
+    counter-increment: f;
+    position: relative;
+    padding: 0 0 1.15rem 2.6rem;
+    margin: 0;
+    border-left: 1px solid var(--line-strong);
+  }
+
+  .flow li:last-child { border-left-color: transparent; padding-bottom: 0; }
+
+  .flow li::before {
+    content: counter(f);
+    position: absolute;
+    left: -0.85rem;
+    top: -0.1rem;
+    width: 1.7rem;
+    height: 1.7rem;
+    display: grid;
+    place-items: center;
+    border-radius: 50%;
+    background: var(--surface);
+    border: 1px solid var(--line-strong);
+    font-family: var(--mono);
+    font-size: 0.72rem;
+    font-weight: 700;
+    color: var(--muted);
+    font-variant-numeric: tabular-nums;
+  }
+
+  .steps { list-style: none; padding: 0; margin: 1.3rem 0 1.5rem; max-width: none; }
+
+  .step {
+    display: grid;
+    grid-template-columns: auto auto 1fr;
+    gap: 0.85rem;
+    align-items: start;
+    border: 1px solid var(--line);
+    border-radius: 7px;
+    background: var(--surface);
+    padding: 0.9rem 1rem;
+    margin-bottom: 0.6rem;
+  }
+
+  .step input[type="checkbox"] {
+    appearance: none;
+    width: 1.05rem;
+    height: 1.05rem;
+    margin: 0.24rem 0 0;
+    border: 1px solid var(--line-strong);
+    border-radius: 3px;
+    background: var(--ground);
+    cursor: pointer;
+    flex: none;
+    display: grid;
+    place-items: center;
+  }
+
+  .step input[type="checkbox"]:checked { background: var(--accent); border-color: var(--accent); }
+
+  .step input[type="checkbox"]:checked::after {
+    content: "";
+    width: 0.28rem;
+    height: 0.56rem;
+    border: solid var(--surface);
+    border-width: 0 2px 2px 0;
+    transform: rotate(42deg) translate(-1px, -1px);
+  }
+
+  .step .sn {
+    font-family: var(--mono);
+    font-size: 0.72rem;
+    font-weight: 700;
+    color: var(--muted);
+    font-variant-numeric: tabular-nums;
+    padding-top: 0.28rem;
+  }
+
+  .step-body h4 { margin: 0 0 0.2rem; font-size: 0.95rem; font-weight: 650; font-family: var(--sans); }
+  .step-body p { margin: 0; font-size: 0.85rem; color: var(--muted); max-width: none; }
+  .step.done .step-body h4 { color: var(--muted); text-decoration: line-through; }
+
+  .pager {
+    display: flex;
+    justify-content: space-between;
+    gap: 1rem;
+    margin-top: 3rem;
+    padding-top: 1.4rem;
+    border-top: 1px solid var(--line);
+  }
+
+  .pg {
+    background: var(--surface);
+    border: 1px solid var(--line-strong);
+    border-radius: 6px;
+    padding: 0.6rem 1rem;
+    cursor: pointer;
+    font-family: var(--mono);
+    font-size: 0.73rem;
+    letter-spacing: 0.05em;
+    text-transform: uppercase;
+    color: var(--ink-2);
+    max-width: 48%;
+    text-align: left;
+  }
+
+  .pg:hover:not(:disabled) { border-color: var(--accent); color: var(--accent); }
+  .pg:disabled { opacity: 0.32; cursor: default; }
+  .pg .dir { display: block; font-size: 0.6rem; color: var(--muted); letter-spacing: 0.12em; margin-bottom: 0.12rem; }
+  .pg.next { text-align: right; margin-left: auto; }
+
+  /* ---------- responsive ---------- */
+
+  @media (max-width: 860px) {
+    .shell { grid-template-columns: 1fr; }
+    .rail { position: static; height: auto; border-right: 0; border-bottom: 1px solid var(--line); }
+    .rail-nav { display: flex; overflow-x: auto; gap: 0.3rem; padding: 0.6rem 0.7rem; }
+    .nav-group { display: none; }
+    .nav-btn { width: auto; white-space: nowrap; flex: none; }
+    .nav-btn[aria-current="true"] { box-shadow: inset 0 -2px 0 var(--accent); }
+  }
+</style>
+
+<div class="shell">
+  <aside class="rail">
+    <div class="rail-head">
+      <p class="wordmark">Hermes <span>/</span> Orchestration<br>Runbook</p>
+      <p class="rail-sub">v0.20.0 &middot; 04 aug 2026</p>
+    </div>
+    <nav class="rail-nav" id="nav" aria-label="Runbook sections"></nav>
+    <div class="rail-foot">
+      <span class="prog-text" id="prog">0 / 10 done</span>
+      <button class="theme-btn" id="theme" type="button">Theme</button>
+    </div>
+  </aside>
+
+  <main id="main" tabindex="-1">
+
+    <!-- 1 -->
+    <section class="page on" data-title="Overview" data-group="Context">
+      <p class="eyebrow">Context / 01</p>
+      <h1>What we are building</h1>
+      <p class="lede">A set of Hermes agent profiles that can research, design, build and verify your websites and apps at the quality bar your existing portfolio already sets. Grounded in what the running instance actually is, not what it could be.</p>
+
+      <div class="tiles">
+        <div class="tile"><span class="k">Instance</span><span class="v">0.20.0</span><span class="n">Nous Research</span></div>
+        <div class="tile"><span class="k">Host</span><span class="v">Debian</span><span class="n">unprivileged LXC</span></div>
+        <div class="tile"><span class="k">Cores / RAM</span><span class="v">2 / 4</span><span class="n">vCPU / GiB</span></div>
+        <div class="tile"><span class="k">Free disk</span><span class="v">14.8</span><span class="n">GiB of 19.5</span></div>
+        <div class="tile"><span class="k">Skills ready</span><span class="v">32</span><span class="n">already valid format</span></div>
+        <div class="tile"><span class="k">Repos cloned</span><span class="v">0</span><span class="n">of 10 projects</span></div>
+      </div>
+
+      <h2>The thesis in one paragraph</h2>
+      <p>Hermes runs on a Linux container that cannot see your Windows drive, so git is the bridge. It reads every repo's <code>CLAUDE.md</code> automatically, which means your per-project rules transfer for free. Its skill format is identical to the one your 32 skills already use, so those transfer for free too. What has to be designed is the division of labour between agents, the gate that stops bad work shipping, and which model does what.</p>
+
+      <h2>What stays behind, for now</h2>
+      <p>MegaBonk permanently: Unity's editor cannot run usefully here, and pretending otherwise would waste weeks. Rise and Job-tracker temporarily: the container does not have the disk or memory for the Android and Flutter toolchains until it is resized. See page 3. Websites move immediately.</p>
+
+      <div class="note">
+        <span class="lbl">How to use this</span>
+        <p>Pages 1 to 4 are what is true today, including decisions already made. Pages 5 to 10 are the design and the reasoning behind it. Page 11 is the ordered build sequence with checkboxes that remember your progress. This document gets updated as we answer things, so it stays the single source rather than something to redo.</p>
+      </div>
+    </section>
+
+    <!-- 2 -->
+    <section class="page" data-title="Verified facts" data-group="Context">
+      <p class="eyebrow">Context / 02</p>
+      <h1>Verified facts</h1>
+      <p class="lede">Every row was checked against your running instance or the official docs. Nothing here is inference.</p>
+
+      <div class="tbl-wrap">
+        <table>
+          <thead><tr><th>Fact</th><th>Source</th><th>Why it matters</th></tr></thead>
+          <tbody>
+            <tr><td>Runs on Linux, home <code>/home/hermes</code></td><td>Files page</td><td>Cannot see the Windows workspace. Git is the only bridge.</td></tr>
+            <tr><td><code>projects/</code> holds only <code>my-app</code></td><td>Files page</td><td>Install scaffold. Effectively a clean slate.</td></tr>
+            <tr><td><code>.npm</code> and <code>.cua-driver</code> present</td><td>Files page</td><td>Node and a computer-use driver already installed.</td></tr>
+            <tr><td>Skills use the agentskills.io spec</td><td>agentskills.io</td><td>Your 32 skills are already valid Hermes skills. No porting work.</td></tr>
+            <tr><td><code>skills.external_dirs</code> in config</td><td>Hermes skills docs</td><td>One shared skills folder can serve Claude Code and Hermes at once.</td></tr>
+            <tr><td>Prompt reads <code>CLAUDE.md</code> and <code>AGENTS.md</code></td><td>Prompt assembly docs</td><td>Per-project rules carry over with zero configuration. Biggest free win.</td></tr>
+            <tr><td>Subagents inherit the parent toolset</td><td>Delegation docs</td><td>Kills the obvious design. Subagents cannot be specialised.</td></tr>
+            <tr><td><code>delegation.model</code> can differ</td><td>Delegation docs</td><td>The main cost lever. Fan out cheap, reason expensive.</td></tr>
+            <tr><td>Profiles isolate config, model, memory, sessions</td><td>Architecture docs</td><td>Profiles are the correct unit for a role.</td></tr>
+            <tr><td>Buzz is a built-in channel</td><td>Channels page</td><td>Needs only the <code>buzz</code> CLI on PATH. Config, not a project.</td></tr>
+            <tr><td>Webhooks channel accepts GitHub events</td><td>Channels page</td><td>Push and PR events can wake an agent.</td></tr>
+            <tr><td>Provider is OpenRouter, MoA on <code>claude-opus-4.8</code></td><td>Models page</td><td>Working today, but per-token and one version behind.</td></tr>
+          </tbody>
+        </table>
+      </div>
+    </section>
+
+    <!-- 3 -->
+    <section class="page" data-title="Capacity" data-group="Context">
+      <p class="eyebrow">Context / 03</p>
+      <h1>What the box can carry</h1>
+      <p class="lede">Measured from the Proxmox panel, not estimated. This is the hardest constraint in the plan and it splits the portfolio in two.</p>
+
+      <div class="tiles">
+        <div class="tile"><span class="k">Node</span><span class="v">Homelab</span><span class="n">unprivileged LXC</span></div>
+        <div class="tile"><span class="k">vCPU</span><span class="v">2</span><span class="n">1.8% idle load</span></div>
+        <div class="tile"><span class="k">RAM</span><span class="v">4.0</span><span class="n">GiB, 12% used</span></div>
+        <div class="tile"><span class="k">Disk free</span><span class="v">14.8</span><span class="n">GiB of 19.5</span></div>
+      </div>
+
+      <h2>What fits today</h2>
+      <div class="tbl-wrap">
+        <table>
+          <thead><tr><th>Stack</th><th>Rough footprint</th><th>Verdict</th></tr></thead>
+          <tbody>
+            <tr><td>Vanilla HTML, CSS, JS</td><td>Negligible</td><td>Fits easily</td></tr>
+            <tr><td>Next.js (Herritage, Van den Dam)</td><td>1 to 2 GB</td><td>Fits, memory a little tight on build</td></tr>
+            <tr><td>Playwright plus Chromium</td><td>~1.5 GB</td><td>Fits</td></tr>
+            <tr><td>The skills and workspace repo</td><td>~40 MB</td><td>Trivial</td></tr>
+            <tr><td>Android SDK, build-tools, Gradle caches</td><td>12 to 17 GB</td><td>Does not fit</td></tr>
+            <tr><td>Flutter plus Dart SDK</td><td>3 to 4 GB</td><td>Does not fit alongside the above</td></tr>
+            <tr><td>Unity editor</td><td>Large, plus licence activation</td><td>Never, see page 1</td></tr>
+          </tbody>
+        </table>
+      </div>
+
+      <div class="note stop">
+        <span class="lbl">The split</span>
+        <p>Websites-only for now. The Android and Flutter toolchains would exhaust 14.8 GiB during installation, and a Gradle daemon wants 1.5 to 2 GB heap on its own, which on a 4 GiB box also running the agent means swapping rather than building.</p>
+      </div>
+
+      <h2>Resize target, when apps join</h2>
+      <p>Roughly <strong>4 vCPU, 8 to 12 GiB RAM, 80 GiB disk</strong>. On Proxmox the disk can grow online; cores and memory need a short restart. This is step 9, not now, and it depends on what the Homelab node has spare.</p>
+
+      <div class="note">
+        <span class="lbl">Why this is fine</span>
+        <p>Phase one is websites, and websites fit comfortably. Nothing about the current sizing blocks steps 1 through 8. Resizing before proving the pipeline works would be spending resources on an unvalidated design.</p>
+      </div>
+    </section>
+
+    <!-- 4 -->
+    <section class="page" data-title="Decisions" data-group="Context">
+      <p class="eyebrow">Context / 04</p>
+      <h1>Decisions made</h1>
+      <p class="lede">Answered as of 4 August. Kept here so the reasoning is not relitigated later.</p>
+
+      <div class="cards">
+        <div class="card">
+          <div class="card-top"><h4>Container size</h4><span class="pill p1">Answered</span></div>
+          <p>2 vCPU, 4 GiB RAM, 14.8 GiB free. Websites-only until resized.</p>
+          <dl><dt>Consequence</dt><dd>Rise and Job-tracker stay in Claude Code on Windows until step 9.</dd></dl>
+        </div>
+        <div class="card">
+          <div class="card-top"><h4>Model access</h4><span class="pill p1">Answered</span></div>
+          <p>Nemotron free tier stays for cheap work. Claude Code subscription credentials get added for the build role.</p>
+          <dl><dt>Consequence</dt><dd>Fallback chain is mandatory, not optional. See page 9.</dd></dl>
+        </div>
+        <div class="card">
+          <div class="card-top"><h4>Git identity</h4><span class="pill p1">Answered</span></div>
+          <p>Agents push as the main Curbi account, the same one everything already runs from.</p>
+          <dl><dt>Consequence</dt><dd>No blast-radius isolation. Compensated by branch-only pushes, see page 12.</dd></dl>
+        </div>
+        <div class="card">
+          <div class="card-top"><h4>Skills transport</h4><span class="pill p1">Answered</span></div>
+          <p>No new repo needed. The workspace repo already carries the skills and has a remote.</p>
+          <dl><dt>Consequence</dt><dd>Step 2 collapses to one clone plus one config line.</dd></dl>
+        </div>
+        <div class="card">
+          <div class="card-top"><h4>Security</h4><span class="pill p1">Answered</span></div>
+          <p>A dedicated security profile, promoted into phase one rather than deferred.</p>
+          <dl><dt>Consequence</dt><dd>Two blocking gates before merge, not one. See page 8.</dd></dl>
+        </div>
+        <div class="card">
+          <div class="card-top"><h4>Buzz hosting</h4><span class="pill p2">Deferred</span></div>
+          <p>Self-hosted eventually. Telegram first, since Buzz is pre-1.0 and the value needs several agents.</p>
+          <dl><dt>Consequence</dt><dd>Revisited at step 9, not before.</dd></dl>
+        </div>
+      </div>
+    </section>
+
+    <!-- 4 -->
+    <section class="page" data-title="Architecture" data-group="Design">
+      <p class="eyebrow">Design / 05</p>
+      <h1>Roles are profiles</h1>
+      <p class="lede">The intuitive design does not work on this platform. Here is the constraint that forces the real one.</p>
+
+      <h2>What everyone tries first</h2>
+      <p>One subagent per co-worker: a researcher, a designer, a builder, spawned by a manager agent. It maps cleanly onto how you described it, and it is wrong here.</p>
+
+      <div class="note stop">
+        <span class="lbl">The blocking constraint</span>
+        <p>Children spawned by <code>delegate_task</code> inherit the parent's enabled toolsets, specifically so a model cannot grant a child capabilities the parent lacks. They also cannot be handed their own skills per call. A "designer" child would carry the builder's full toolset and the builder's expensive model.</p>
+      </div>
+
+      <h2>What actually isolates</h2>
+      <p>Profiles. Each Hermes profile is a separate instance with its own config, model, tool set, skills, memory, sessions and gateway process. That is exactly the boundary a specialist role needs.</p>
+
+      <div class="tbl-wrap">
+        <table>
+          <thead><tr><th>Concern</th><th>Mechanism</th><th>Why</th></tr></thead>
+          <tbody>
+            <tr><td>Role specialisation</td><td>Profile</td><td>Only thing that isolates model, tools and skills together.</td></tr>
+            <tr><td>Domain knowledge</td><td>The repo's <code>CLAUDE.md</code></td><td>Auto-injected. Kotlin vs Flutter vs vanilla needs no config.</td></tr>
+            <tr><td>Parallelism inside a role</td><td><code>delegate_task</code></td><td>Fan out to 3 children on a cheap model, only summaries return.</td></tr>
+            <tr><td>Hand-off between roles</td><td><code>hermes kanban</code></td><td>Built-in multi-profile assign and dispatch.</td></tr>
+          </tbody>
+        </table>
+      </div>
+
+      <div class="note">
+        <span class="lbl">The consequence worth noticing</span>
+        <p>Domain expertise costs nothing to move. Because Hermes reads each repo's <code>CLAUDE.md</code> into the prompt automatically, an agent working in the Rise repo already knows the Rise rules. You wrote that documentation for yourself, and it turns out to be the configuration.</p>
+      </div>
+    </section>
+
+    <!-- 5 -->
+    <section class="page" data-title="The five roles" data-group="Design">
+      <p class="eyebrow">Design / 06</p>
+      <h1>The five roles</h1>
+      <p class="lede">Phase one is three profiles: one that builds, and two that can refuse to let the work through. The remaining two are cost and quality optimisations added later.</p>
+
+      <div class="cards">
+        <div class="card">
+          <div class="card-top"><h4>forge</h4><span class="pill p1">Phase 1</span></div>
+          <p>Writes the code. Owns the repos under <code>/home/hermes/projects/</code>. The only profile with git write access.</p>
+          <dl>
+            <dt>Tools</dt><dd>Terminal, file edit, git, browser</dd>
+            <dt>Model</dt><dd>Top tier. The one place not to economise.</dd>
+            <dt>Skills</dt><dd>frontend-design, find-docs, full-output-enforcement</dd>
+          </dl>
+        </div>
+        <div class="card">
+          <div class="card-top"><h4>warden</h4><span class="pill p1">Phase 1</span></div>
+          <p>Verifies, and can reject. Holds the authority to close a task, which <code>forge</code> deliberately does not have.</p>
+          <dl>
+            <dt>Tools</dt><dd>Browser automation, terminal, read</dd>
+            <dt>Model</dt><dd>Mid to high. Must catch real defects.</dd>
+            <dt>Skills</dt><dd>security-review, ponytail-review, simplify</dd>
+          </dl>
+        </div>
+        <div class="card">
+          <div class="card-top"><h4>aegis</h4><span class="pill p1">Phase 1</span></div>
+          <p>Security. The second blocking gate. Reviews every diff, scans every dependency, and tracks advisories that touch your actual stack. Full detail on page 8.</p>
+          <dl>
+            <dt>Tools</dt><dd>Read, terminal, web search. No git write.</dd>
+            <dt>Model</dt><dd>High. A reviewer that misses things is worse than none.</dd>
+            <dt>Skills</dt><dd>security-review, owasp-security-check, ghost-scan-secrets</dd>
+          </dl>
+        </div>
+        <div class="card">
+          <div class="card-top"><h4>scout</h4><span class="pill p2">Phase 2</span></div>
+          <p>Researches. No repo write access at all. Fans out heavily, since research parallelises better than anything else here.</p>
+          <dl>
+            <dt>Tools</dt><dd>Web search, browser</dd>
+            <dt>Model</dt><dd>Cheap or free. Your Nemotron is genuinely fine.</dd>
+            <dt>Skills</dt><dd>find-docs</dd>
+          </dl>
+        </div>
+        <div class="card">
+          <div class="card-top"><h4>studio</h4><span class="pill p2">Phase 2</span></div>
+          <p>Design direction and imagery. Writes only to <code>resources/</code> and <code>assets/</code>, never to source.</p>
+          <dl>
+            <dt>Tools</dt><dd>Image generation, browser, scoped write</dd>
+            <dt>Model</dt><dd>Mid. The image model matters more than the text model.</dd>
+            <dt>Skills</dt><dd>Impeccable and Taste sets, brandkit, imagegen</dd>
+          </dl>
+        </div>
+      </div>
+
+      <div class="note warn">
+        <span class="lbl">Why phase it</span>
+        <p>Building all five before any of them has run a real job means guessing at the interfaces between them. Three profiles produce work you can judge, and judge safely. Judge it, then specialise.</p>
+      </div>
+
+      <div class="note">
+        <span class="lbl">Why forge cannot close its own work</span>
+        <p>Two of the three phase-one profiles exist to say no. That ratio is deliberate: the builder is the part a model is already good at, and the reviewing is the part that disappears when you remove the human.</p>
+      </div>
+    </section>
+
+    <!-- 6 -->
+    <section class="page" data-title="Quality gate" data-group="Design">
+      <p class="eyebrow">Design / 07</p>
+      <h1>The quality gate</h1>
+      <p class="lede">This is the page that decides whether the output matches your existing portfolio, so it is worth being blunt about where the risk actually sits.</p>
+
+      <h2>Where your current quality comes from</h2>
+      <p>Not the model alone. Five things: the skills, the per-project <code>CLAUDE.md</code>, a strong model, mandatory Playwright QA, and you reviewing the result. The first three move to Hermes cleanly. The fourth is already written down as a rule. The fifth is exactly what automation deletes.</p>
+
+      <div class="note stop">
+        <span class="lbl">The real risk</span>
+        <p>Automating the pipeline removes the reviewer, not the builder. If nothing replaces you at that step, quality regresses quietly and you find out weeks later on a live client site. <code>warden</code> exists to be that replacement, which is why it holds reject authority rather than being advisory.</p>
+      </div>
+
+      <h2>The gate, concretely</h2>
+      <ol class="flow">
+        <li><strong>forge finishes</strong> and moves the kanban task to "needs review". It cannot close its own work.</li>
+        <li><strong>warden pulls the branch</strong> and builds it in a clean checkout.</li>
+        <li><strong>Playwright run.</strong> Desktop and mobile widths, both themes, cache busted. This mirrors the QA rule you already made mandatory for UI work.</li>
+        <li><strong>aegis reviews the same diff</strong> in parallel. Both gates must pass. Detail on page 8.</li>
+        <li><strong>Pass</strong> posts the diff, the screenshots and the security verdict to the project channel for a human yes.</li>
+        <li><strong>Fail from either gate</strong> reopens the task with the evidence attached, assigned back to <code>forge</code>.</li>
+      </ol>
+
+      <div class="note">
+        <span class="lbl">Deliberately not automated</span>
+        <p>Nothing merges or deploys off <code>warden</code> alone. The final yes stays human until this pipeline has a track record you actually trust. That is a decision to revisit in a few months, not a permanent rule.</p>
+      </div>
+    </section>
+
+    <!-- 8 -->
+    <section class="page" data-title="The security agent" data-group="Design">
+      <p class="eyebrow">Design / 08</p>
+      <h1>aegis</h1>
+      <p class="lede">A dedicated security profile with authority to block a merge. The hard part is not the reviewing, it is making its advisory feed relevant enough that you keep reading it.</p>
+
+      <h2>Four standing jobs</h2>
+      <div class="cards">
+        <div class="card">
+          <div class="card-top"><h4>Diff review</h4><span class="pill gate">Blocking</span></div>
+          <p>Runs the security-review skill against every branch before merge. Injection paths, auth and authorisation, unsafe deserialisation, HTML injection, dangerous shell construction.</p>
+        </div>
+        <div class="card">
+          <div class="card-top"><h4>Secret scanning</h4><span class="pill gate">Blocking</span></div>
+          <p>ghost-scan-secrets on every diff. Nothing containing a key, token or credential merges. This is the one gate with zero tolerance and no judgement call.</p>
+        </div>
+        <div class="card">
+          <div class="card-top"><h4>Dependency advisories</h4><span class="pill p2">Daily cron</span></div>
+          <p>Cross-references live advisories against your actual lockfiles. Filing method below, and it is the part that decides whether this is useful or noise.</p>
+        </div>
+        <div class="card">
+          <div class="card-top"><h4>Standing audit</h4><span class="pill p2">Weekly cron</span></div>
+          <p>owasp-security-check across the deployed sites. Headers, cookie flags, exposed endpoints, TLS, form handling.</p>
+        </div>
+      </div>
+
+      <h2>How it stays relevant</h2>
+      <p>You said you do not want Intune and Microsoft advisories. The wrong way to solve that is a keyword blocklist, which will silently drop something that mattered. The right way is to make relevance structural.</p>
+
+      <div class="note">
+        <span class="lbl">The filter rule</span>
+        <p>An advisory is reported <strong>only if the affected package actually appears in one of your dependency manifests.</strong> The cron job reads every <code>package-lock.json</code>, <code>pubspec.lock</code>, <code>composer.lock</code> and Gradle lockfile under <code>projects/</code>, then matches advisories from the GitHub Advisory Database scoped to those ecosystems. Windows Server and Intune CVEs never match anything you own, so they never appear. Not filtered out, simply never matched.</p>
+      </div>
+
+      <h2>The manual watchlist</h2>
+      <p>Some things you run have no lockfile, so they need naming explicitly. This list is the whole scope, and anything outside it is not <code>aegis</code>'s business:</p>
+      <div class="tbl-wrap">
+        <table>
+          <thead><tr><th>Target</th><th>Source</th><th>Why it is on the list</th></tr></thead>
+          <tbody>
+            <tr><td>WordPress core and plugins</td><td>Patchstack, Wordfence</td><td>Contact Form 7, Yoast, UpdraftPlus, FileBird, Really Simple SSL, Easy WP SMTP and the rest on the live site.</td></tr>
+            <tr><td>Payload CMS</td><td>GitHub releases</td><td>Runs the Van den Dam client site.</td></tr>
+            <tr><td>Supabase and Postgres</td><td>Vendor advisories</td><td>Self-hosted instance plus RLS as the actual security boundary.</td></tr>
+            <tr><td>Cloudflare Tunnel</td><td>Vendor advisories</td><td>The only inbound path to your homelab.</td></tr>
+            <tr><td>Vercel platform</td><td>Vendor advisories</td><td>Hosts the public sites.</td></tr>
+            <tr><td>Hermes itself</td><td>GitHub releases</td><td>An agent with a terminal and push rights is worth watching.</td></tr>
+          </tbody>
+        </table>
+      </div>
+
+      <div class="note warn">
+        <span class="lbl">Where your actual risk is</span>
+        <p>Not in the Next.js code. It is the WordPress site. Vulnerable WP plugins are the most routinely exploited thing in a portfolio shaped like yours, they are exploited by automated scanners within days of disclosure, and that site is run by people who will not be reading advisories. If <code>aegis</code> only ever did one job well, this would be the one.</p>
+      </div>
+
+      <h2>What it deliberately cannot do</h2>
+      <ul>
+        <li><strong>No git write access.</strong> It reports and blocks, it does not patch. An agent that both finds and silently fixes security issues is a bad idea, and a patch needs review like any other change.</li>
+        <li><strong>It files, it does not fix.</strong> A confirmed advisory becomes a kanban task for <code>forge</code>, which then goes through both gates like everything else.</li>
+        <li><strong>No deploy credentials</strong>, same as every other profile.</li>
+      </ul>
+    </section>
+
+    <!-- 9 -->
+    <section class="page" data-title="Models and cost" data-group="Design">
+      <p class="eyebrow">Design / 09</p>
+      <h1>Models and cost</h1>
+      <p class="lede">You want Opus 5 on your subscription rather than per-token. That is possible, and it collides with the rest of what you want in a way worth understanding before you build on it.</p>
+
+      <h2>The allocation</h2>
+      <div class="tbl-wrap">
+        <table>
+          <thead><tr><th>Profile</th><th>Tier</th><th>Reason</th></tr></thead>
+          <tbody>
+            <tr><td><code>forge</code></td><td>Top</td><td>Writes production code. Do not economise here.</td></tr>
+            <tr><td><code>warden</code></td><td>Mid to high</td><td>A weak reviewer rubber-stamps, which is worse than no reviewer.</td></tr>
+            <tr><td><code>aegis</code></td><td>High</td><td>Security reasoning degrades fastest on a weak model. Do not economise here either.</td></tr>
+            <tr><td><code>scout</code></td><td>Free</td><td>Summarising search results. Your Nemotron is genuinely fine.</td></tr>
+            <tr><td><code>studio</code></td><td>Mid</td><td>Plus an image model, which matters more than the text model.</td></tr>
+            <tr><td><code>delegation.model</code></td><td>Cheap</td><td>Global setting. Fan-out must not burn top-tier tokens.</td></tr>
+          </tbody>
+        </table>
+      </div>
+
+      <h2>Opus 5 on the subscription</h2>
+      <p>Hermes docs state it prefers refreshable Claude Code credentials over copied env tokens, and accepts <code>CLAUDE_CODE_OAUTH_TOKEN</code>. So it can ride Claude Code credentials, which on a Max plan are subscription-backed rather than metered.</p>
+
+      <div class="note warn">
+        <span class="lbl">Warning one, policy</span>
+        <p>Those credentials are issued for Claude Code. Feeding them to a different agent framework is not what the subscription terms are written around. It may work, it may get throttled, the token may be invalidated. Do not make it the only path.</p>
+      </div>
+
+      <div class="note stop">
+        <span class="lbl">Warning two, arithmetic</span>
+        <p>This is the bigger one. "No tokens" and "everything automated" pull against each other. A subscription is rate-limited for one human working interactively. You are describing five profiles, three concurrent children each, plus daily and weekly security cron jobs. That is precisely the shape of load a subscription throttles hardest, and it will fail at night with nobody watching.</p>
+      </div>
+
+      <p><strong>The practical resolution:</strong> put <code>forge</code> on Claude Code credentials, configure <code>hermes fallback</code> to OpenRouter underneath it, and keep the cheap tier for delegation. An unattended run then degrades to a slower model instead of dying at 3am. Also bump your Mixture of Agents preset, it still points at <code>claude-opus-4.8</code>.</p>
+    </section>
+
+    <!-- 8 -->
+    <section class="page" data-title="Communication" data-group="Design">
+      <p class="eyebrow">Design / 10</p>
+      <h1>Talking to the agents</h1>
+      <p class="lede">You asked what Buzz adds when Hermes already has agents. They are different layers, and for now you only need one of them.</p>
+
+      <h2>Buzz and Hermes are not competitors</h2>
+      <div class="cards">
+        <div class="card">
+          <div class="card-top"><h4>Hermes</h4><span class="pill p1">The worker</span></div>
+          <p>Runs the agent loop, holds the tools, calls the model, edits files, drives the terminal. It does the work.</p>
+        </div>
+        <div class="card">
+          <div class="card-top"><h4>Buzz</h4><span class="pill p2">The office</span></div>
+          <p>Chat, channels, threads, git repos, canvases, audit log. It runs no agents at all. It is agent-agnostic and hosts whatever harness you plug in.</p>
+        </div>
+      </div>
+      <p>The bees are not a rival workforce. A bee is whatever harness you connect, and Hermes would be the bee. Buzz is where you and the bee talk, and where the bee's work is recorded.</p>
+
+      <h2>What Buzz would add</h2>
+      <ul>
+        <li><strong>Cryptographic agent identity.</strong> Each agent signs its own work with its own keys. Once four profiles are committing, provable attribution stops being academic.</li>
+        <li><strong>Git in the same place as the conversation.</strong> Agents open repos, send patches and review in-channel instead of round-tripping through GitHub.</li>
+        <li><strong>One channel per project</strong>, which is the structure this plan already assumes.</li>
+        <li><strong>Self-sovereign.</strong> Your own relay, your data. Apache 2.0, self-hostable.</li>
+      </ul>
+
+      <div class="note">
+        <span class="lbl">Recommendation</span>
+        <p>Use Telegram now, not Buzz. It is in the channel list with QR setup, Hermes creates the bot for you, it takes about five minutes, and it works from your phone. Buzz is at v0.4.21 with unfinished mobile clients, and its value is agent identity and audit trails across many agents. You have one agent and one human. Revisit it at step 9, by which point Buzz will have had months to settle.</p>
+      </div>
+
+      <p>If you want self-hosted chat that is boring and works today, <strong>Mattermost</strong> and <strong>Matrix</strong> are both mature and both already supported by Hermes. Buzz wins on being genuinely agent-native. It just is not ready to be load-bearing yet.</p>
+    </section>
+
+    <!-- 9 -->
+    <section class="page" data-title="Build order" data-group="Execution">
+      <p class="eyebrow">Execution / 11</p>
+      <h1>Build order</h1>
+      <p class="lede">Ordered by dependency, not by appeal. Step 6 is the go or no-go: if a real task cannot survive the full loop, nothing after it is worth building.</p>
+
+      <ul class="steps" id="steps">
+        <li class="step"><input type="checkbox" id="s1" aria-labelledby="s1t"><span class="sn">01</span><div class="step-body"><h4 id="s1t">Inspect the container</h4><p>Complete. 2 vCPU, 4 GiB RAM, 14.8 GiB free, Debian unprivileged LXC. Verdict on page 3: websites now, apps after a resize.</p></div></li>
+        <li class="step"><input type="checkbox" id="s2" aria-labelledby="s2t"><span class="sn">02</span><div class="step-body"><h4 id="s2t">Clone the workspace repo</h4><p>No new repo needed. Clone <code>website-builder</code> on the box and point <code>skills.external_dirs</code> at its <code>.agents/skills</code>. Verify with <code>hermes skills list</code>.</p></div></li>
+        <li class="step"><input type="checkbox" id="s3" aria-labelledby="s3t"><span class="sn">03</span><div class="step-body"><h4 id="s3t">Clone one website</h4><p>A vanilla one, lowest risk. Confirm Hermes picks up its <code>CLAUDE.md</code> using <code>hermes prompt-size</code>.</p></div></li>
+        <li class="step"><input type="checkbox" id="s4" aria-labelledby="s4t"><span class="sn">04</span><div class="step-body"><h4 id="s4t">Create forge</h4><p>New profile, Claude Code credentials, OpenRouter fallback chain. Run one real task end to end and read the output critically.</p></div></li>
+        <li class="step"><input type="checkbox" id="s5" aria-labelledby="s5t"><span class="sn">05</span><div class="step-body"><h4 id="s5t">Create warden</h4><p>Second profile, install Playwright plus system deps, wire the screenshot gate described on page 7.</p></div></li>
+        <li class="step"><input type="checkbox" id="s6" aria-labelledby="s6t"><span class="sn">06</span><div class="step-body"><h4 id="s6t">Create aegis</h4><p>Third profile, high-tier model, security skills enabled. Build the lockfile-matched advisory cron described on page 8.</p></div></li>
+        <li class="step"><input type="checkbox" id="s7" aria-labelledby="s7t"><span class="sn">07</span><div class="step-body"><h4 id="s7t">Run one full loop</h4><p>A real task through forge, then both gates, then a human yes. <strong>This is the go or no-go.</strong> If the quality is not there, stop and fix it before scaling.</p></div></li>
+        <li class="step"><input type="checkbox" id="s8" aria-labelledby="s8t"><span class="sn">08</span><div class="step-body"><h4 id="s8t">Telegram channel</h4><p>QR setup. Now you can start and review work from your phone instead of the dashboard.</p></div></li>
+        <li class="step"><input type="checkbox" id="s9" aria-labelledby="s9t"><span class="sn">09</span><div class="step-body"><h4 id="s9t">Resize, then the app stacks</h4><p>Grow the LXC to roughly 4 vCPU, 8 to 12 GiB, 80 GiB. Then Next.js, then Flutter and Android. Revisit Buzz here.</p></div></li>
+        <li class="step"><input type="checkbox" id="s10" aria-labelledby="s10t"><span class="sn">10</span><div class="step-body"><h4 id="s10t">scout, studio, and the rest of cron</h4><p>The two optimisation profiles, plus SEO and Lighthouse passes and GitHub webhooks waking the right profile.</p></div></li>
+      </ul>
+
+      <div class="note warn">
+        <span class="lbl">Do not reorder</span>
+        <p>Every step before 7 exists to make 7 meaningful. Jumping to the interesting parts, five profiles and Buzz and cron, gives you a large system whose output nobody has ever checked.</p>
+      </div>
+    </section>
+
+    <!-- 10 -->
+    <section class="page" data-title="Guardrails" data-group="Execution">
+      <p class="eyebrow">Execution / 12</p>
+      <h1>Guardrails</h1>
+      <p class="lede">Agents on this box get a terminal, git push rights and API keys, behind a dashboard exposed through your tunnel. These are the non-negotiables.</p>
+
+      <h2>Access</h2>
+      <ul>
+        <li><strong>Keep Cloudflare Access in front of the dashboard.</strong> It is what returned a 403 when I first tried to fetch the URL, which is correct behaviour. Do not loosen it to make automation easier.</li>
+        <li><strong>Agents push as your main Curbi account.</strong> Your call, and it keeps setup simple. It does mean no blast-radius isolation, so the compensating control matters: agents push branches only, never to <code>main</code>, and the token is scoped to the repos in <code>projects/</code> rather than the whole account.</li>
+        <li><strong>Deploy credentials stay out of <code>forge</code>.</strong> Deployment is a separate human-triggered step until the pipeline has earned trust.</li>
+      </ul>
+
+      <h2>Secrets</h2>
+      <ul>
+        <li>Use <code>hermes auth</code> credential pools or the Bitwarden integration. Never a repo, never a skill, never a prompt.</li>
+        <li>The skills repo becomes a shared surface across two machines. It must contain no keys, ever.</li>
+      </ul>
+
+      <h2>Untrusted content</h2>
+      <ul>
+        <li><code>scout</code> reads the open web and has no repo write access <em>by design</em>. That separation is a security boundary, not only a cost one.</li>
+        <li>Hermes scans hub-installed skills for prompt injection. Anything sourced outside your own skills repo gets read before it is enabled.</li>
+      </ul>
+
+      <div class="note">
+        <span class="lbl">Where this ends up</span>
+        <p>After step 6 you will know whether this produces work you would put your name on. Everything past that is scaling something already proven. If step 6 disappoints, the honest move is to fix the gate or the model, not to add more agents.</p>
+      </div>
+    </section>
+
+  </main>
+</div>
+
+<script>
+(function () {
+  var pages = Array.prototype.slice.call(document.querySelectorAll('.page'));
+  var nav = document.getElementById('nav');
+  var main = document.getElementById('main');
+  var current = 0;
+  var lastGroup = null;
+
+  function el(tag, cls, text) {
+    var e = document.createElement(tag);
+    if (cls) e.className = cls;
+    if (text != null) e.textContent = text;
+    return e;
+  }
+
+  pages.forEach(function (pg, i) {
+    if (pg.dataset.group !== lastGroup) {
+      lastGroup = pg.dataset.group;
+      nav.appendChild(el('div', 'nav-group', lastGroup));
+    }
+    var b = el('button', 'nav-btn');
+    b.type = 'button';
+    b.setAttribute('aria-current', i === 0 ? 'true' : 'false');
+    b.appendChild(el('span', 'idx', String(i + 1).padStart(2, '0')));
+    b.appendChild(el('span', null, pg.dataset.title));
+    b.addEventListener('click', function () { go(i); });
+    nav.appendChild(b);
+  });
+
+  var navBtns = Array.prototype.slice.call(nav.querySelectorAll('.nav-btn'));
+
+  pages.forEach(function (pg, i) {
+    var pager = el('div', 'pager');
+
+    var prev = el('button', 'pg');
+    prev.type = 'button';
+    prev.disabled = i === 0;
+    prev.appendChild(el('span', 'dir', 'Back'));
+    prev.appendChild(document.createTextNode(i > 0 ? pages[i - 1].dataset.title : 'Start'));
+    prev.addEventListener('click', function () { go(i - 1); });
+
+    var next = el('button', 'pg next');
+    next.type = 'button';
+    next.disabled = i === pages.length - 1;
+    next.appendChild(el('span', 'dir', 'Next'));
+    next.appendChild(document.createTextNode(i < pages.length - 1 ? pages[i + 1].dataset.title : 'End'));
+    next.addEventListener('click', function () { go(i + 1); });
+
+    pager.appendChild(prev);
+    pager.appendChild(next);
+    pg.appendChild(pager);
+  });
+
+  function go(i) {
+    if (i < 0 || i >= pages.length) return;
+    pages[current].classList.remove('on');
+    navBtns[current].setAttribute('aria-current', 'false');
+    current = i;
+    pages[current].classList.add('on');
+    navBtns[current].setAttribute('aria-current', 'true');
+    navBtns[current].scrollIntoView({ block: 'nearest', inline: 'nearest' });
+    window.scrollTo({ top: 0 });
+    main.focus({ preventScroll: true });
+  }
+
+  document.addEventListener('keydown', function (e) {
+    if (e.target.matches('input, textarea, button')) return;
+    if (e.key === 'ArrowRight') go(current + 1);
+    if (e.key === 'ArrowLeft') go(current - 1);
+  });
+
+  var boxes = Array.prototype.slice.call(document.querySelectorAll('#steps input[type="checkbox"]'));
+  var prog = document.getElementById('prog');
+  var KEY = 'hermes-runbook-progress';
+
+  function save() {
+    try {
+      var done = boxes.filter(function (b) { return b.checked; }).map(function (b) { return b.id; });
+      localStorage.setItem(KEY, JSON.stringify(done));
+    } catch (e) { /* storage unavailable, still works in-session */ }
+  }
+
+  function load() {
+    try {
+      var raw = localStorage.getItem(KEY);
+      if (!raw) return;
+      var done = JSON.parse(raw);
+      boxes.forEach(function (b) { if (done.indexOf(b.id) !== -1) b.checked = true; });
+    } catch (e) { /* ignore */ }
+  }
+
+  function paint() {
+    var n = 0;
+    boxes.forEach(function (b) {
+      b.closest('.step').classList.toggle('done', b.checked);
+      if (b.checked) n++;
+    });
+    prog.textContent = n + ' / ' + boxes.length + ' done';
+  }
+
+  boxes.forEach(function (b) {
+    b.addEventListener('change', function () { save(); paint(); });
+  });
+
+  load();
+  paint();
+
+  document.getElementById('theme').addEventListener('click', function () {
+    var root = document.documentElement;
+    var now = root.getAttribute('data-theme');
+    if (!now) now = window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light';
+    root.setAttribute('data-theme', now === 'dark' ? 'light' : 'dark');
+  });
+})();
+</script>
