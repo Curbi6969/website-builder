@@ -74,14 +74,40 @@ for (const vp of VIEWPORTS) {
       await page.evaluate((mode) => {
         document.documentElement.setAttribute('data-theme', mode);
       }, theme);
+
+      // Reveal-on-scroll sections start at opacity 0 and are only shown once an
+      // IntersectionObserver fires. A fullPage screenshot does not scroll, so
+      // without this pass everything below the hero photographs as blank and the
+      // gate would reject good work. Scroll the whole page, then return to top.
+      await page.evaluate(async () => {
+        const step = Math.round(window.innerHeight * 0.8);
+        for (let y = 0; y < document.body.scrollHeight; y += step) {
+          window.scrollTo(0, y);
+          await new Promise((r) => setTimeout(r, 120));
+        }
+        window.scrollTo(0, document.body.scrollHeight);
+        await new Promise((r) => setTimeout(r, 400));
+        window.scrollTo(0, 0);
+      });
       await page.waitForTimeout(1200);
+
+      const hidden = await page.evaluate(() =>
+        [...document.querySelectorAll('[class*="reveal"]')].filter(
+          (el) => getComputedStyle(el).opacity === '0'
+        ).length
+      );
 
       const path = `${outDir}/${label}.png`;
       await page.screenshot({ path, fullPage: true });
 
       const applied = await page.evaluate(() => document.documentElement.getAttribute('data-theme'));
-      console.log(`ok   ${label} -> ${path} (data-theme=${applied}${errors.length ? `, ${errors.length} page errors` : ''})`);
+      console.log(
+        `ok   ${label} -> ${path} (data-theme=${applied}, ${hidden} still-hidden reveal elements${errors.length ? `, ${errors.length} page errors` : ''})`
+      );
       if (errors.length) failures.push(`${label}: ${errors[0]}`);
+      // A shot full of invisible sections is worse than no shot: it looks like a
+      // rendered page and is not one.
+      if (hidden > 0) failures.push(`${label}: ${hidden} reveal elements still at opacity 0`);
       await context.close();
     } catch (err) {
       console.log(`FAIL ${label}: ${err.message}`);
