@@ -90,17 +90,25 @@ for (const vp of VIEWPORTS) {
             document.body.offsetHeight,
             document.documentElement.offsetHeight
           );
+        // These sites set html { scroll-behavior: smooth }, which makes every
+        // scrollTo animate. The loop then outruns the real scroll position and the
+        // lower half of the page never enters the viewport, so its observers never
+        // fire. Force instant scrolling for the pass.
+        const prev = document.documentElement.style.scrollBehavior;
+        document.documentElement.style.scrollBehavior = 'auto';
+
         const step = Math.round(window.innerHeight * 0.8);
         let y = 0;
         let guard = 0;
         while (y < pageHeight() && guard++ < 500) {
-          window.scrollTo(0, y);
+          window.scrollTo({ top: y, behavior: 'instant' });
           await new Promise((r) => setTimeout(r, 120));
           y += step;
         }
-        window.scrollTo(0, pageHeight());
+        window.scrollTo({ top: pageHeight(), behavior: 'instant' });
         await new Promise((r) => setTimeout(r, 400));
-        window.scrollTo(0, 0);
+        window.scrollTo({ top: 0, behavior: 'instant' });
+        document.documentElement.style.scrollBehavior = prev;
       });
       await page.waitForTimeout(1200);
 
