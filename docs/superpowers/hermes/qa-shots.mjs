@@ -80,12 +80,25 @@ for (const vp of VIEWPORTS) {
       // without this pass everything below the hero photographs as blank and the
       // gate would reject good work. Scroll the whole page, then return to top.
       await page.evaluate(async () => {
+        // body.scrollHeight is not the page height on every layout, it stops short
+        // when the scrolling element is documentElement. Take the max and
+        // re-measure each step, since revealed content changes the height.
+        const pageHeight = () =>
+          Math.max(
+            document.body.scrollHeight,
+            document.documentElement.scrollHeight,
+            document.body.offsetHeight,
+            document.documentElement.offsetHeight
+          );
         const step = Math.round(window.innerHeight * 0.8);
-        for (let y = 0; y < document.body.scrollHeight; y += step) {
+        let y = 0;
+        let guard = 0;
+        while (y < pageHeight() && guard++ < 500) {
           window.scrollTo(0, y);
           await new Promise((r) => setTimeout(r, 120));
+          y += step;
         }
-        window.scrollTo(0, document.body.scrollHeight);
+        window.scrollTo(0, pageHeight());
         await new Promise((r) => setTimeout(r, 400));
         window.scrollTo(0, 0);
       });
