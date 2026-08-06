@@ -91,10 +91,18 @@ for (const vp of VIEWPORTS) {
       });
       await page.waitForTimeout(1200);
 
-      const hidden = await page.evaluate(() =>
-        [...document.querySelectorAll('[class*="reveal"]')].filter(
-          (el) => getComputedStyle(el).opacity === '0'
-        ).length
+      // Only count elements that are actually laid out. A .reveal that is
+      // display:none at this width (a desktop-only variant on mobile, say) still
+      // reports opacity 0 and is not a defect.
+      const hidden = await page.evaluate(
+        () =>
+          [...document.querySelectorAll('[class*="reveal"]')].filter((el) => {
+            const s = getComputedStyle(el);
+            if (s.display === 'none' || s.visibility === 'hidden') return false;
+            const r = el.getBoundingClientRect();
+            if (r.width === 0 || r.height === 0) return false;
+            return s.opacity === '0';
+          }).length
       );
 
       const path = `${outDir}/${label}.png`;
