@@ -641,6 +641,8 @@
             <tr><td>Buzz is a built-in channel</td><td>Channels page</td><td>Needs only the <code>buzz</code> CLI on PATH. Config, not a project.</td></tr>
             <tr><td>Webhooks channel accepts GitHub events</td><td>Channels page</td><td>Push and PR events can wake an agent.</td></tr>
             <tr><td>Provider is OpenRouter, MoA on <code>claude-opus-4.8</code></td><td>Models page</td><td>Working today, but per-token and one version behind.</td></tr>
+            <tr><td>Box is <code>hermesagent</code> at <code>192.168.178.113</code>, root SSH key installed</td><td>Verified login, 6 Aug</td><td>Setup runs over SSH, not through the dashboard. Faster and scriptable.</td></tr>
+            <tr><td>Repos are private, box has its own deploy key</td><td>GitHub returns 404 unauthenticated</td><td>Each repo needs the box's key added before it can be cloned.</td></tr>
           </tbody>
         </table>
       </div>
@@ -1002,7 +1004,7 @@
 
       <ul class="steps" id="steps">
         <li class="step"><input type="checkbox" id="s1" aria-labelledby="s1t"><span class="sn">01</span><div class="step-body"><h4 id="s1t">Inspect the container</h4><p>Complete. 2 vCPU, 4 GiB RAM, 14.8 GiB free, Debian unprivileged LXC. Verdict on page 3: websites now, apps after a resize.</p></div></li>
-        <li class="step"><input type="checkbox" id="s2" aria-labelledby="s2t"><span class="sn">02</span><div class="step-body"><h4 id="s2t">Clone the workspace repo</h4><p>No new repo needed. Clone <code>website-builder</code> on the box and point <code>skills.external_dirs</code> at its <code>.agents/skills</code>. Verify with <code>hermes skills list</code>.</p></div></li>
+        <li class="step"><input type="checkbox" id="s2" aria-labelledby="s2t"><span class="sn">02</span><div class="step-body"><h4 id="s2t">Clone the workspace repo</h4><p>Complete. <code>website-builder</code> is cloned at <code>/home/hermes/website-builder</code>. The clone existed already but the skills never loaded: <code>external_dirs</code> was nested under <code>delegation:</code> instead of <code>skills:</code>, and <code>hermes config set</code> writes a list as a quoted string, so it had to be written as real YAML. <code>hermes skills list</code> now reports <strong>32 local</strong>, was 0.</p></div></li>
         <li class="step"><input type="checkbox" id="s3" aria-labelledby="s3t"><span class="sn">03</span><div class="step-body"><h4 id="s3t">Clone one website</h4><p>A vanilla one, lowest risk. Confirm Hermes picks up its <code>CLAUDE.md</code> using <code>hermes prompt-size</code>.</p></div></li>
         <li class="step"><input type="checkbox" id="s4" aria-labelledby="s4t"><span class="sn">04</span><div class="step-body"><h4 id="s4t">Create forge</h4><p>New profile, Claude Code credentials, OpenRouter fallback chain. Run one real task end to end and read the output critically.</p></div></li>
         <li class="step"><input type="checkbox" id="s5" aria-labelledby="s5t"><span class="sn">05</span><div class="step-body"><h4 id="s5t">Create warden</h4><p>Second profile, install Playwright plus system deps, wire the screenshot gate described on page 7.</p></div></li>
