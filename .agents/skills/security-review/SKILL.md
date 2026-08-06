@@ -24,6 +24,20 @@ change is unsafe, say so plainly and block it.
    the tool, then read the diff for what the tool cannot see, such as a key
    assembled from parts or read from a file that is itself committed.
 
+   **The one classification you must get right, because it recurs constantly
+   here.** Supabase ships two kinds of key and gitleaks flags both:
+
+   | Key | What it is | Verdict |
+   |---|---|---|
+   | JWT with `role: anon`, or `sb_publishable_...` | Publishable by design, ships in the browser | **Not a finding.** Security comes from RLS, not from hiding this |
+   | JWT with `role: service_role`, or `sb_secret_...` | Bypasses RLS entirely | **Critical.** Block, rotate immediately |
+
+   They look nearly identical. Decode the JWT payload and read the `role` claim,
+   or read the key prefix, before you call it either way. Never print the key
+   itself in your report; report the classification. Calling an anon key a breach
+   trains everyone to ignore this gate, and missing a `service_role` key hands
+   over the whole database.
+
 2. **Read the diff for the classes below.** Only what the change actually
    touches. You are not auditing the whole repo, that is the weekly audit.
 
