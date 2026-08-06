@@ -22,7 +22,10 @@ if [ ! -x "$SCANNER" ]; then
   exit 0
 fi
 
-out=$("$SCANNER" scan source -r "$TARGET" --format markdown 2>/dev/null)
+# --allow-no-lockfiles: a vanilla HTML site has no lockfile, which is a clean
+# result, not a failure. Without it osv-scanner exits 128 and every clean day
+# looks like a broken feed.
+out=$("$SCANNER" scan source -r "$TARGET" --allow-no-lockfiles --format markdown 2>/dev/null)
 rc=$?
 
 # 0 = clean, 1 = vulnerabilities found, anything else = the scanner itself broke.
