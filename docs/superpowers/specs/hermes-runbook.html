@@ -710,8 +710,8 @@
         </div>
         <div class="card">
           <div class="card-top"><h4>Git identity</h4><span class="pill p1">Answered</span></div>
-          <p>Agents push as the main Curbi account, the same one everything already runs from.</p>
-          <dl><dt>Consequence</dt><dd>No blast-radius isolation. Compensated by branch-only pushes, see page 12.</dd></dl>
+          <p>Agents push as the main Curbi account, the same one everything already runs from. Revised 6 Aug: the box gets an account-level SSH key, not a scoped token, because every project repo is private and per-repo keys do not scale past ten repos.</p>
+          <dl><dt>Consequence</dt><dd>No blast-radius isolation at all, the box reaches every repo you own. Branch-only pushes are now the only compensating control, so page 12 is load-bearing rather than belt-and-braces.</dd></dl>
         </div>
         <div class="card">
           <div class="card-top"><h4>Skills transport</h4><span class="pill p1">Answered</span></div>
@@ -1005,8 +1005,8 @@
       <ul class="steps" id="steps">
         <li class="step"><input type="checkbox" id="s1" aria-labelledby="s1t"><span class="sn">01</span><div class="step-body"><h4 id="s1t">Inspect the container</h4><p>Complete. 2 vCPU, 4 GiB RAM, 14.8 GiB free, Debian unprivileged LXC. Verdict on page 3: websites now, apps after a resize.</p></div></li>
         <li class="step"><input type="checkbox" id="s2" aria-labelledby="s2t"><span class="sn">02</span><div class="step-body"><h4 id="s2t">Clone the workspace repo</h4><p>Complete. <code>website-builder</code> is cloned at <code>/home/hermes/website-builder</code>. The clone existed already but the skills never loaded: <code>external_dirs</code> was nested under <code>delegation:</code> instead of <code>skills:</code>, and <code>hermes config set</code> writes a list as a quoted string, so it had to be written as real YAML. <code>hermes skills list</code> now reports <strong>32 local</strong>, was 0.</p></div></li>
-        <li class="step"><input type="checkbox" id="s3" aria-labelledby="s3t"><span class="sn">03</span><div class="step-body"><h4 id="s3t">Clone one website</h4><p>A vanilla one, lowest risk. Confirm Hermes picks up its <code>CLAUDE.md</code> using <code>hermes prompt-size</code>.</p></div></li>
-        <li class="step"><input type="checkbox" id="s4" aria-labelledby="s4t"><span class="sn">04</span><div class="step-body"><h4 id="s4t">Create forge</h4><p>New profile, Claude Code credentials, OpenRouter fallback chain. Run one real task end to end and read the output critically.</p></div></li>
+        <li class="step"><input type="checkbox" id="s3" aria-labelledby="s3t"><span class="sn">03</span><div class="step-body"><h4 id="s3t">Clone one website</h4><p>Complete. <code>beau-nolten-cv</code> cloned to <code>~/projects/CV</code> over SSH. <code>CLAUDE.md</code> pickup proven by difference, not assertion: <code>prompt-size</code> reports 7,200 B in the context tier inside the repo and 0 B outside it, against a 5,213 B <code>CLAUDE.md</code>.</p></div></li>
+        <li class="step"><input type="checkbox" id="s4" aria-labelledby="s4t"><span class="sn">04</span><div class="step-body"><h4 id="s4t">Create forge</h4><p>Complete on OpenRouter <code>anthropic/claude-opus-5</code>, delegation on free Nemotron. Claude Code credentials still to be added by hand, see page 9. First real task passed: it read <code>CLAUDE.md</code> plus a 2,937-line <code>index.html</code> and cited the i18n, theme and <code>will-change</code> rules with exact line numbers. Every claim was checked against the file and all were correct.</p></div></li>
         <li class="step"><input type="checkbox" id="s5" aria-labelledby="s5t"><span class="sn">05</span><div class="step-body"><h4 id="s5t">Create warden</h4><p>Second profile, install Playwright plus system deps, wire the screenshot gate described on page 7.</p></div></li>
         <li class="step"><input type="checkbox" id="s6" aria-labelledby="s6t"><span class="sn">06</span><div class="step-body"><h4 id="s6t">Create aegis</h4><p>Third profile, high-tier model, security skills enabled. Build the lockfile-matched advisory cron described on page 8.</p></div></li>
         <li class="step"><input type="checkbox" id="s7" aria-labelledby="s7t"><span class="sn">07</span><div class="step-body"><h4 id="s7t">Run one full loop</h4><p>A real task through forge, then both gates, then a human yes. <strong>This is the go or no-go.</strong> If the quality is not there, stop and fix it before scaling.</p></div></li>
@@ -1030,7 +1030,7 @@
       <h2>Access</h2>
       <ul>
         <li><strong>Keep Cloudflare Access in front of the dashboard.</strong> It is what returned a 403 when I first tried to fetch the URL, which is correct behaviour. Do not loosen it to make automation easier.</li>
-        <li><strong>Agents push as your main Curbi account.</strong> Your call, and it keeps setup simple. It does mean no blast-radius isolation, so the compensating control matters: agents push branches only, never to <code>main</code>, and the token is scoped to the repos in <code>projects/</code> rather than the whole account.</li>
+        <li><strong>Agents push as your main Curbi account, via an account-level SSH key.</strong> Every project repo is private, so per-repo deploy keys would mean a paste per repo forever. The scoping half of this control is therefore gone: the box can reach every repo you own. <strong>Branch-only pushes, never to <code>main</code>, is now the single compensating control and has to be enforced, not assumed.</strong> Enforce it at GitHub with branch protection on <code>main</code>, not by asking the agent nicely in a prompt.</li>
         <li><strong>Deploy credentials stay out of <code>forge</code>.</strong> Deployment is a separate human-triggered step until the pipeline has earned trust.</li>
       </ul>
 
